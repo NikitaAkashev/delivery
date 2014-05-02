@@ -10,5 +10,7 @@ jimport('joomla.application.component.controller');
  */
 class CalculatorController extends JControllerLegacy
 {
+	
+	
 }
 ?>

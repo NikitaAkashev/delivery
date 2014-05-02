@@ -1,0 +1,70 @@
+
+insert into `calc_zone`(`name`)
+values ('Зона 1'),('Зона 2'),('Зона 3'),('Зона 4'),('Зона 5'),('Зона 6');
+
+insert into `calc_direction2zone`(`city_from`, `city_to`, `zone`)
+values (1, 2, 3), (2,1,3);
+
+insert into `calc_discount`(`city_from`, `city_to`, `factor`)
+values (4, 1, 15), (2, 3, 10);
+
+insert into `calc_weight_price`(`zone`, `from`, `to`, `base_price`, `overweight_cost`)
+values	(3, 0, 0.5, 429, 0),
+		(3, 0.5, 1, 464, 0),
+		(3, 1, 2, 562, 0),
+		(3, 2, 3, 636, 0),
+		(3, 3, 4, 710, 0),
+		(3, 4, 5, 783, 0),
+		(3, 5, 6, 847, 0),
+		(3, 6, 7, 911, 0),
+		(3, 7, 8, 975, 0),
+		(3, 8, 9, 1039, 0),
+		(3, 9, 10, 1103, 0),
+		(3, 10, 20, 1103, 62),
+		(3, 20, 100, 1737, 51),
+		(3, 100, 10000, 5817, 35);
+
+insert into `calc_assessed_value_price`(`from`, `to`, `base_price`, `overprice_percent`)
+values	(0,15000,200,0),
+		(15000,25000,500,0),
+		(25000,50000,1000,0),
+		(50000,150000,1000,1),
+		(150000,500000,2000,0.5),
+		(500000,1000000,3750,0.3),
+		(1000000,2000000,5250,0.2),
+		(2000000,5000000,7250,0.15),
+		(5000000,10000000,11750,0.1),
+		(10000000,20000000,16750,0.05),
+		(20000000,100000000,21750,0.04);
+
+
+select 
+	cf.factor as factor_from,
+	ct.factor as factor_to,
+	wp.from as weight_bottom,
+	wp.base_price as weight_base,
+	COALESCE(wp.overweight_cost, 0) as weight_over,
+	avp.from as assessed_value_bottom,
+	avp.base_price as assessed_value_base,
+	COALESCE(avp.overprice_percent, 0) as assessed_value_over,
+	COALESCE(d.factor, 1) as discount
+from `#__city`as cf
+	join `#__city` as ct on ct.city=1 
+	join `#__direction2zone` as d2z 
+					on d2z.city_from = COALESCE(cf.parent, cf.city) 
+						and d2z.city_to = COALESCE(ct.parent, ct.city)
+	join `#__weight_price` as wp 
+					on wp.zone = d2z.zone
+						and wp.from <= 15
+						and wp.to > 15
+	join `#__assessed_value_price` as avp
+					on avp.from <= 1689000
+						and avp.to > 1689000
+	left join `#__discount` as d 
+					on d.city_from = cf.city
+						and d.city_to = ct.city
+where
+	cf.city=4
+
+
+
