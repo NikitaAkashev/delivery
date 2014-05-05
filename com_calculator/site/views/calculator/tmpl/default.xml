@@ -5,17 +5,4 @@
                         <![CDATA[COM_CALCULATOR_CALCULATOR_VIEW_DEFAULT_DESC]]>
                 </message>
         </layout>
-        <fields
-                name="request"
-                addfieldpath="/administrator/components/com_calculator/models/fields"
-        >
-                <fieldset name="request">
-                        <field
-                                name="id"
-                                type="calculator"
-                                label="COM_CALCULATOR_CALCULATOR_FIELD_GREETING_LABEL"
-                                description="COM_CALCULATOR_CALCULATOR_FIELD_GREETING_DESC"
-                        />
-                </fieldset>
-        </fields>
 </metadata>

@@ -64,19 +64,19 @@ select
 	avp.base_price as assessed_value_base,
 	COALESCE(avp.overprice_percent, 0) as assessed_value_over,
 	COALESCE(d.factor, 1) as discount
-from `#__city`as cf
-	join `#__city` as ct on ct.city=".$db->quote($this->city_to)." 
-	join `#__direction2zone` as d2z 
+from `#__calc_city`as cf
+	join `#__calc_city` as ct on ct.city=".$db->quote($this->city_to)." 
+	join `#__calc_direction2zone` as d2z 
 					on d2z.city_from = COALESCE(cf.parent, cf.city) 
 						and d2z.city_to = COALESCE(ct.parent, ct.city)
-	join `#__weight_price` as wp 
+	join `#__calc_weight_price` as wp 
 					on wp.zone = d2z.zone
 						and (wp.from < ".$db->quote($real_weight)." or ".$db->quote($real_weight)."=0)
 						and wp.to >= ".$db->quote($real_weight)."
-	join `#__assessed_value_price` as avp
+	join `#__calc_assessed_value_price` as avp
 					on avp.from <= ".$db->quote($this->assessed_value)."
 						and avp.to > ".$db->quote($this->assessed_value)."
-	left join `#__discount` as d 
+	left join `#__calc_discount` as d 
 					on d.city_from = cf.city
 						and d.city_to = ct.city
 where
@@ -103,7 +103,7 @@ where
 		$query = $db->getQuery(true);
 		 
 		$query->select($db->quoteName(array('city', 'name')));
-		$query->from($db->quoteName('#__city'));
+		$query->from($db->quoteName('#__calc_city'));
 		$query->order('name ASC');
 		 
 		$db->setQuery($query);
