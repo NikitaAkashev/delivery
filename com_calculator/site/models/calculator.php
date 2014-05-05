@@ -36,9 +36,9 @@ class CalculatorModelCalculator extends JModelItem
 	}
 	
 	function IsFilled(){
-		return $this->city_from != null && $this->city_to != null && $this->weight != null &&
-				$this->assessed_value != null && $this->width != null &&
-				$this->length != null && $this->height != null;
+		return isset($this->city_from) && isset($this->city_to) && isset($this->weight) &&
+				isset($this->assessed_value) && isset($this->width) &&
+				isset($this->length) && isset($this->height);
 	}
 	
 	function Calculate(){
@@ -83,6 +83,12 @@ where
 	cf.city=".$db->quote($this->city_from).";";
 			$db->setQuery($query);
 			$result = $db->loadObject();
+			
+			if(is_null($result))
+			{
+				$this->price = null;
+				return;
+			}
 									
 			$discount = (100 - $result->discount)/100;
 			
