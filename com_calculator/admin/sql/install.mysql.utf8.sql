@@ -35,6 +35,7 @@ CREATE TABLE `#__calc_discount` (
   `city_from` int(11) NOT NULL references `#__calc_city`(city),
   `city_to` int(11) NOT NULL references `#__calc_city`(city),
   `factor` decimal(4,2) not null,
+  `user` int(11) NULL references `#__users(id)`
    PRIMARY KEY  (`city_from`, `city_to`),
    unique (`city_from`, `city_to`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -60,18 +61,8 @@ CREATE TABLE `#__calc_assessed_value_price` (
   `overprice_percent` decimal(15,10) not null default 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-insert into `#__calc_city` (`name`,`factor`, `parent`)
-values ('Москва', 1.0, null),('Екатеринбург', 1.0, null),('Химки', 1.25, 1),('Нижний Тагил', 1.15, 2);
-
 insert into `#__calc_zone`(`name`)
 values ('Зона 1'),('Зона 2'),('Зона 3'),('Зона 4'),('Зона 5'),('Зона 6');
-
-insert into `#__calc_direction2zone`(`city_from`, `city_to`, `zone`)
-values (1, 2, 3), (2,1,3);
-
-insert into `#__calc_discount`(`city_from`, `city_to`, `factor`)
-values (4, 1, 15), (2, 3, 10);
 
 insert into `#__calc_weight_price`(`zone`, `from`, `to`, `base_price`, `overweight_cost`)
 values	(3, 0, 0.5, 429, 0),

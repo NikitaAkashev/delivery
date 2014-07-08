@@ -79,6 +79,7 @@ from `#__calc_city`as cf
 	left join `#__calc_discount` as d 
 					on d.city_from = cf.city
 						and d.city_to = ct.city
+						and (d.user = ".$db->quote(JFactory::getUser()->get('id'))." or d.user is null)
 where
 	cf.city=".$db->quote($this->city_from).";";
 			$db->setQuery($query);
