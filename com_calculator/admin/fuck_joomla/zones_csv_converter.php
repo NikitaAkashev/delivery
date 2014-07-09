@@ -10,7 +10,7 @@ echo <<<TXT
 <body>
 	<form method="POST" action="" enctype="multipart/form-data" >
 		<input type="file" name="input" />
-		<input type="text" name="prefix"/>
+		Префикс таблиц в БД<input type="text" name="prefix"/>
 		<input type="submit" value="Преобразовать" />	
 	</form>	
 </body>
@@ -47,9 +47,8 @@ TXT;
 				$rows_inserted = 0;
 				
 				$query = mb_substr($query, 0, -1);
-				$query .= ";";
 				
-				$query .= "; \r\ninsert into ".$prefix."_calc_direction2zone (city_from, city_to, zone) values ";
+				$query .= ";\r\ninsert into ".$prefix."_calc_direction2zone (city_from, city_to, zone) values ";
 			}
 			$query .= " (".$i.", ".$j.", ".$converted[$i][$j]."),";
 				
@@ -57,9 +56,7 @@ TXT;
 		}
 	}	
 	
-	if ($rows_inserted != 500){
-		$query = mb_substr($query, 0, -1);
-	}
+	$query = mb_substr($query, 0, -1);
 	$query .= ";";
 	
 	echo $query;

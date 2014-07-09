@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td><select name="city_from">
 			<option value="">Нет</option>
 			<?php
-				foreach($this->citys as $city){
+				foreach($this->cities as $city){
 						$selected = $city->city == $this->model->city_from ? " selected=\"selected\" " : "";
 						echo "<option ".$selected." value=\"".$city->city."\">".$city->name."</option>";
 				}
@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td><select name="city_to">
 			<option value="">Нет</option>
 			<?php
-				foreach($this->citys as $city){
+				foreach($this->cities as $city){
 						$selected = $city->city == $this->model->city_to ? " selected=\"selected\" " : "";
 						echo "<option ".$selected." value=\"".$city->city."\">".$city->name."</option>";
 				}
