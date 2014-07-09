@@ -15,10 +15,12 @@ class CalculatorViewCalculator extends JViewLegacy
         {
 			$model = $this->getModel();
 			$model->Calculate();
-			$citys = $model->GetCitys();
+			$cities = $model->GetCities();
+			$tariffs = $model->GetTariffs();
 						
 			$this->assignRef('model', $model);
-			$this->assignRef('citys', $citys);
+			$this->assignRef('cities', $cities);
+			$this->assignRef('tariffs', $tariffs);
 			
 			parent::display($tpl);
         }

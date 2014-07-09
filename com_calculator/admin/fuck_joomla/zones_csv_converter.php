@@ -10,6 +10,7 @@ echo <<<TXT
 <body>
 	<form method="POST" action="" enctype="multipart/form-data" >
 		<input type="file" name="input" />
+		<input type="text" name="prefix"/>
 		<input type="submit" value="Преобразовать" />	
 	</form>	
 </body>
@@ -36,19 +37,19 @@ TXT;
 	
 	$rows_inserted = 0;
 	
-	$query = "insert into #__calc_direction2zone (city_from, city_to, zone) values ";
+	$prefix = $_POST["prefix"];
+	
+	$query = "insert into ".$prefix."_calc_direction2zone (city_from, city_to, zone) values ";
 	
 	for ($i = 1; $i <= count($converted); $i++){
 		for ($j = 1; $j <= count($converted[$i]); $j++){
-			if($converted[$i][$j] == 0){
-				continue;
-			}
 			if($rows_inserted == 500){
 				$rows_inserted = 0;
 				
 				$query = mb_substr($query, 0, -1);
+				$query .= ";";
 				
-				$query .= "; \r\ninsert into #__calc_direction2zone (city_from, city_to, zone) values ";
+				$query .= "; \r\ninsert into ".$prefix."_calc_direction2zone (city_from, city_to, zone) values ";
 			}
 			$query .= " (".$i.", ".$j.", ".$converted[$i][$j]."),";
 				

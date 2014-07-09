@@ -5,6 +5,15 @@ defined('_JEXEC') or die('Restricted access');
 <h1>Расчет стоимости отправки</h1>
 <form method="POST" name="calculate_form" action="">
 <table>
+	<tr><td>Тариф</td>
+		<td><select name="tariff">
+			<?php
+				foreach($this->tariffs as $tariff){
+						$selected = $tariff->tariff == $this->model->tariff ? " selected=\"selected\" " : "";
+						echo "<option ".$selected." value=\"".$tariff->tariff."\">".$tariff->name."</option>";
+				}
+			 ?>		
+		</select></td></tr>
 	<tr><td>Откуда</td>
 		<td><select name="city_from">
 			<option value="">Нет</option>

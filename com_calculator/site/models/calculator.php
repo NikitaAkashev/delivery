@@ -14,6 +14,7 @@ class CalculatorModelCalculator extends JModelItem
 	private $_dimension_limit = 300;
 	private $_weight_limit = 200;
 	
+	public $tariff;
 	public $city_from;
 	public $city_to;
 	public $weight;
@@ -33,12 +34,13 @@ class CalculatorModelCalculator extends JModelItem
 		$this->width = JRequest::getFloat('width', null);    
 		$this->length = JRequest::getFloat('length', null);    
 		$this->height = JRequest::getFloat('height', null);    
+		$this->tariff = JRequest::getFloat('tariff', null);    
 	}
 	
 	function IsFilled(){
 		return isset($this->city_from) && isset($this->city_to) && isset($this->weight) &&
 				isset($this->assessed_value) && isset($this->width) &&
-				isset($this->length) && isset($this->height);
+				isset($this->length) && isset($this->height) && isset($this->tariff);
 	}
 	
 	function Calculate(){
@@ -55,8 +57,8 @@ class CalculatorModelCalculator extends JModelItem
 			$db = JFactory::getDBO();
 			$query = "
 select 
-	cf.factor as factor_from,
-	ct.factor as factor_to,
+	ff.value as factor_from,
+	ft.value as factor_to,
 	wp.from as weight_bottom,
 	wp.base_price as weight_base,
 	COALESCE(wp.overweight_cost, 0) as weight_over,
@@ -65,7 +67,9 @@ select
 	COALESCE(avp.overprice_percent, 0) as assessed_value_over,
 	COALESCE(d.factor, 1) as discount
 from `#__calc_city`as cf
-	join `#__calc_city` as ct on ct.city=".$db->quote($this->city_to)." 
+	join `#__calc_city` as ct on ct.city=".$db->quote($this->city_to)."	 
+	join `#__calc_factor` as ff on ff.factor = cf.factor
+	join `#__calc_factor` as ft on ft.factor = ct.factor
 	join `#__calc_direction2zone` as d2z 
 					on d2z.city_from = COALESCE(cf.parent, cf.city) 
 						and d2z.city_to = COALESCE(ct.parent, ct.city)
@@ -73,6 +77,7 @@ from `#__calc_city`as cf
 					on wp.zone = d2z.zone
 						and (wp.from < ".$db->quote($real_weight)." or ".$db->quote($real_weight)."=0)
 						and wp.to >= ".$db->quote($real_weight)."
+						and wp.tariff = ".$db->quote($this->tariff)."
 	join `#__calc_assessed_value_price` as avp
 					on avp.from <= ".$db->quote($this->assessed_value)."
 						and avp.to > ".$db->quote($this->assessed_value)."
@@ -97,13 +102,15 @@ where
 			$assessed_value_price = $result->assessed_value_base + $result->assessed_value_over * (ceil($this->assessed_value) - $result->assessed_value_bottom);
 			
 			$this->price = $weight_price * $oversize * $result->factor_from * $result->factor_to * $discount + $assessed_value_price;
+			
+			echo $this->price;
 		} else {
 			$this->price = null;
 		}
 
 	}
 	
-	function GetCitys(){
+	function GetCities(){
 		//select `city`, `name` from `#__city`
 		$db = JFactory::getDbo();
 		
@@ -112,6 +119,23 @@ where
 		$query->select($db->quoteName(array('city', 'name')));
 		$query->from($db->quoteName('#__calc_city'));
 		$query->order('name ASC');
+		 
+		$db->setQuery($query);
+		 
+		$results = $db->loadObjectList();
+		
+		return $results;
+	}
+	
+	function GetTariffs(){
+		//select `tariff`, `name` from `#__calc_tariff`
+		$db = JFactory::getDbo();
+		
+		$query = $db->getQuery(true);
+		 
+		$query->select($db->quoteName(array('tariff', 'name')));
+		$query->from($db->quoteName('#__calc_tariff'));
+		$query->order('tariff ASC');
 		 
 		$db->setQuery($query);
 		 
