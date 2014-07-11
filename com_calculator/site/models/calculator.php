@@ -65,7 +65,7 @@ select
 	avp.from as assessed_value_bottom,
 	avp.base_price as assessed_value_base,
 	COALESCE(avp.overprice_percent, 0) as assessed_value_over,
-	COALESCE(d.factor, 1) as discount
+	COALESCE(d.factor, 0) as discount
 from `#__calc_city`as cf
 	join `#__calc_city` as ct on ct.city=".$db->quote($this->city_to)."	 
 	join `#__calc_factor` as ff on ff.factor = cf.factor
@@ -102,8 +102,6 @@ where
 			$assessed_value_price = $result->assessed_value_base + $result->assessed_value_over * (ceil($this->assessed_value) - $result->assessed_value_bottom);
 			
 			$this->price = $weight_price * $oversize * $result->factor_from * $result->factor_to * $discount + $assessed_value_price;
-			
-			echo $this->price;
 		} else {
 			$this->price = null;
 		}
