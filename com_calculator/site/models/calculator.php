@@ -13,8 +13,12 @@ class CalculatorModelCalculator extends JModelItem
 	private $_volume_weight_divider = 6000;
 	private $_dimension_limit = 300;
 	private $_weight_limit = 200;
+	private $_inner_price_viewer_group_id = 10; // ID группы, которой можно считать разницу в ценах.
 	
-	public $tariff;
+	private $user_id;
+	
+	public $is_express;
+	public $from_door;
 	public $city_from;
 	public $city_to;
 	public $weight;
@@ -22,28 +26,46 @@ class CalculatorModelCalculator extends JModelItem
 	public $width;
 	public $length;
 	public $height;
-	public $price;
 	
+	public $price;
+	public $inner_price;
+	public $min_delivery_time;
+	public $max_delivery_time;	
 	
 	function __construct() {
 		parent::__construct();
+		
+		$this->user_id = JFactory::getUser()->get('id');
+		
 		$this->city_from = JRequest::getInt('city_from', null);
 		$this->city_to = JRequest::getInt('city_to', null);				
 		$this->weight = JRequest::getFloat('weight', null);    
 		$this->assessed_value = JRequest::getFloat('assessed_value', null);    
 		$this->width = JRequest::getFloat('width', null);    
 		$this->length = JRequest::getFloat('length', null);    
-		$this->height = JRequest::getFloat('height', null);    
-		$this->tariff = JRequest::getFloat('tariff', null);    
+		$this->height = JRequest::getFloat('height', null);
+		    
+		$this->is_express = JRequest::getFloat('is_express', false);    
+		$this->from_door = JRequest::getFloat('from_door', 0) + JRequest::getFloat('to_door', 0) == 2 ? true : false ; // тариф дверь-дверь только если выбрано и забрать груз и доставить груз    
 	}
 	
 	function IsFilled(){
 		return isset($this->city_from) && isset($this->city_to) && isset($this->weight) &&
 				isset($this->assessed_value) && isset($this->width) &&
-				isset($this->length) && isset($this->height) && isset($this->tariff);
+				isset($this->length) && isset($this->height);
 	}
 	
-	function Calculate(){
+	function IsInnerPriceViewer(){
+		$usergroups = JAccess::getGroupsByUser($this->user_id);
+				
+		return in_array($_inner_price_viewer_group_id, $usergroups));
+	}
+	
+	function Calculate($is_public){
+		if(!$is_public && $this->price === null){
+			$this->inner_price == null;
+		}
+		
 		if($this->IsFilled()){
 			
 			$volume_weight = $this->width * $this->length * $this->height / $this->_volume_weight_divider;
@@ -84,7 +106,7 @@ from `#__calc_city`as cf
 	left join `#__calc_discount` as d 
 					on d.city_from = cf.city
 						and d.city_to = ct.city
-						and (d.user = ".$db->quote(JFactory::getUser()->get('id'))." or d.user is null)
+						and (d.user = ".$db->quote($this->user_id)." or d.user is null)
 where
 	cf.city=".$db->quote($this->city_from).";";
 			$db->setQuery($query);
@@ -132,7 +154,7 @@ where
 		$query = $db->getQuery(true);
 		 
 		$query->select($db->quoteName(array('tariff', 'name')));
-		$query->from($db->quoteName('#__calc_tariff'));
+		$query->from($db->quoteName('#__calc_tariff'));	
 		$query->order('tariff ASC');
 		 
 		$db->setQuery($query);

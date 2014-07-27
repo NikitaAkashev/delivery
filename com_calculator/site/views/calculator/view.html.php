@@ -14,7 +14,10 @@ class CalculatorViewCalculator extends JViewLegacy
         function display($tpl = null) 
         {
 			$model = $this->getModel();
-			$model->Calculate();
+			$model->Calculate(1);
+			if($model->IsInnerPriceViewer()){
+				$model->Calculate(0);
+			}
 			$cities = $model->GetCities();
 			$tariffs = $model->GetTariffs();
 						
