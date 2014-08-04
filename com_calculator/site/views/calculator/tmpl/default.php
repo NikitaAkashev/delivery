@@ -2,20 +2,33 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 ?>
+<link rel="stylesheet" href="/kadence_of_pride/media/chosen/chosen.min.css" type="text/css" />
+<script src="/kadence_of_pride/media/chosen/chosen.jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		jQuery(".city_select").chosen();
+	});
+</script>
 <h1>Расчет стоимости отправки</h1>
 <form method="POST" name="calculate_form" action="">
 <table>
 	<tr><td>Тариф</td>
-		<td><select name="tariff">
-			<?php
-				foreach($this->tariffs as $tariff){
-						$selected = $tariff->tariff == $this->model->tariff ? " selected=\"selected\" " : "";
-						echo "<option ".$selected." value=\"".$tariff->tariff."\">".$tariff->name."</option>";
-				}
-			 ?>		
-		</select></td></tr>
+		<td>
+			<label><input type="radio" name="is_express" value="1" <?php if($this->model->is_express === null || $this->model->is_express == 1) echo "checked" ?> />Экспресс</label>
+			<label><input type="radio" name="is_express" value="0" <?php if($this->model->is_express == 0) echo "checked" ?> />Стандарт</label>
+		</td></tr>
+	<tr><td>Забрать</td>
+	<td>
+		<label><input type="radio" name="from_door" value="1" <?php if($this->model->price === null) echo "checked" ?> />Забрать от адреса</label>
+		<label><input type="radio" name="from_door" value="0" />Самостоятельно привезти</label>
+	</td></tr>
+	<tr><td>Доставить</td>
+	<td>
+		<label><input type="radio" name="to_door" value="1" <?php if($this->model->price === null) echo "checked" ?> />Доставить на адрес</label>
+		<label><input type="radio" name="to_door" value="0" />Самостоятельно забрать</label>
+	</td></tr>
 	<tr><td>Откуда</td>
-		<td><select name="city_from">
+		<td><select name="city_from" class="city_select">
 			<option value="">Нет</option>
 			<?php
 				foreach($this->cities as $city){
@@ -25,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 			 ?>		
 		</select></td></tr>
 	<tr><td>Куда</td>
-		<td><select name="city_to">
+		<td><select name="city_to" class="city_select">
 			<option value="">Нет</option>
 			<?php
 				foreach($this->cities as $city){
@@ -44,4 +57,8 @@ defined('_JEXEC') or die('Restricted access');
 </form>
 <?php if($this->model->price != null){ ?>
 	<h2>Стоимость отправки: <?php echo $this->model->price; ?> руб.</h2>
+	Время доставки: <?php echo $this->model->min_delivery_time;  ?> - <?php echo $this->model->max_delivery_time; ?> дней
+<?php } ?>
+<?php if($this->model->inner_price != null){ ?>
+	<h2>Внутренняя стоимость отправки: <?php echo $this->model->inner_price; ?> руб.</h2>
 <?php } ?>

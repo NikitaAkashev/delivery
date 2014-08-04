@@ -19,11 +19,9 @@ class CalculatorViewCalculator extends JViewLegacy
 				$model->Calculate(0);
 			}
 			$cities = $model->GetCities();
-			$tariffs = $model->GetTariffs();
 						
 			$this->assignRef('model', $model);
 			$this->assignRef('cities', $cities);
-			$this->assignRef('tariffs', $tariffs);
 			
 			parent::display($tpl);
         }

@@ -36,7 +36,7 @@ TXT;
 				
 				$query .= "; \r\ninsert into `".$prefix."_calc_city` (`name`, `parent`, `factor`, `express_min_delivery_time`, `express_max_delivery_time`, `standart_min_delivery_time`, `standart_max_delivery_time`, `region_name`) values ";
 			}
-			$query .= "('".$data[1]."', ".($data[2] == '' ? "null" : $data[2]).", ".$data[3].", ".$data[4].", ".$data[5].", ".$data[6].", ".$data[7].", ".($data[8] == '' ? "null" : $data[8])."),";
+			$query .= "('".$data[1]."', ".($data[2] == '' ? "null" : $data[2]).", ".$data[3].", ".$data[4].", ".$data[5].", ".$data[6].", ".$data[7].", ".($data[8] == '' ? "null" : "'".$data[8]."'")."),";
 			$rows_inserted ++;
 		}
 		fclose($handle);

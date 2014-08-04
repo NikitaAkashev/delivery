@@ -98,7 +98,7 @@ CREATE TABLE `#__calc_assessed_value_price` (
   `to` decimal(15,2) NOT NULL,
   `base_price` decimal(15,2) not null,
   `overprice_percent` decimal(15,10) not null default 0,
-  `is_public` tinyint(1) not null,
+  `is_public` tinyint(1) not null
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 set sql_mode='NO_AUTO_VALUE_ON_ZERO';
@@ -111,12 +111,12 @@ values
 	('Дверь-Дверь (Экспресс)', 1, 1, 1), 
 	('Окно-Дверь (Экспресс)', 1, 1, 0), 
 	('Дверь-Дверь (Стандарт)', 1, 0, 1), 
-	('Окно-Дверь (Стандарт)', 1, 0, 0);
-	('Дверь-Дверь (Внутренний)', 0, 0, 1);
+	('Окно-Дверь (Стандарт)', 1, 0, 0),
+	('Дверь-Дверь (Внутренний)', 0, 0, 1),
 	('Окно-Дверь (Внутренний)', 0, 0, 0);
 
 insert into `#__calc_factor`(`name`, `value`, `value_for_inner_calculations`)
-values ('Областной центр', 1.0), ('Районный центр', 1.25, 1.25), ('Свердловская область', 1.15, 1.15);
+values ('Областной центр', 1.0, 1.0), ('Районный центр', 1.3, 1.25), ('Свердловская область', 1.2, 1.15);
 
 insert into `#__calc_assessed_value_price`(`from`, `to`, `base_price`, `overprice_percent`, `is_public`)
 values
