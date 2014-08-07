@@ -13,7 +13,7 @@ class CalculatorModelCalculator extends JModelItem
 	private $_volume_weight_divider = 6000;
 	private $_dimension_limit = 300;
 	private $_weight_limit = 200;
-	private $_inner_price_viewer_group_ids = array(8,9); // ID групп, которым можно считать разницу в ценах.
+	private $_inner_price_viewer_group_ids = array(7,8); // ID групп, которым можно считать разницу в ценах.
 	
 	private $user_id;
 	
@@ -139,6 +139,7 @@ where
 			if(is_null($result))
 			{
 				$this->price = null;
+				$this->inner_price = null;
 				return;
 			}
 									
@@ -148,13 +149,22 @@ where
 			$assessed_value_price = $result->assessed_value_base + $result->assessed_value_over * (ceil($this->assessed_value) - $result->assessed_value_bottom);
 			
 			if($is_public){
-				$this->price = $weight_price * $oversize * $result->factor_from * $result->factor_to * $discount + $assessed_value_price;
+				$this->price = $weight_price * $oversize * ($result->factor_from + $result->factor_to - 1)* $discount + $assessed_value_price;
 				
-				$this->min_delivery_time = $result->f_min_time == 1  ? $result->t_min_time : ($result->t_min_time == 1 ? $result->f_min_time : $result->t_min_time + $result->f_min_time );
-				$this->max_delivery_time = $result->f_max_time == 1  ? $result->t_max_time : ($result->t_max_time == 1 ? $result->f_max_time : $result->t_max_time + $result->f_max_time );
+				if ($result->f_min_time == 1){
+					$this->min_delivery_time = $result->t_min_time;
+					$this->max_delivery_time = $result->t_max_time;					
+				} else if ($result->t_min_time == 1){
+					$this->min_delivery_time = $result->f_min_time;
+					$this->max_delivery_time = $result->f_max_time;	
+				} else {
+					$this->min_delivery_time = $result->f_min_time + $result->t_min_time;
+					$this->max_delivery_time = $result->f_max_time + $result->t_max_time;
+				}
+				
 			} else
 			{
-				$this->inner_price = $weight_price * $oversize * $result->factor_from * $result->factor_to * $discount + $assessed_value_price;
+				$this->inner_price = $weight_price * $oversize * ($result->factor_from + $result->factor_to - 1) * $discount + $assessed_value_price;
 			}
 		} else {
 			$this->price = null;
@@ -168,8 +178,8 @@ where
 select 
 	c.city,
 	concat(c.name, ' (', coalesce(p.region_name, c.region_name, ''), ')') as name
-from calc_calc_city c
-	left join calc_calc_city p on p.city = c.parent
+from #__calc_city c
+	left join #__calc_city p on p.city = c.parent
 order by c.name
 		";
 				 

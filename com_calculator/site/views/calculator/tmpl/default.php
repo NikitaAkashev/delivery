@@ -2,8 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 ?>
-<link rel="stylesheet" href="/kadence_of_pride/media/chosen/chosen.min.css" type="text/css" />
-<script src="/kadence_of_pride/media/chosen/chosen.jquery.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/media/chosen/chosen.min.css" type="text/css" />
+<script src="/media/chosen/chosen.jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function(){
 		jQuery(".city_select").chosen();
@@ -19,13 +19,13 @@ defined('_JEXEC') or die('Restricted access');
 		</td></tr>
 	<tr><td>Забрать</td>
 	<td>
-		<label><input type="radio" name="from_door" value="1" <?php if($this->model->price === null) echo "checked" ?> />Забрать от адреса</label>
-		<label><input type="radio" name="from_door" value="0" />Самостоятельно привезти</label>
+		<label><input type="radio" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 1) == 1) echo "checked" ?> />Забрать от адреса</label>
+		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 1) == 0) echo "checked" ?>/>Самостоятельно привезти</label>
 	</td></tr>
 	<tr><td>Доставить</td>
 	<td>
-		<label><input type="radio" name="to_door" value="1" <?php if($this->model->price === null) echo "checked" ?> />Доставить на адрес</label>
-		<label><input type="radio" name="to_door" value="0" />Самостоятельно забрать</label>
+		<label><input type="radio" name="to_door" value="1" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "checked" ?> />Доставить на адрес</label>
+		<label><input type="radio" name="to_door" value="0" <?php if(JRequest::getFloat('to_door', 1) == 0) echo "checked" ?> />Самостоятельно забрать</label>
 	</td></tr>
 	<tr><td>Откуда</td>
 		<td><select name="city_from" class="city_select">
@@ -56,9 +56,10 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 </form>
 <?php if($this->model->price != null){ ?>
-	<h2>Стоимость отправки: <?php echo $this->model->price; ?> руб.</h2>
-	Время доставки: <?php echo $this->model->min_delivery_time;  ?> - <?php echo $this->model->max_delivery_time; ?> дней
+	<h2>Стоимость отправки: <?php echo ceil($this->model->price); ?> руб.</h2>
+	Время доставки: <?php echo $this->model->min_delivery_time;  ?> - <?php echo $this->model->max_delivery_time; ?> дн.
 <?php } ?>
 <?php if($this->model->inner_price != null){ ?>
-	<h2>Внутренняя стоимость отправки: <?php echo $this->model->inner_price; ?> руб.</h2>
+	<h2>Внутренняя стоимость отправки: <?php echo ceil($this->model->inner_price); ?> руб.</h2>
+	<h2>Прибыль: <?php echo ceil($this->model->price) - ceil($this->model->inner_price); ?> руб.</h2>
 <?php } ?>
