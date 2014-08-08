@@ -52,7 +52,10 @@ class CalculatorModelCalculator extends JModelItem
 	function IsFilled(){
 		return isset($this->city_from) && isset($this->city_to) && isset($this->weight) &&
 				isset($this->assessed_value) && isset($this->width) &&
-				isset($this->length) && isset($this->height);
+				isset($this->length) && isset($this->height) && 
+				$this->city_from != 0 && $this->city_to != 0 && 
+				$this->weight != 0 && $this->width != 0 &&
+				$this->length != 0 && $this->height != 0;
 	}
 	
 	function IsInnerPriceViewer(){
@@ -177,7 +180,9 @@ where
 		$query = "
 select 
 	c.city,
-	concat(c.name, ' (', coalesce(p.region_name, c.region_name, ''), ')') as name
+	concat(c.name,
+		(case when c.city IN (38,55) then ''
+		else concat(' (', coalesce(p.region_name, c.region_name, ''), ')') end)) as name
 from #__calc_city c
 	left join #__calc_city p on p.city = c.parent
 order by c.name
