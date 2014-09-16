@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 	});
 </script>
 <h1>Расчет стоимости отправки</h1>
-<form method="POST" name="calculate_form" action="">
+<form id="calculator" method="POST" name="calculate_form" action="">
 <table>
 	<tr><td>Тариф</td>
 		<td>
@@ -56,17 +56,17 @@ defined('_JEXEC') or die('Restricted access');
 	<tr><td>Высота, см</td><td><input class="comma-replace <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" /></td></tr>
 	<tr><td>Длина, см</td><td><input class="comma-replace <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" /></td></tr>
 	<tr><td>Ширина, см</td><td><input class="comma-replace <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" /></td></tr>
-	<tr><td colspan="2"><input type="submit" name="submit" value="Расчитать" /></td></tr>
+	<tr><td colspan="2"><input class="submit" type="submit" name="submit" value="Расчитать" /></td></tr>
 </table>
 </form>
 <?php if($this->model->price != null){ ?>
-	<h2>Стоимость отправки: <?php echo ceil($this->model->price * ($this->model->nds + 1)); ?> руб (в том числе НДС <?php echo ceil($this->model->price * ($this->model->nds)); ?> руб.)</h2>
+	<h2>Стоимость отправки: <?php echo ceil($this->model->price * ($this->model->nds + 1)); ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil($this->model->price * ($this->model->nds)); ?> руб.)</span></h2>
 	Время доставки: <?php echo $this->model->min_delivery_time;  ?> - <?php echo $this->model->max_delivery_time; ?> дн.
-	Объем груза: <?php echo $this->model->width * $this->model->length * $this->model->height / 1000000;  ?> м^3
+	Объем груза: <?php echo $this->model->width * $this->model->length * $this->model->height / 1000000;  ?> м<sup>3</sup>
 	
 <?php } ?>
 <?php if($this->model->inner_price != null){ ?>
-	<h2>Внутренняя стоимость отправки: <?php echo ceil($this->model->inner_price * ($this->model->nds + 1)); ?> руб (в том числе НДС <?php echo ceil($this->model->inner_price * ($this->model->nds)); ?> руб.)</h2>
-	<h2>Прибыль: <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds + 1)); ?> руб (в том числе НДС <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds)); ?> руб.)</h2>
+	<h2>Внутренняя стоимость отправки: <?php echo ceil($this->model->inner_price * ($this->model->nds + 1)); ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil($this->model->inner_price * ($this->model->nds)); ?> руб.)</span></h2>
+	<h2>Прибыль: <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds + 1)); ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds)); ?> руб.)</span></h2>
 <?php } ?>
 
