@@ -17,6 +17,8 @@ class CalculatorModelCalculator extends JModelItem
 	
 	private $user_id;
 	
+	public $nds = 0.18;
+	
 	public $is_express;
 	public $from_door;
 	public $city_from;
