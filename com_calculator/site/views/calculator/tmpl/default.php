@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 	
 <?php } ?>
 <?php if($this->model->inner_price != null){ ?>
-	<h2>Внутренняя стоимость отправки: <?php echo ceil($this->model->inner_price * ($this->model->nds + 1)); ?> руб (в том числе НДС <?php echo ceil($this->model->inner_price * ($this->model->nds)); ?>руб.)</h2>
-	<h2>Прибыль: <?php echo ceil($this->model->price) - ceil($this->model->inner_price); ?> руб.</h2>
+	<h2>Внутренняя стоимость отправки: <?php echo ceil($this->model->inner_price * ($this->model->nds + 1)); ?> руб (в том числе НДС <?php echo ceil($this->model->inner_price * ($this->model->nds)); ?> руб.)</h2>
+	<h2>Прибыль: <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds + 1)); ?> руб (в том числе НДС <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds)); ?> руб.)</h2>
 <?php } ?>
 
