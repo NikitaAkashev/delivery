@@ -53,9 +53,9 @@ defined('_JEXEC') or die('Restricted access');
 		</select></td></tr>
 	<tr><td>Вес, кг</td><td><input class="comma-replace <?php if($this->model->weight !== null && $this->model->weight == 0) echo 'alert-error'?>" type="text" name="weight" value="<?php echo $this->model->weight; ?>" /></td></tr>
 	<tr><td>Оценка, руб</td><td><input class="comma-replace" type="text" name="assessed_value" value="<?php echo $this->model->assessed_value; ?>" /></td></tr>
-	<tr><td>Высота, см</td><td><input class="comma-replace <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" /></td></tr>
+	<tr><td>Ширина, см</td><td><input class="comma-replace <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" /></td></tr>
 	<tr><td>Длина, см</td><td><input class="comma-replace <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" /></td></tr>
-	<tr><td>Ширина, см</td><td><input class="comma-replace <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" /></td></tr>
+	<tr><td>Высота, см</td><td><input class="comma-replace <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" /></td></tr>
 	<tr><td colspan="2"><input class="submit" type="submit" name="submit" value="Расчитать" /></td></tr>
 </table>
 </form>
