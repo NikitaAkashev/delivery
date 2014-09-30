@@ -14,34 +14,38 @@ defined('_JEXEC') or die; ?>
 	});
 </script>
 
-<form name="mod_calculator" method="post" action="/kadence_of_pride/index.php/component/calculator/" >
-<table>
-<tr><td>Откуда</td>
-		<td><select name="city_from" class="city_select">
+<form name="mod_calculator" method="post" action="/calculator/" >
+	<div>
+		<label>Откуда</label>
+		<select name="city_from" class="city_select">
 			<option value="">Нет</option>
 			<?php
 				foreach($cities as $city){
 						echo "<option value=\"".$city->city."\">".$city->name."</option>";
 				}
 			 ?>		
-		</select></td></tr>
-	<tr><td>Куда</td>
-		<td><select name="city_to" class="city_select">
+		</select>
+	</div>
+	<div>
+		<label>Куда</label> 
+		<select name="city_to" class="city_select">
 			<option value="">Нет</option>
 			<?php
 				foreach($cities as $city){
 						echo "<option value=\"".$city->city."\">".$city->name."</option>";
 				}
 			 ?>
-		</select></td></tr>
+		</select>
+	</div>
 		
-	<tr><td>Размеры, см</td>
-		<td>
-			<input class="comma-replace" type="text" name="width" placeholder="шир." />x
-			<input class="comma-replace" type="text" name="length" placeholder="дл." />x
-			<input class="comma-replace" type="text" name="height" placeholder="выс." />
+	<div class="weight-size">
+		<label>Вес/Размеры</label>
+		<input class="comma-replace weight" size="2" maxlength="3" type="text" name="weight" value="0" /> <span class="decoding">кг</span> <sub class="separator">/</sub> 
+		<input class="comma-replace" size="2" maxlength="3" type="text" name="width"  value="0" /> <span class="decoding">см</span> <span class="separator">x</span>
+		<input class="comma-replace" size="2" maxlength="3" type="text" name="length"  value="0" /> <span class="decoding">см</span> <span class="separator">x</span>
+		<input class="comma-replace" size="2" maxlength="3" type="text" name="height"  value="0" /> <span class="decoding">см</span>
+	</div>
 	
-		
-	<tr><td colspan = 2><input type="submit" value="К расчету!"></td></tr>
-</table>
+	<button class="roboto">заказать</button>	
+	
 </form>
