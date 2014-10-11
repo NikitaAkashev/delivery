@@ -49,4 +49,7 @@ defined('_JEXEC') or die; ?>
 	
 	<button class="roboto">заказать</button>	
 	
+	<h2><?php echo ceil($model->price * ($model->nds + 1)); ?> руб.</h2>
+	<div><?php echo $model->min_delivery_time;  ?> - <?php echo $model->max_delivery_time; ?> дн.</div>
+	
 </form>

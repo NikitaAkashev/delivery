@@ -22,5 +22,20 @@ $parcel_parameters_variant = array(
 $parcel = $parcel_parameters_variant[array_rand($parcel_parameters_variant)];
 
 $cities = CalculatorModelCalculator::GetCities();
+
+$model = new CalculatorModelCalculator();
+$model->city_from = $selected_city_from;
+$model->city_to = $selected_city_to;
+$model->weight = $parcel["weight"];
+$model->assessed_value = 0;
+$model->width = $parcel["width"];
+$model->length = $parcel["length"];
+$model->height = $parcel["height"];
+
+$model->is_express = 1;
+$model->from_door = 0;
+
+$model->Calculate(1);
+
 require( JModuleHelper::getLayoutPath('mod_calculator'));
 ?>
