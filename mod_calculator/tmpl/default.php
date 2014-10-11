@@ -21,7 +21,7 @@ defined('_JEXEC') or die; ?>
 			<option value="">Нет</option>
 			<?php
 				foreach($cities as $city){
-						echo "<option value=\"".$city->city."\">".$city->name."</option>";
+						echo "<option".($city->city == $selected_city_from ? " selected" : "")." value=\"".$city->city."\">".$city->name."</option>";
 				}
 			 ?>		
 		</select>
@@ -32,7 +32,7 @@ defined('_JEXEC') or die; ?>
 			<option value="">Нет</option>
 			<?php
 				foreach($cities as $city){
-						echo "<option value=\"".$city->city."\">".$city->name."</option>";
+						echo "<option".($city->city == $selected_city_to ? " selected" : "")." value=\"".$city->city."\">".$city->name."</option>";
 				}
 			 ?>
 		</select>
@@ -40,10 +40,11 @@ defined('_JEXEC') or die; ?>
 		
 	<div class="weight-size">
 		<label>Вес/Размеры</label>
-		<input class="comma-replace weight" size="2" maxlength="3" type="text" name="weight" value="0" /> <span class="decoding">кг</span> <sub class="separator">/</sub> 
-		<input class="comma-replace" size="2" maxlength="3" type="text" name="width"  value="0" /> <span class="decoding">см</span> <span class="separator">x</span>
-		<input class="comma-replace" size="2" maxlength="3" type="text" name="length"  value="0" /> <span class="decoding">см</span> <span class="separator">x</span>
-		<input class="comma-replace" size="2" maxlength="3" type="text" name="height"  value="0" /> <span class="decoding">см</span>
+		<input class="comma-replace weight" size="2" maxlength="3" type="text" name="weight" value="<?php echo $parcel["weight"]; ?>" /> <span class="decoding">кг</span> <sub class="separator">/</sub> 
+		<input class="comma-replace" size="2" maxlength="3" type="text" name="width"  value="<?php echo $parcel["width"]; ?>" /> <span class="decoding">см</span> <span class="separator">x</span>
+		<input class="comma-replace" size="2" maxlength="3" type="text" name="length"  value="<?php echo $parcel["length"]; ?>" /> <span class="decoding">см</span> <span class="separator">x</span>
+		<input class="comma-replace" size="2" maxlength="3" type="text" name="height"  value="<?php echo $parcel["height"]; ?>" /> <span class="decoding">см</span>
+		<input type="hidden" value="" name="assessed_value" />
 	</div>
 	
 	<button class="roboto">заказать</button>	
