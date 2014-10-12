@@ -27,9 +27,9 @@ defined('_JEXEC') or die('Restricted access');
 		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 1) == 0) echo "checked" ?>/>Самостоятельно привезти</label>
 	</td></tr>
 	<tr><td>Доставить</td>
-	<td>
-		<label><input type="radio" name="to_door" value="1" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "checked" ?> />Доставить на адрес</label>
-		<label><input type="radio" name="to_door" value="0" <?php if(JRequest::getFloat('to_door', 1) == 0) echo "checked" ?> />Самостоятельно забрать</label>
+	<td><!-- по умолчанию доставка до окна -->
+		<label><input type="radio" name="to_door" value="1" <?php if(JRequest::getFloat('to_door', 0) == 1) echo "checked" ?> />Доставить на адрес</label>
+		<label><input type="radio" name="to_door" value="0" <?php if(JRequest::getFloat('to_door', 0) == 0) echo "checked" ?> />Самостоятельно забрать</label>
 	</td></tr>
 	<tr><td>Откуда</td>
 		<td><select name="city_from" class="city_select">
