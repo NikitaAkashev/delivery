@@ -33,7 +33,7 @@ $model->length = $parcel["length"];
 $model->height = $parcel["height"];
 
 $model->is_express = 1;
-$model->from_door = 0;
+$model->to_door = 0;
 
 $model->Calculate(1);
 
