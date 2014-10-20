@@ -23,10 +23,10 @@ defined('_JEXEC') or die('Restricted access');
 			<label><input type="radio" name="is_express" value="0" <?php if($this->model->is_express == 0) echo "checked" ?> /><span>Стандарт</span></label>
 		</td></tr>
 	<tr><td>Забрать</td>
-	<td><!-- по умолчанию доставка от окна -->
-		<label><input type="radio" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "checked" ?> /><span>Забрать от адреса</span></label>
+	<td><!-- по умолчанию доставка от двери -->
+		<label><input type="radio" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 1) == 1) echo "checked" ?> /><span>Забрать от адреса</span></label>
 		<b class="separate">|</b>
-		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 0) == 0) echo "checked" ?>/><span>Самостоятельно привезти</span></label>
+		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 1) == 0) echo "checked" ?>/><span>Самостоятельно привезти</span></label>
 	</td></tr>
 	<tr><td>Доставить</td>
 	<td><!-- по умолчанию доставка до двери -->
