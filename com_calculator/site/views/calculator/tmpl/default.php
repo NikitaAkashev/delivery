@@ -18,18 +18,21 @@ defined('_JEXEC') or die('Restricted access');
 <table>
 	<tr><td>Тариф</td>
 		<td>
-			<label><input type="radio" name="is_express" value="1" <?php if($this->model->is_express === null || $this->model->is_express == 1) echo "checked" ?> />Экспресс</label>
-			<label><input type="radio" name="is_express" value="0" <?php if($this->model->is_express == 0) echo "checked" ?> />Стандарт</label>
+			<label><input type="radio" name="is_express" value="1" <?php if($this->model->is_express === null || $this->model->is_express == 1) echo "checked" ?> /><span>Экспресс</span></label>
+			<b class="separate">|</b>
+			<label><input type="radio" name="is_express" value="0" <?php if($this->model->is_express == 0) echo "checked" ?> /><span>Стандарт</span></label>
 		</td></tr>
 	<tr><td>Забрать</td>
 	<td><!-- по умолчанию доставка от окна -->
-		<label><input type="radio" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "checked" ?> />Забрать от адреса</label>
-		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 0) == 0) echo "checked" ?>/>Самостоятельно привезти</label>
+		<label><input type="radio" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "checked" ?> /><span>Забрать от адреса</span></label>
+		<b class="separate">|</b>
+		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 0) == 0) echo "checked" ?>/><span>Самостоятельно привезти</span></label>
 	</td></tr>
 	<tr><td>Доставить</td>
 	<td><!-- по умолчанию доставка до двери -->
-		<label><input type="radio" name="to_door" value="1" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "checked" ?> />Доставить на адрес</label>
-		<label><input type="radio" name="to_door" value="0" <?php if(JRequest::getFloat('to_door', 1) == 0) echo "checked" ?> />Самостоятельно забрать</label>
+		<label><input type="radio" name="to_door" value="1" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "checked" ?> /><span>Доставить на адрес</span></label>
+		<b class="separate">|</b>
+		<label><input type="radio" name="to_door" value="0" <?php if(JRequest::getFloat('to_door', 1) == 0) echo "checked" ?> /><span>Самостоятельно забрать</span></label>
 	</td></tr>
 	<tr><td>Откуда</td>
 		<td><select name="city_from" class="city_select">
