@@ -23,10 +23,10 @@ defined('_JEXEC') or die('Restricted access');
 			<label><input type="radio" name="is_express" value="0" <?php if($this->model->is_express == 0) echo "checked" ?> /><span>Стандарт</span></label>
 		</td></tr>
 	<tr><td>Забрать</td>
-	<td><!-- по умолчанию доставка от двери -->
-		<label><input type="radio" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 1) == 1) echo "checked" ?> /><span>Забрать от адреса</span></label>
+	<td><!-- по умолчанию доставка от окна -->
+		<label><input type="radio" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "checked" ?> /><span>Забрать от адреса</span></label>
 		<b class="separate">|</b>
-		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 1) == 0) echo "checked" ?>/><span>Самостоятельно привезти</span></label>
+		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 0) == 0) echo "checked" ?>/><span>Самостоятельно привезти</span></label>
 	</td></tr>
 	<tr><td>Доставить</td>
 	<td><!-- по умолчанию доставка до двери -->
@@ -63,12 +63,13 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 </form>
 <?php if($this->model->price != null){ ?>
-	<h2>Стоимость отправки: <?php echo ceil($this->model->price * ($this->model->nds + 1)); ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil($this->model->price * ($this->model->nds)); ?> руб.)</span></h2>
+	<h2>Стоимость отправки: <?php echo ceil($this->model->price * ($this->model->nds + 1)*100)/100; ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil($this->model->price * ($this->model->nds)*100)/100; ?> руб.)</span></h2>
 	Время доставки: <?php echo $this->model->min_delivery_time;  ?> - <?php echo $this->model->max_delivery_time; ?> дн.
 	Объем груза: <?php $vol = $this->model->width * $this->model->length * $this->model->height / 1000000; echo ($vol < 0.01 ? "менее 0,01" : $vol);  ?> м<sup>3</sup>
 	
 <?php } ?>
 <?php if($this->model->inner_price != null){ ?>
-	<h2>Внутренняя стоимость отправки: <?php echo ceil($this->model->inner_price * ($this->model->nds + 1)); ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil($this->model->inner_price * ($this->model->nds)); ?> руб.)</span></h2>
-	<h2>Прибыль: <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds + 1)); ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds)); ?> руб.)</span></h2>
+	<h2>Внутренняя стоимость отправки: <?php echo ceil($this->model->inner_price * ($this->model->nds + 1)*100)/100; ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil($this->model->inner_price * ($this->model->nds)*100)/100; ?> руб.)</span></h2>
+	<h2>Прибыль: <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds + 1)*100)/100; ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds)*100)/100; ?> руб.)</span></h2>
 <?php } ?>
+
