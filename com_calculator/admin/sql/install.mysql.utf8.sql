@@ -46,13 +46,13 @@ CREATE TABLE `#__calc_city` (
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS `#__calc_dot`;
+DROP TABLE IF EXISTS `#__calc_terminal`;
  
-CREATE TABLE `#__calc_dot` (
-  `dot` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL unique,
+CREATE TABLE `#__calc_terminal` (
+  `terminal` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(127) NOT NULL,
   `city` int not null references `#__calc_city`(city),
-   PRIMARY KEY  (`dot`)
+   PRIMARY KEY  (`terminal`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
   
   
@@ -100,6 +100,17 @@ CREATE TABLE `#__calc_assessed_value_price` (
   `overprice_percent` decimal(15,10) not null default 0,
   `is_public` tinyint(1) not null
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `#__calc_order_log`;
+ 
+CREATE TABLE `#__calc_order_log` (
+	`order_log` int primary key auto_increment,
+	`message` varchar(4096) not null,
+	`user` int(11) NULL references `#__users(id)`,
+	`dt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 auto_increment=0;
+
 
 set sql_mode='NO_AUTO_VALUE_ON_ZERO';
 insert into `#__calc_zone`(`zone`, `name`)

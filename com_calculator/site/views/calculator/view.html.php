@@ -18,10 +18,19 @@ class CalculatorViewCalculator extends JViewLegacy
 			if($model->IsInnerPriceViewer()){
 				$model->Calculate(0);
 			}
+			
+			$model->MakeOrder();
+			
 			$cities = $model->GetCities();
+			
+			$terminals = array(
+				'from' => $model->GetTerminalsByCity($model->city_from),
+				'to' => $model->GetTerminalsByCity($model->city_to)
+			);
 						
 			$this->assignRef('model', $model);
 			$this->assignRef('cities', $cities);
+			$this->assignRef('terminals', $terminals);
 			
 			parent::display($tpl);
         }
