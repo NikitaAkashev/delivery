@@ -360,8 +360,8 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 			
 			// сформируем тело
 			$tariff_name = ($this->from_door ? 'Дверь-Дверь ' : 'Окно-Дверь ').($this->is_express ? 'Экспресс' : 'Стандарт');
-			$city_name_from = $this->GetCities($this->city_from)[0]->name;
-			$city_name_to = $this->GetCities($this->city_to)[0]->name;
+			$city_name_from = $this->GetCities($this->city_from);
+			$city_name_to = $this->GetCities($this->city_to);
 			
 			$address_from = $this->form['from_door'] == 1 ? 
 				$this->form['from_door_street']
@@ -395,8 +395,8 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 					(empty($this->form['to_door_breaktime_end']) ? '' : ' до '.$this->form['to_door_breaktime_end'])				
 				: 'не указано';
 			
-			$fixed_time_from = $this->form['from_door'] == 1 && $this->form['from_door_exact_time'] == 1 ? 'Фиксированное время забора' : '';
-			$fixed_time_to = $this->form['to_door'] == 1 && $this->form['to_door_exact_time'] == 1 ? 'Фиксированное время доставки' : '';
+			$fixed_time_from = $this->form['from_door'] == 1 && array_key_exists('from_door_exact_time', $this->form) && $this->form['from_door_exact_time'] == 1 ? 'Фиксированное время забора' : '';
+			$fixed_time_to = $this->form['to_door'] == 1 && array_key_exists('to_door_exact_time', $this->form) && $this->form['to_door_exact_time'] == 1 ? 'Фиксированное время доставки' : '';
 			
 			$send_price = ceil($this->price * ($this->nds + 1)*100)/100;
 			$nds_in_price = ceil($this->price * ($this->nds)*100)/100;
@@ -416,10 +416,10 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 Внимание! Новый заказ.
 Тариф: {$tariff_name}
 
-Откуда: {$city_name_from}, {$address_from}
+Откуда: {$city_name_from[0]->name}, {$address_from}
 Время забора: {$time_from}. {$fixed_time_from}
 
-Куда: {$city_name_to}, {$address_to}
+Куда: {$city_name_to[0]->name}, {$address_to}
 Время доставки: {$time_to}. {$fixed_time_to}
 
 Вес: {$this->weight}кг	
