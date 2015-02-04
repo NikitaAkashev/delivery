@@ -163,12 +163,18 @@ where
 			if($is_public){
 				$this->price = $weight_price * $oversize * ($result->factor_from + $result->factor_to - 1)* $discount + $assessed_value_price;
 				
-				if ($result->f_min_time == 1){
+				if($this->city_from == 38){// Москва
 					$this->min_delivery_time = $result->t_min_time;
-					$this->max_delivery_time = $result->t_max_time;					
-				} else if ($result->t_min_time == 1){
+					$this->max_delivery_time = $result->t_max_time;	
+				} else if($this->city_to == 38){// Москва
 					$this->min_delivery_time = $result->f_min_time;
 					$this->max_delivery_time = $result->f_max_time;	
+				} else if ($result->f_min_time == 1){
+					$this->min_delivery_time = $result->t_min_time + 1;
+					$this->max_delivery_time = $result->t_max_time + 1;					
+				} else if ($result->t_min_time == 1){
+					$this->min_delivery_time = $result->f_min_time + 1;
+					$this->max_delivery_time = $result->f_max_time + 1;	
 				} else {
 					$this->min_delivery_time = $result->f_min_time + $result->t_min_time;
 					$this->max_delivery_time = $result->f_max_time + $result->t_max_time;
