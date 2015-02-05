@@ -2,7 +2,13 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 ?>
-
+<?php if ($this->model->step == 2) {?>
+	<h3>Спасибо за заказ!</h3>
+	<button style="width:700px; height:300px; background-color:#44FF44;" onclick="window.location=window.location;"><span style="font-size:36pt;">Сделать хорошо!<sup>*</sup></span><br /><span style="font-size:4pt;">посчитать заново</span></button>
+	<script type="text/javascript">
+		window.setTimeout('window.location=window.location', 5*1000); // перезагрузим через 5 секунд
+	</script>
+ <?php } else { ?>
 <link rel="stylesheet" href="/media/chosen/chosen.min.css" type="text/css" />
 <script src="/media/chosen/chosen.jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -454,10 +460,9 @@ function UseFunctionReceiver(whichOpt)
 <?php if($this->model->step == 1){ ?>
     <input class="submit" type="submit" name="submit" value="Оформить заказ" />
 	<input type="hidden" name="step" value="<?php echo $this->model->step; ?>"/>
-<?php }else if ($this->model->step == 2) {?>
-	<h3>Спасибо за заказ!</h3>
- <?php } ?>
+<?php }?>
     
+<?php }?>
 <?php }?>
 </form>
 
