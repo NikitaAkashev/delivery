@@ -1,14 +1,13 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-print_r($this->model->form);
 ?>
 
 <?php if ($this->model->step == 2) {?>
 	<h3>Спасибо за заказ!</h3>
 	<button style="width:700px; height:300px; background-color:#44FF44;" onclick="window.location=window.location;"><span style="font-size:36pt;">Сделать хорошо!<sup>*</sup></span><br /><span style="font-size:4pt;">посчитать заново</span></button>
 	<script type="text/javascript">
-		//window.setTimeout('window.location=window.location', 5*1000); // перезагрузим через 5 секунд
+		window.setTimeout('window.location=window.location', 5*1000); // перезагрузим через 5 секунд
 	</script>
  <?php } else { ?>
 <link rel="stylesheet" href="/media/chosen/chosen.min.css" type="text/css" />
