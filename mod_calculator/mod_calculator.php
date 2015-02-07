@@ -3,7 +3,7 @@
 // no direct access
 defined('_JEXEC') or die;
 // Include the syndicate functions only once
-require_once( dirname(__FILE__) . '/../../components/com_calculator/models/calculator.php' );
+require_once( dirname(__FILE__) . '/../../components/com_calculator/models/order.php' );
  
 $selected_city_from = 18; // екатеринбург
 
@@ -21,9 +21,9 @@ $parcel_parameters_variant = array(
 
 $parcel = $parcel_parameters_variant[array_rand($parcel_parameters_variant)];
 
-$cities = CalculatorModelCalculator::GetCities();
+$cities = CalculatorModelsOrder::GetCities();
 
-$model = new CalculatorModelCalculator();
+$model = new CalculatorModelsOrder();
 $model->city_from = $selected_city_from;
 $model->city_to = $selected_city_to;
 $model->weight = $parcel["weight"];

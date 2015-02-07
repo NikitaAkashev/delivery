@@ -8,7 +8,7 @@ jimport('joomla.application.component.modelitem');
 /**
  *  Model
  */
-class CalculatorModelCalculator extends JModelItem
+class CalculatorModelsOrder extends JModelBase
 {
 	private $_volume_weight_divider = 6000;
 	private $_dimension_limit = 300;

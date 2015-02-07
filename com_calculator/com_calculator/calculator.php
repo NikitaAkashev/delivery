@@ -1,17 +1,30 @@
 <?php
-// No direct access to this file
-defined('_JEXEC') or die('Restricted access');
+defined( '_JEXEC' ) or die( 'Restricted access' );
  
-// import joomla controller library
-jimport('joomla.application.component.controller');
+//sessions
+jimport( 'joomla.session.session' );
  
-// Get an instance of the controller 
-$controller = JControllerLegacy::getInstance('Calculator');
+//load tables
+JTable::addIncludePath(JPATH_COMPONENT.'/tables');
+ 
+//load classes
+JLoader::registerPrefix('Calculator', JPATH_COMPONENT);
+ 
+//Load plugins
+JPluginHelper::importPlugin('calculator');
+ 
+//application
+$app = JFactory::getApplication();
+ 
+// Require specific controller if requested
+if($controller = $app->input->get('controller','order')) {
+	require_once (JPATH_COMPONENT.'/controllers/'.$controller.'.php');
+}
+ 
+// Create the controller
+$classname = 'CalculatorControllers'.$controller;
+$controller = new $classname();
  
 // Perform the Request task
-$input = JFactory::getApplication()->input;
-$controller->execute($input->getCmd('task'));
- 
-// Redirect if set by the controller
-$controller->redirect();
+$controller->execute();
 ?>

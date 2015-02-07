@@ -1,61 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.1" method="upgrade"> 
-        <name>Calculator</name>
-        <!-- The following elements are optional and free of formatting constraints -->
-        <creationDate>10.04.2014</creationDate>
-        <author>Akashev Nikita</author>
-        <authorEmail>regspambox@yandex.ru</authorEmail>
-        <authorUrl>http://www.example.org</authorUrl>
-        <copyright>Copyright Info</copyright>
-        <license>License Info</license>
-        <!--  The version string is recorded in the components table -->
-        <version>0.8</version>
-        <!-- The description is optional and defaults to the name -->
-        <description>Description</description>
- 
-         <install> <!-- Runs on install -->
-                <sql>
-                        <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
-                </sql>
-        </install>
-        <uninstall> <!-- Runs on uninstall -->
-                <sql>
-                        <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
-                </sql>
-        </uninstall> 
-        <!-- Site Main File Copy Section -->
-        <!-- Note the folder attribute: This attribute describes the folder
-                to copy FROM in the package to install therefore files copied
-                in this section are copied from /site/ in the package -->
-        <files folder="com_calculator">
-                <filename>index.html</filename>
-                <filename>calculator.php</filename>
-                <filename>controller.php</filename>
-                <folder>views</folder>
-                <folder>models</folder>
-                <folder>tables</folder>
-        </files>
-        <languages folder="site">
+	<name>COM_CALCULATOR</name>
+	<creationDate>07.02.2015</creationDate>
+	<author>Akashev Nikita</author>
+	<authorEmail>regspambox@yandex.ru</authorEmail>
+	<version>0.8</version>
+	<description>COM_CALCULATOR_DESCRIPTION</description>
+
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall> 
+
+	<files folder="com_calculator">
+		<filename>index.html</filename>
+		<filename>calculator.php</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>tables</folder>
+		<folder>controllers</folder>
+	</files>
+
+	<languages folder="site">
+		<language tag="ru-RU">languages/ru-RU/ru-RU.com_calculator.ini</language>
+	</languages>
+
+	<administration>
+		<menu link="option=com_calculator">COM_CALCULATOR</menu>
+		<submenu>
+			<menu view="terminals">COM_CALCULATOR_TERMINALS</menu>
+		</submenu>
+		
+		<files folder="admin">
+			<filename>index.html</filename>
+			<filename>calculator.php</filename>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>models</folder>
+			<folder>fuck_joomla</folder>
+		</files>
+		
+		<languages folder="admin">
 			<language tag="ru-RU">languages/ru-RU/ru-RU.com_calculator.ini</language>
+			<language tag="ru-RU">languages/ru-RU/ru-RU.com_calculator.sys.ini</language>
 		</languages>
- 
-        <administration>
-                <!-- Administration Menu Section -->
-                <menu>Calculator</menu>
-                <!-- Administration Main File Copy Section -->
-                <!-- Note the folder attribute: This attribute describes the folder
-                        to copy FROM in the package to install therefore files copied
-                        in this section are copied from /admin/ in the package -->
-                <files folder="admin">
-                        <!-- Admin Main File Copy Section -->
-                        <filename>index.html</filename>
-                        <filename>calculator.php</filename>
-                        <!-- SQL files section -->
-                        <folder>sql</folder>
-						<folder>tables</folder>
-						<folder>models</folder>
-						<folder>fuck_joomla</folder>
-                </files>
-        </administration>
- 
+	</administration>
 </extension>
