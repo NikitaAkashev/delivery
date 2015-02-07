@@ -163,9 +163,10 @@ defined('_JEXEC') or die('Restricted access');
 	<tr><td>Ширина, см</td><td><input class="comma-replace <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" /></td></tr>
 	<tr><td>Длина, см</td><td><input class="comma-replace <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" /></td></tr>
 	<tr><td>Высота, см</td><td><input class="comma-replace <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" /></td></tr>
-<?php if ($this->model->step < 1){ ?>	
-	<tr><td colspan="2"><input class="submit" type="submit" name="submit" value="Расчитать" /></td></tr>
-<?php }?>
+	<tr><td colspan="2">
+		<input class="submit" type="submit" name="submit" value="Расчитать" />
+		<a href="#" onclick="jQuery('#order_form').show(); jQuery(this).hide(); return false;" >Оформить заказ</a>
+	</td></tr>
 <?php if($this->model->price != null){ ?>
 	<tr><td colspan="2"><h2>Стоимость отправки: <?php echo ceil($this->model->price * ($this->model->nds + 1)*100)/100; ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil($this->model->price * ($this->model->nds)*100)/100; ?> руб.)</span></h2>
 	Время доставки: <?php echo $this->model->min_delivery_time;  ?> - <?php echo $this->model->max_delivery_time; ?> дн.
@@ -180,6 +181,7 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 
 <?php if ($this->model->step > 0){ ?>
+<div id="order_form" style="display:none;">
 <div id="produce_date" class="form-block">
     <label for="produceDate" class="control-label">
         <span>Дата выполнения заявки</span><span class="asterisk correct">*</span>
@@ -462,7 +464,7 @@ function UseFunctionReceiver(whichOpt)
     <input class="submit" type="submit" name="submit" value="Оформить заказ" />
 	<input type="hidden" name="step" value="<?php echo $this->model->step; ?>"/>
 <?php }?>
-    
+ </div>   
 <?php }?>
 <?php }?>
 </form>
