@@ -8,7 +8,7 @@ jimport('joomla.application.component.modelitem');
 /**
  *  Model
  */
-class CalculatorModelCalculator extends JModelItem
+class CalculatorModelsOrder extends CalculatorModelsDefault
 {
 	private $_volume_weight_divider = 6000;
 	private $_dimension_limit = 300;
@@ -215,6 +215,12 @@ order by c.name
 		return $results;
 	}
 	
+	function GetCity($city){
+		$results = $this->GetCities($city);
+		
+		return $results[0];
+	}
+	
 	// список терминалов в области, к которой относится переданный город
 	function GetTerminalsByCity($city){
 		$db = JFactory::getDbo();
@@ -330,7 +336,7 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 			// Если Сам довезет
 			else
 			{
-				if(empty($this->form['from_terminal_address']))
+				if(empty($this->form['from_terminal']))
 					return false;
 			}
 		}
@@ -348,7 +354,7 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 			// Если Сам заберет
 			else
 			{
-				if(empty($this->form['to_terminal_address']))
+				if(empty($this->form['to_terminal']))
 					return false;
 			}
 		}
@@ -366,8 +372,13 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 			
 			// сформируем тело
 			$tariff_name = ($this->from_door ? 'Дверь-Дверь ' : 'Окно-Дверь ').($this->is_express ? 'Экспресс' : 'Стандарт');
-			$city_name_from = $this->GetCities($this->city_from);
-			$city_name_to = $this->GetCities($this->city_to);
+			$city_name_from = $this->GetCity($this->city_from);
+			$city_name_to = $this->GetCity($this->city_to);
+			
+			$terminal_model = new CalculatorModelsTerminal();
+			
+			$terminal_from = $terminal_model->GetTerminal($this->form['from_terminal']);
+			$terminal_to = $terminal_model->GetTerminal($this->form['to_terminal']);
 			
 			$address_from = $this->form['from_door'] == 1 ? 
 				$this->form['from_door_street']
@@ -375,7 +386,7 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 					.(empty($this->form['from_door_building']) ? '' : ', корп. '.$this->form['from_door_building'])
 					.(empty($this->form['from_door_structure']) ? '' : ', стр. '.$this->form['from_door_structure'])
 					.(empty($this->form['from_door_flat']) ? '' : ', кв/оф. '.$this->form['from_door_flat'])
-				: 'терминал '.$this->form['from_terminal_address'] ;
+				: 'терминал '.$terminal_from->name;
 			
 			$address_to = $this->form['to_door'] == 1 ? 
 				$this->form['to_door_street']
@@ -383,7 +394,7 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 					.(empty($this->form['to_door_building']) ? '' : ', корп. '.$this->form['to_door_building'])
 					.(empty($this->form['to_door_structure']) ? '' : ', стр. '.$this->form['to_door_structure'])
 					.(empty($this->form['to_door_flat']) ? '' : ', кв/оф. '.$this->form['to_door_flat'])
-				: 'терминал '.$this->form['to_terminal_address'] ;
+				: 'терминал '.$terminal_to->name;
 				
 			$time_from = $this->form['from_door'] == 1 ?
 					(empty($this->form['from_door_worktime_start']) ? '' : 'с '.$this->form['from_door_worktime_start']).
@@ -422,10 +433,10 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 Внимание! Новый заказ.
 Тариф: {$tariff_name}
 
-Откуда: {$city_name_from[0]->name}, {$address_from}
+Откуда: {$city_name_from->name}, {$address_from}
 Время забора: {$time_from}. {$fixed_time_from}
 
-Куда: {$city_name_to[0]->name}, {$address_to}
+Куда: {$city_name_to->name}, {$address_to}
 Время доставки: {$time_to}. {$fixed_time_to}
 
 Вес: {$this->weight}кг	
@@ -455,7 +466,7 @@ MSG;
 			// echo '<pre>'.$message.'</pre>';
 			
 			// сохраним в лог
-			$this->LogOrder($message);
+			$this->LogOrder($this->form);
 			
 			// отправим мыло			
 			$to      = 'regspambox@yandex.ru';
@@ -496,17 +507,18 @@ MSG;
 	}
 	
 	// Логирование заказа
-	function LogOrder($message){
-		$db = JFactory::getDbo();
+	function LogOrder($data){
+		$date = date("Y-m-d H:i:s");
 		
-		$query = "
-insert into #__calc_order_log(message, user)
-values(".$db->quote($message).", ".$db->quote($this->user_id).")
-		";
-				 
-		$db->setQuery($query);
+		$data['table'] = 'order';
+		$data['created'] = $date;
+		$data['modified'] = $date;
+		$data['price'] = $this->price;
+		$data['user'] = $this->user_id;
+		$data['order_status'] = 1; // magic number, TODO переделать на получение по коду
+		$data['tariff'] = 0; // TODO После переделки системы тарифов сделать сюда вставку идентификатора тарифа
 		
-		return $db->query();
+		return $this->store($data);
 	}
 }
 ?>

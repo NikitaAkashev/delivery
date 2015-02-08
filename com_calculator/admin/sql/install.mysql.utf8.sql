@@ -115,7 +115,9 @@ DROP TABLE IF EXISTS `#__calc_order`;
 create table #__calc_order(
 	`order` int primary key auto_increment,
 	`user` int(11) NULL references `calc_users(id)`,
-	`dt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	`created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	`modified` TIMESTAMP,
+	`price` decimal(15,2) not null,
 	`tariff` int(11) not null references `#__calc_tariff(tariff)`,
     `city_from` int(11) not null references `#__calc_city(city)`,
     `city_to` int(11) not null references `#__calc_city(city)`,
@@ -186,7 +188,8 @@ create table #__calc_order(
     `third_flat` varchar(32),
     `third_contact` varchar(127),
     `third_phone` varchar(32),
-	`order_status` int(11) references `#__calc_order_status(order_status)`
+    `order_status` int(11) references `#__calc_order_status(order_status)`,
+    `outer_id` varchar(100)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

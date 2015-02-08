@@ -8,12 +8,16 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HelloWorld Component
  */
-class CalculatorViewCalculator extends JViewLegacy
+class CalculatorViewsOrderHtml extends JViewHtml
 {
         // Overwriting JView display method
-        function display($tpl = null) 
+        function render() 
         {
-			$model = $this->getModel();
+			$app = JFactory::getApplication();
+			$type = $app->input->get('type');
+			$view = $app->input->get('view');
+			 
+			$model = new CalculatorModelsOrder();
 			$model->Calculate(1);
 			if($model->IsInnerPriceViewer()){
 				$model->Calculate(0);
@@ -28,11 +32,11 @@ class CalculatorViewCalculator extends JViewLegacy
 				'to' => $model->GetTerminalsByCity($model->city_to)
 			);
 						
-			$this->assignRef('model', $model);
-			$this->assignRef('cities', $cities);
-			$this->assignRef('terminals', $terminals);
+			$this->model = $model;
+			$this->cities = $cities;
+			$this->terminals =$terminals;
 			
-			parent::display($tpl);
+			return parent::render();
         }
 }
 ?>
