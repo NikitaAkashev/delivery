@@ -31,10 +31,22 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 	
 	public $price;
 	public $inner_price;
+	
+	public $total_cost;
+	public $total_cost_inner;
+	
+	public $nds_part;
+	public $nds_part_inner;
+	
 	public $min_delivery_time;
 	public $max_delivery_time;	
 	
-	public $step;
+	public $volume;
+	
+	public $profit;
+	public $profit_nds_part;
+	
+	public $ordered = false;
 	
 	// и вдруг, не мудурствуя лукаво, берем и фигачим весь реквест в переменную!!!
 	public $form;
@@ -180,13 +192,16 @@ where
 					$this->max_delivery_time = $result->f_max_time + $result->t_max_time;
 				}
 				
+				$this->total_cost = ceil($this->price * ($this->nds + 1)*100)/100;
+				$this->nds_part = ceil($this->price * ($this->nds)*100)/100;
+				$this->volume = $this->width * $this->length * $this->height / 1000000;
 			} else
 			{
 				$this->inner_price = $weight_price * $oversize * ($result->factor_from + $result->factor_to - 1) * $discount + $assessed_value_price;
-			}
-			
-			if($this->step == 0){
-				$this->step = 1;				
+				$this->total_cost_inner = ceil($this->inner_price * ($this->nds + 1)*100)/100;
+				$this->nds_part_inner = ceil($this->inner_price * ($this->nds)*100)/100;
+				$this->profit = ceil(($this->price - $this->inner_price) * ($this->nds + 1)*100)/100;
+				$this->profit_nds_part = ceil(($this->price - $this->inner_price) * ($this->nds)*100)/100;
 			}
 		} else {
 			$this->price = null;
@@ -250,10 +265,7 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 	
 	// проверим, что пришли все данные, которые нам нужны для заказа
 	function CheckOrderData()
-	{
-		if($this->step != 1)
-			return false;
-		
+	{		
 		// установлена дата заказа	
 		if (empty($this->form['produceDate']))
 			return false;
@@ -367,9 +379,7 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 	function MakeOrder()
 	{
 		if($this->CheckOrderData())
-		{
-			$this->step = 2;
-			
+		{			
 			// сформируем тело
 			$tariff_name = ($this->from_door ? 'Дверь-Дверь ' : 'Окно-Дверь ').($this->is_express ? 'Экспресс' : 'Стандарт');
 			$city_name_from = $this->GetCity($this->city_from);
@@ -476,6 +486,8 @@ MSG;
 						'X-Mailer: PHP/' . phpversion();
 
 			mail($to, $subject, $message, $headers);
+			
+			$this->ordered = true;
 		}
 	}	
 	

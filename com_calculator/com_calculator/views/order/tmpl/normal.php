@@ -3,7 +3,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<?php if ($this->model->step == 2) {?>
+<?php if ($this->model->ordered) {?>
 	<h3>Спасибо за заказ!</h3>
 	<button style="width:700px; height:300px; background-color:#44FF44;" onclick="window.location=window.location;"><span style="font-size:36pt;">Сделать хорошо!<sup>*</sup></span><br /><span style="font-size:4pt;">посчитать заново</span></button>
 	<script type="text/javascript">
@@ -12,40 +12,17 @@ defined('_JEXEC') or die('Restricted access');
  <?php } else { ?>
 <link rel="stylesheet" href="/media/chosen/chosen.min.css" type="text/css" />
 <script src="/media/chosen/chosen.jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-	jQuery(document).ready(function(){
-		jQuery(".city_select").chosen();
-
-		jQuery(".comma-replace").keyup(function(){
-			jQuery(this).val(jQuery(this).val().replace(',', '.'));
-		});
-		
-		jQuery('.city_select').change(function(){ LoadTerminalList(jQuery(this).val(), jQuery(this).attr('name'));});
-	});
-	
-	function LoadTerminalList(id, select_id)
-	{	
-		jQuery.post('?controller=terminalslist&format=json', {city: id}, function (data){
-							console.log(data);
-							jQuery('#'+select_id+'_terminal option').remove();
-							jQuery.each(data, function(index, t){
-								jQuery('#'+select_id+'_terminal').append(jQuery('<option value="'+t.terminal+'">'+t.name+'</option>'));
-							});
-						}
-		);
-	}
-</script>
 <h1>Расчет стоимости отправки</h1>
 <form id="calculator" method="POST" name="calculate_form" action="">
 <table>
 	<tr><td>Тариф</td>
 		<td>
-			<label><input type="radio" name="is_express" value="1" <?php if($this->model->is_express === null || $this->model->is_express == 1) echo "checked" ?> /><span>Экспресс</span></label>
+			<label><input class="advantage_fields" type="radio" name="is_express" value="1" <?php if($this->model->is_express === null || $this->model->is_express == 1) echo "checked" ?> /><span>Экспресс</span></label>
 			<b class="separate">|</b>
-			<label><input type="radio" name="is_express" value="0" <?php if($this->model->is_express == 0) echo "checked" ?> /><span>Стандарт</span></label>
+			<label><input class="advantage_fields" type="radio" name="is_express" value="0" <?php if($this->model->is_express == 0) echo "checked" ?> /><span>Стандарт</span></label>
 		</td></tr>
 	<tr><td>Откуда</td>
-		<td><select id="city_from" name="city_from" class="city_select">
+		<td><select id="city_from" name="city_from" class="city_select advantage_fields">
 			<option value="">Нет</option>
 			<?php
 				foreach($this->cities as $city){
@@ -55,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 			 ?>		
 		</select></td></tr>
 	<tr><td>Куда</td>
-		<td><select id="city_to" name="city_to" class="city_select">
+		<td><select id="city_to" name="city_to" class="city_select advantage_fields">
 			<option value="">Нет</option>
 			<?php
 				foreach($this->cities as $city){
@@ -66,12 +43,12 @@ defined('_JEXEC') or die('Restricted access');
 		</select></td></tr>
 	<tr><td>Забрать</td>
 	<td><!-- по умолчанию доставка от окна -->
-		<label><input type="radio" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "checked" ?> onchange="jQuery('.from_window').toggle(); jQuery('.from_door').toggle();" /><span>Забрать от адреса</span></label>
+		<label><input type="radio" class="advantage_fields" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "checked" ?> onchange="jQuery('.from_window').toggle(); jQuery('.from_door').toggle();" /><span>Забрать от адреса</span></label>
 		<b class="separate">|</b>
-		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 0) == 0) echo "checked" ?> onchange="jQuery('.from_window').toggle(); jQuery('.from_door').toggle();" /><span>Самостоятельно привезти</span></label>
+		<label><input type="radio" class="advantage_fields" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 0) == 0) echo "checked" ?> onchange="jQuery('.from_window').toggle(); jQuery('.from_door').toggle();" /><span>Самостоятельно привезти</span></label>
         <!-- код забора груза от окна -->
         <div class="from_window terminal-select" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "style=\"display:none;\"" ?>>
-			<select name="from_terminal" id="city_from_terminal" class="<?php if($this->model->step > 0 && JRequest::getFloat('from_door', 0) == 0 && count($this->terminals["from"]) == 0) echo 'alert-error'; ?>">
+			<select name="from_terminal" id="city_from_terminal" class="<?php if($this->model->price != null && JRequest::getFloat('from_door', 0) == 0 && count($this->terminals["from"]) == 0) echo 'alert-error'; ?>">
 				<?php foreach($this->terminals["from"] as $t){
 						$selected = $t->terminal == $this->model->form['from_terminal'] ? " selected=\"selected\" " : "";
 						echo "<option ".$selected." value=".$t->terminal." >".$t->name."</option>";
@@ -115,12 +92,12 @@ defined('_JEXEC') or die('Restricted access');
     </tbody>
 	<tr><td>Доставить</td>
 	<td><!-- по умолчанию доставка до двери -->
-		<label><input type="radio" name="to_door" value="1" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "checked" ?> onchange="jQuery('.to_door').toggle(); jQuery('.to_window').toggle()" /><span>Доставить на адрес</span></label>
+		<label><input type="radio" class="advantage_fields" name="to_door" value="1" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "checked" ?> onchange="jQuery('.to_door').toggle(); jQuery('.to_window').toggle()" /><span>Доставить на адрес</span></label>
 		<b class="separate">|</b>
-		<label><input type="radio" name="to_door" value="0" <?php if(JRequest::getFloat('to_door', 1) == 0) echo "checked" ?> onchange="jQuery('.to_door').toggle(); jQuery('.to_window').toggle()" /><span>Самостоятельно забрать</span></label>
+		<label><input type="radio" class="advantage_fields" name="to_door" value="0" <?php if(JRequest::getFloat('to_door', 1) == 0) echo "checked" ?> onchange="jQuery('.to_door').toggle(); jQuery('.to_window').toggle()" /><span>Самостоятельно забрать</span></label>
         <!-- код забора груза от окна -->
         <div class="to_window terminal-select" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "style=\"display:none;\"" ?>>
-            <select name="to_terminal" id="city_to_terminal" class="<?php if($this->model->step > 0 && JRequest::getFloat('to_door', 1) == 0 && count($this->terminals["to"]) == 0) echo 'alert-error'; ?>">
+            <select name="to_terminal" id="city_to_terminal" class="<?php if($this->model->price != null && JRequest::getFloat('to_door', 1) == 0 && count($this->terminals["to"]) == 0) echo 'alert-error'; ?>">
 				<?php foreach($this->terminals["to"] as $t){
 						$selected = $t->terminal == $this->model->form['to_terminal'] ? " selected=\"selected\" " : "";
 						echo "<option ".$selected." value=".$t->terminal." >".$t->name."</option>";
@@ -158,29 +135,28 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     </div>
 	</td></tr>
-	<tr><td>Вес, кг</td><td><input class="comma-replace <?php if($this->model->weight !== null && $this->model->weight == 0) echo 'alert-error'?>" type="text" name="weight" value="<?php echo $this->model->weight; ?>" /></td></tr>
-	<tr><td>Оценка, руб</td><td><input class="comma-replace" type="text" name="assessed_value" value="<?php echo $this->model->assessed_value; ?>" /></td></tr>
-	<tr><td>Ширина, см</td><td><input class="comma-replace <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" /></td></tr>
-	<tr><td>Длина, см</td><td><input class="comma-replace <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" /></td></tr>
-	<tr><td>Высота, см</td><td><input class="comma-replace <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" /></td></tr>
+	<tr><td>Вес, кг</td><td><input class="comma-replace advantage_fields <?php if($this->model->weight !== null && $this->model->weight == 0) echo 'alert-error'?>" type="text" name="weight" value="<?php echo $this->model->weight; ?>" /></td></tr>
+	<tr><td>Оценка, руб</td><td><input class="comma-replace advantage_fields" type="text" name="assessed_value" value="<?php echo $this->model->assessed_value; ?>" /></td></tr>
+	<tr><td>Ширина, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" /></td></tr>
+	<tr><td>Длина, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" /></td></tr>
+	<tr><td>Высота, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" /></td></tr>
 	<tr><td colspan="2">
-		<input class="submit" type="submit" name="submit" value="Расчитать" />
-		<a href="#" onclick="jQuery('#order_form').show(); jQuery(this).hide(); return false;" >Оформить заказ</a>
+		<a href="#" id="order_details_link" style="<?php if($this->model->price == null){ echo "display:none;"; }?>" onclick="jQuery('#order_form').show(); return false;" >Оформить заказ</a>
 	</td></tr>
-<?php if($this->model->price != null){ ?>
-	<tr><td colspan="2"><h2>Стоимость отправки: <?php echo ceil($this->model->price * ($this->model->nds + 1)*100)/100; ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil($this->model->price * ($this->model->nds)*100)/100; ?> руб.)</span></h2>
-	Время доставки: <?php echo $this->model->min_delivery_time;  ?> - <?php echo $this->model->max_delivery_time; ?> дн.
-	Объем груза: <?php $vol = $this->model->width * $this->model->length * $this->model->height / 1000000; echo ($vol < 0.01 ? "менее 0,01" : $vol);  ?> м<sup>3</sup>
+
+	<tr id="calculated" style="<?php if($this->model->price == null){ echo "display:none;"; }?>"><td colspan="2">
+		<h2>Стоимость отправки: <span id="total_cost"><?php echo $this->model->total_cost; ?></span> руб <span style="text-transform:none;">(в том числе НДС <span id="nds_part"><?php echo $this->model->nds_part; ?></span> руб.)</span></h2>
+		Время доставки: <?php echo $this->model->min_delivery_time;  ?> - <?php echo $this->model->max_delivery_time; ?> дн.
+		Объем груза: <span id="volume"><?php echo ($this->model->volume < 0.01 ? "менее 0,01" : $this->model->volume);  ?></span> м<sup>3</sup>
+	</td></tr>
 	
-<?php } ?>
-<?php if($this->model->inner_price != null){ ?>
-	<h2>Внутренняя стоимость отправки: <?php echo ceil($this->model->inner_price * ($this->model->nds + 1)*100)/100; ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil($this->model->inner_price * ($this->model->nds)*100)/100; ?> руб.)</span></h2>
-	<h2>Прибыль: <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds + 1)*100)/100; ?> руб <span style="text-transform:none;">(в том числе НДС <?php echo ceil(($this->model->price - $this->model->inner_price) * ($this->model->nds)*100)/100; ?> руб.)</span></h2>
+<tr id="calculated_inner" style="<?php if($this->model->inner_price == null){ echo "display:none;"; }?>"><td colspan="2">
+	<h2>Внутренняя стоимость отправки: <span id="total_cost_inner"><?php echo $this->model->total_cost_inner; ?></span> руб <span style="text-transform:none;">(в том числе НДС <span id="nds_part_inner"><?php echo $this->model->nds_part_inner; ?></span> руб.)</span></h2>
+	<h2>Прибыль: <span id="profit"><?php echo $this->model->profit; ?></span> руб 
+		<span style="text-transform:none;">(в том числе НДС <span id="profit_nds_part"><?php echo $this->model->profit_nds_part; ?></span> руб.)</span></h2>
 	</td></tr>
-<?php } ?>
 </table>
 
-<?php if ($this->model->step > 0){ ?>
 <div id="order_form" style="display:none;">
 <div id="produce_date" class="form-block">
     <label for="produceDate" class="control-label">
@@ -460,12 +436,43 @@ function UseFunctionReceiver(whichOpt)
 	}
 }
 </script>
-<?php if($this->model->step == 1){ ?>
     <input class="submit" type="submit" name="submit" value="Оформить заказ" />
-	<input type="hidden" name="step" value="<?php echo $this->model->step; ?>"/>
-<?php }?>
  </div>   
 <?php }?>
-<?php }?>
 </form>
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		jQuery(".city_select").chosen();
+
+		jQuery(".comma-replace").keyup(function(){
+			jQuery(this).val(jQuery(this).val().replace(',', '.'));
+		});
+		
+		jQuery('.city_select').change(function(){ LoadTerminalList(jQuery(this).val(), jQuery(this).attr('name'));});
+		
+		jQuery('.advantage_fields').change(Recalculate);
+	});
+	
+	function LoadTerminalList(id, select_id)
+	{	
+		jQuery.post('?controller=terminalslist&format=json', {city: id}, function (data){
+				jQuery('#'+select_id+'_terminal option').remove();
+				jQuery.each(data, function(index, t){
+					jQuery('#'+select_id+'_terminal').append(jQuery('<option value="'+t.terminal+'">'+t.name+'</option>'));
+				});
+			}
+		);
+	}
+	
+	function Recalculate(){
+		jQuery.post(
+			'?controller=calculate&format=json', 
+			jQuery('#calculator').serialize(), 
+			function (data) {
+				console.log(data);
+			}
+		);
+	}
+	
+</script>
 
