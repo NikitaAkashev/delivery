@@ -23,8 +23,8 @@ if($controller = $app->input->get('controller','order')) {
  
 // Create the controller
 $classname = 'CalculatorControllers'.$controller;
+
 $controller = new $classname();
- 
-// Perform the Request task
+
 $controller->execute();
 ?>

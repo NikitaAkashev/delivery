@@ -1,7 +1,6 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-print_r($this->model->form);
 ?>
 
 <?php if ($this->model->step == 2) {?>
@@ -26,11 +25,11 @@ print_r($this->model->form);
 	
 	function LoadTerminalList(id, select_id)
 	{	
-		jQuery.post('./?format=json', {city: id}, function (data){
+		jQuery.post('?controller=terminalslist&format=json', {city: id}, function (data){
 							console.log(data);
 							jQuery('#'+select_id+'_terminal option').remove();
 							jQuery.each(data, function(index, t){
-								jQuery('#'+select_id+'_terminal').append(jQuery('<option>'+t.name+'</option>'));
+								jQuery('#'+select_id+'_terminal').append(jQuery('<option value="'+t.terminal+'">'+t.name+'</option>'));
 							});
 						}
 		);
@@ -72,10 +71,10 @@ print_r($this->model->form);
 		<label><input type="radio" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 0) == 0) echo "checked" ?> onchange="jQuery('.from_window').toggle(); jQuery('.from_door').toggle();" /><span>Самостоятельно привезти</span></label>
         <!-- код забора груза от окна -->
         <div class="from_window terminal-select" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "style=\"display:none;\"" ?>>
-			<select name="from_terminal_address" id="city_from_terminal" class="<?php if($this->model->step > 0 && JRequest::getFloat('from_door', 0) == 0 && count($this->terminals["from"]) == 0) echo 'alert-error'; ?>">
+			<select name="from_terminal" id="city_from_terminal" class="<?php if($this->model->step > 0 && JRequest::getFloat('from_door', 0) == 0 && count($this->terminals["from"]) == 0) echo 'alert-error'; ?>">
 				<?php foreach($this->terminals["from"] as $t){
-						$selected = $t->name == $this->model->form['from_terminal_address'] ? " selected=\"selected\" " : "";
-						echo "<option ".$selected." >".$t->name."</option>";
+						$selected = $t->terminal == $this->model->form['from_terminal'] ? " selected=\"selected\" " : "";
+						echo "<option ".$selected." value=".$t->terminal." >".$t->name."</option>";
 				} ?>
             </select>
         </div>
@@ -121,10 +120,10 @@ print_r($this->model->form);
 		<label><input type="radio" name="to_door" value="0" <?php if(JRequest::getFloat('to_door', 1) == 0) echo "checked" ?> onchange="jQuery('.to_door').toggle(); jQuery('.to_window').toggle()" /><span>Самостоятельно забрать</span></label>
         <!-- код забора груза от окна -->
         <div class="to_window terminal-select" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "style=\"display:none;\"" ?>>
-            <select name="to_terminal_address" id="city_to_terminal" class="<?php if($this->model->step > 0 && JRequest::getFloat('to_door', 1) == 0 && count($this->terminals["to"]) == 0) echo 'alert-error'; ?>">
+            <select name="to_terminal" id="city_to_terminal" class="<?php if($this->model->step > 0 && JRequest::getFloat('to_door', 1) == 0 && count($this->terminals["to"]) == 0) echo 'alert-error'; ?>">
 				<?php foreach($this->terminals["to"] as $t){
-						$selected = $t->name == $this->model->form['to_terminal_address'] ? " selected=\"selected\" " : "";
-						echo "<option ".$selected." >".$t->name."</option>";
+						$selected = $t->terminal == $this->model->form['to_terminal'] ? " selected=\"selected\" " : "";
+						echo "<option ".$selected." value=".$t->terminal." >".$t->name."</option>";
 				} ?>
             </select>
         </div>

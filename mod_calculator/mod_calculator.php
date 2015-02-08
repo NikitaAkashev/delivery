@@ -21,9 +21,10 @@ $parcel_parameters_variant = array(
 
 $parcel = $parcel_parameters_variant[array_rand($parcel_parameters_variant)];
 
-$cities = CalculatorModelsOrder::GetCities();
-
 $model = new CalculatorModelsOrder();
+
+$cities = $model->GetCities();
+
 $model->city_from = $selected_city_from;
 $model->city_to = $selected_city_to;
 $model->weight = $parcel["weight"];

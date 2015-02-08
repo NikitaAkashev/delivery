@@ -12,20 +12,11 @@ class CalculatorModelsDefault extends JModelBase
 	public function store($data)
 	{
 		$row = JTable::getInstance($data['table'],'Table');
-	 
-		$date = date("Y-m-d H:i:s");
-	 
+			 
 		// Bind the form fields to the table
 		if (!$row->bind($data))
 		{
 			return false;
-		}
-		
-		// надо ли...
-		$row->modified = $date;
-		if ( !$row->created )
-		{
-			$row->created = $date;
 		}
 	 
 		// Make sure the record is valid
@@ -41,4 +32,5 @@ class CalculatorModelsDefault extends JModelBase
 	 
 		return $row;
 	}
+}
 ?>
