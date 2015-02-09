@@ -158,7 +158,7 @@ defined('_JEXEC') or die('Restricted access');
 	</td></tr>
 </table>
 
-<div id="order_form" style="<?php if($this->model->inner_price == null){ echo "display:none;"; }?>">
+<div id="order_form" style="<?php if($this->model->price == null){ echo "display:none;"; }?>">
 <div id="produce_date" class="form-block">
     <label for="produceDate" class="control-label">
         <span>Дата выполнения заявки</span><span class="asterisk correct">*</span>
