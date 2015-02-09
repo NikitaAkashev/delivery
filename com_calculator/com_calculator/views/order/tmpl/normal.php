@@ -140,14 +140,12 @@ defined('_JEXEC') or die('Restricted access');
 	<tr><td>Ширина, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" /></td></tr>
 	<tr><td>Длина, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" /></td></tr>
 	<tr><td>Высота, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" /></td></tr>
-	<tr><td colspan="2">
-		<a href="#" id="order_details_link" style="<?php if($this->model->price == null){ echo "display:none;"; }?>" onclick="jQuery('#order_form').show(); return false;" >Оформить заказ</a>
-	</td></tr>
 
 	<tr id="calculated" style="<?php if($this->model->price == null){ echo "display:none;"; }?>"><td colspan="2">
 		<h2>Стоимость отправки: <span id="total_cost"><?php echo $this->model->total_cost; ?></span> руб <span style="text-transform:none;">(в том числе НДС <span id="nds_part"><?php echo $this->model->nds_part; ?></span> руб.)</span></h2>
-		Время доставки: <?php echo $this->model->min_delivery_time;  ?> - <?php echo $this->model->max_delivery_time; ?> дн.
-		Объем груза: <span id="volume"><?php echo ($this->model->volume < 0.01 ? "менее 0,01" : $this->model->volume);  ?></span> м<sup>3</sup>
+		Время доставки: <span id="min_delivery_time"><?php echo $this->model->min_delivery_time;  ?></span> - 
+			<span id="max_delivery_time"><?php echo $this->model->max_delivery_time; ?></span> дн.
+		Объем груза: <span id="volume"><?php echo ($this->model->volume < 0.01 ? "менее 0,01" : $this->model->volume); ?></span> м<sup>3</sup>
 	</td></tr>
 	
 <tr id="calculated_inner" style="<?php if($this->model->inner_price == null){ echo "display:none;"; }?>"><td colspan="2">
@@ -155,9 +153,12 @@ defined('_JEXEC') or die('Restricted access');
 	<h2>Прибыль: <span id="profit"><?php echo $this->model->profit; ?></span> руб 
 		<span style="text-transform:none;">(в том числе НДС <span id="profit_nds_part"><?php echo $this->model->profit_nds_part; ?></span> руб.)</span></h2>
 	</td></tr>
+	<tr><td colspan="2">
+		<a href="#" id="order_details_link" style="<?php if($this->model->price == null){ echo "display:none;"; }?>" onclick="jQuery('#order_form').toggle(); return false;" >Оформить заказ</a>
+	</td></tr>
 </table>
 
-<div id="order_form" style="display:none;">
+<div id="order_form" style="<?php if($this->model->inner_price == null){ echo "display:none;"; }?>">
 <div id="produce_date" class="form-block">
     <label for="produceDate" class="control-label">
         <span>Дата выполнения заявки</span><span class="asterisk correct">*</span>
@@ -469,7 +470,29 @@ function UseFunctionReceiver(whichOpt)
 			'?controller=calculate&format=json', 
 			jQuery('#calculator').serialize(), 
 			function (data) {
-				console.log(data);
+				if(data.calculated){
+					jQuery('#calculated').show();
+					jQuery('#order_details_link').show();
+				}else{
+					jQuery('#calculated').hide();
+					jQuery('#order_details_link').hide();
+					jQuery('#order_form').hide();
+				}				
+				if(data.calculated_inner){
+					jQuery('#calculated_inner').show();
+				}else{
+					jQuery('#calculated_inner').hide();
+				}
+				
+				jQuery('#total_cost').text(data.total_cost);
+				jQuery('#nds_part').text(data.nds_part);
+				jQuery('#min_delivery_time').text(data.min_delivery_time);
+				jQuery('#max_delivery_time').text(data.max_delivery_time);
+				jQuery('#volume').text(data.volume >= 0.01? data.volume : 'менее 0.01');
+				jQuery('#total_cost_inner').text(data.total_cost_inner);
+				jQuery('#nds_part_inner').text(data.nds_part_inner);
+				jQuery('#profit').text(data.profit);
+				jQuery('#profit_nds_part').text(data.profit_nds_part);
 			}
 		);
 	}
