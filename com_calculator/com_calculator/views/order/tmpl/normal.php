@@ -18,6 +18,11 @@ defined('_JEXEC') or die('Restricted access');
 <h1>Расчет стоимости отправки</h1>
 <form id="calculator" method="POST" name="calculate_form" action="">
 <table>
+	<tr><td>Вес, кг</td><td><input class="comma-replace advantage_fields <?php if($this->model->weight !== null && $this->model->weight == 0) echo 'alert-error'?>" type="text" name="weight" value="<?php echo $this->model->weight; ?>" /></td></tr>
+	<tr><td>Оценка, руб</td><td><input class="comma-replace advantage_fields" type="text" name="assessed_value" value="<?php echo $this->model->assessed_value; ?>" /></td></tr>
+	<tr><td>Ширина, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" /></td></tr>
+	<tr><td>Длина, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" /></td></tr>
+	<tr><td>Высота, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" /></td></tr>
 	<tr><td>Тариф</td>
 		<td>
 			<label><input class="advantage_fields" type="radio" name="is_express" value="1" <?php if($this->model->is_express === null || $this->model->is_express == 1) echo "checked" ?> /><span>Экспресс</span></label>
@@ -138,11 +143,6 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     </div>
 	</td></tr>
-	<tr><td>Вес, кг</td><td><input class="comma-replace advantage_fields <?php if($this->model->weight !== null && $this->model->weight == 0) echo 'alert-error'?>" type="text" name="weight" value="<?php echo $this->model->weight; ?>" /></td></tr>
-	<tr><td>Оценка, руб</td><td><input class="comma-replace advantage_fields" type="text" name="assessed_value" value="<?php echo $this->model->assessed_value; ?>" /></td></tr>
-	<tr><td>Ширина, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" /></td></tr>
-	<tr><td>Длина, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" /></td></tr>
-	<tr><td>Высота, см</td><td><input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" /></td></tr>
 
 	<tr id="calculated" style="<?php if($this->model->price == null){ echo "display:none;"; }?>"><td colspan="2">
 		<h2>Стоимость отправки: <span id="total_cost"><?php echo $this->model->total_cost; ?></span> руб <span style="text-transform:none;">(в том числе НДС <span id="nds_part"><?php echo $this->model->nds_part; ?></span> руб.)</span></h2>
