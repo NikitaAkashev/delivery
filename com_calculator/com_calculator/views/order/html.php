@@ -25,11 +25,11 @@ class CalculatorViewsOrderHtml extends JViewHtml
 			
 			$model->MakeOrder();
 			
-			$cities = $model->GetCities();
+			$cities = CalculatorModelsCity::GetCities();
 			
 			$terminals = array(
-				'from' => $model->GetTerminalsByCity($model->city_from),
-				'to' => $model->GetTerminalsByCity($model->city_to)
+				'from' => CalculatorModelsTerminal::GetTerminalsByCity($model->city_from),
+				'to' => CalculatorModelsTerminal::GetTerminalsByCity($model->city_to)
 			);
 						
 			$this->model = $model;

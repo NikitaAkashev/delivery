@@ -12,7 +12,10 @@ JLoader::registerPrefix('Calculator', JPATH_COMPONENT);
  
 //Load plugins
 JPluginHelper::importPlugin('calculator');
- 
+
+//Load styles and javascripts
+CalculatorHelpersJscss::load();
+
 //application
 $app = JFactory::getApplication();
  

@@ -67,6 +67,7 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 		$this->form = JRequest::get();
 	}
 	
+	// проверяет, что переданы все необходимые данные для расчета
 	function IsFilled(){
 		return isset($this->city_from) && isset($this->city_to) && isset($this->weight) &&
 				isset($this->assessed_value) && isset($this->width) &&
@@ -76,6 +77,7 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 				$this->length != 0 && $this->height != 0;
 	}
 	
+	// проверяет, можно ли пользователю смотреть внутреннюю стоимость отправки
 	function IsInnerPriceViewer(){
 		$usergroups = JAccess::getGroupsByUser($this->user_id);
 		foreach ($this->_inner_price_viewer_group_ids as $agid)
@@ -85,6 +87,7 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 		  return false;
 	}
 	
+	// Производит расчет
 	function Calculate($is_public){
 		if(!$is_public && $this->price === null){
 			$this->inner_price = null;
@@ -202,62 +205,7 @@ where
 			$this->price = null;
 		}
 	}
-	
-	function GetCities($city = null){
-		$db = JFactory::getDbo();
-		
-		$query = "
-select 
-	c.city,
-	concat(c.name,
-		(case when c.city IN (38,55) then ''
-		else concat(' (', coalesce(p.region_name, c.region_name, ''), ')') end)) as name
-from #__calc_city c
-	left join #__calc_city p on p.city = c.parent
-".($city == null ? '' : 'where c.city='.$db->quote($city))."
-order by c.name
-		";
-				 
-		$db->setQuery($query);
-		 
-		$results = $db->loadObjectList();
-		
-		return $results;
-	}
-	
-	function GetCity($city){
-		$results = $this->GetCities($city);
-		
-		return $results[0];
-	}
-	
-	// список терминалов в области, к которой относится переданный город
-	function GetTerminalsByCity($city){
-		$db = JFactory::getDbo();
-		
-		$query = "
-select 
-	t.terminal,
-	t.name
-from #__calc_terminal t
-where
-	exists(select 1 from #__calc_city c 
-				join #__calc_city ch on 
-						ch.parent = ifnull(c.parent, c.city) 
-						or ch.city = ifnull(c.parent, c.city)
-			where 
-				c.city = ".$db->quote($city)." 
-				and t.city = ch.city)
-order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
-		";
-				 
-		$db->setQuery($query);
-		 
-		$results = $db->loadObjectList();
-		
-		return $results;
-	}
-	
+
 	// проверим, что пришли все данные, которые нам нужны для заказа
 	function CheckOrderData()
 	{		

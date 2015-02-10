@@ -21,9 +21,9 @@ $parcel_parameters_variant = array(
 
 $parcel = $parcel_parameters_variant[array_rand($parcel_parameters_variant)];
 
-$model = new CalculatorModelsOrder();
+$cities = CalculatorModelsCity::GetCities();
 
-$cities = $model->GetCities();
+$model = new CalculatorModelsOrder();
 
 $model->city_from = $selected_city_from;
 $model->city_to = $selected_city_to;

@@ -7,7 +7,7 @@ jimport('joomla.application.component.modelitem');
 class CalculatorModelsTerminal extends CalculatorModelsDefault
 {
 	// список терминалов в области, к которой относится переданный город
-	function GetTerminalsByCity($city){
+	static function GetTerminalsByCity($city){
 		$db = JFactory::getDbo();
 		
 		$query = "

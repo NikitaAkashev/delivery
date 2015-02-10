@@ -6,7 +6,7 @@ defined('_JEXEC') or die; ?>
 <script src="/media/chosen/chosen.jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function(){
-		jQuery(".city_select").chosen();
+		jQuery(".mod_city_select").chosen();
 
 		jQuery(".comma-replace").keyup(function(){
 			jQuery(this).val(jQuery(this).val().replace(',', '.'));
@@ -17,7 +17,7 @@ defined('_JEXEC') or die; ?>
 <form name="mod_calculator" method="post" action="/calculator/" >
 	<div>
 		<label>Откуда</label>
-		<select name="city_from" class="city_select">
+		<select name="city_from" class="mod_city_select">
 			<option value="">Нет</option>
 			<?php
 				foreach($cities as $city){
@@ -28,7 +28,7 @@ defined('_JEXEC') or die; ?>
 	</div>
 	<div>
 		<label>Куда</label> 
-		<select name="city_to" class="city_select">
+		<select name="city_to" class="mod_city_select">
 			<option value="">Нет</option>
 			<?php
 				foreach($cities as $city){
