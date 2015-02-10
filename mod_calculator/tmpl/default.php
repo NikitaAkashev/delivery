@@ -48,7 +48,7 @@ defined('_JEXEC') or die; ?>
 		<input type="hidden" value="0" name="from_door" />
 	</div>
 
-	<div id="result"><span class="data"><?php echo $model->min_delivery_time;  ?>–<?php echo $model->max_delivery_time; ?></span> дн. <b><span class="data"><?php echo ceil($model->price * ($model->nds + 1)*100)/100; ?></span> руб.</b></div>
+	<div id="result"><span class="data"><?php echo $model->min_delivery_time;  ?>–<?php echo $model->max_delivery_time; ?></span> дн. <b><span class="data"><?php echo ceil($model->price*100)/100; ?></span> руб.</b></div>
 	
 	<button class="roboto">заказать</button>	
 	

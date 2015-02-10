@@ -31,10 +31,7 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 	
 	public $price;
 	public $inner_price;
-	
-	public $total_cost;
-	public $total_cost_inner;
-	
+		
 	public $nds_part;
 	public $nds_part_inner;
 	
@@ -192,16 +189,14 @@ where
 					$this->max_delivery_time = $result->f_max_time + $result->t_max_time;
 				}
 				
-				$this->total_cost = ceil($this->price * ($this->nds + 1)*100)/100;
-				$this->nds_part = ceil($this->price * ($this->nds)*100)/100;
+				$this->nds_part = ceil($this->nds * $this->price / (1 + $this->nds) * 100 ) / 100;
 				$this->volume = $this->width * $this->length * $this->height / 1000000;
 			} else
 			{
 				$this->inner_price = $weight_price * $oversize * ($result->factor_from + $result->factor_to - 1) * $discount + $assessed_value_price;
-				$this->total_cost_inner = ceil($this->inner_price * ($this->nds + 1)*100)/100;
-				$this->nds_part_inner = ceil($this->inner_price * ($this->nds)*100)/100;
-				$this->profit = ceil(($this->price - $this->inner_price) * ($this->nds + 1)*100)/100;
-				$this->profit_nds_part = ceil(($this->price - $this->inner_price) * ($this->nds)*100)/100;
+				$this->nds_part_inner = ceil($this->nds * $this->inner_price / (1 + $this->nds) * 100) / 100;
+				$this->profit = $this->price - $this->inner_price;
+				$this->profit_nds_part = ceil($this->nds * $this->profit / (1 + $this->nds) * 100) / 100;
 			}
 		} else {
 			$this->price = null;

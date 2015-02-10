@@ -23,9 +23,6 @@ class CalculatorViewsCalculateJson extends JViewHtml
 			$data['price'] = $model->price;
 			$data['inner_price'] = $model->inner_price;
 			
-			$data['total_cost'] = $model->total_cost;
-			$data['total_cost_inner'] = $model->total_cost_inner;
-			
 			$data['nds_part'] = $model->nds_part;
 			$data['nds_part_inner'] = $model->nds_part_inner;
 			
