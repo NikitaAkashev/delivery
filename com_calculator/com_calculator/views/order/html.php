@@ -14,9 +14,7 @@ class CalculatorViewsOrderHtml extends JViewHtml
         function render() 
         {
 			$app = JFactory::getApplication();
-			
-			$view = $app->input->get('view');
-			 
+						 
 			$model = new CalculatorModelsOrder();
 			$model->Calculate(1);
 			if($model->IsInnerPriceViewer()){

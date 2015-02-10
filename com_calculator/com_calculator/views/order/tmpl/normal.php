@@ -4,8 +4,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <?php if ($this->model->ordered) {?>
-	<h3>Спасибо за заказ!</h3>
-	<button style="width:700px; height:300px; background-color:#44FF44;" onclick="window.location=window.location;"><span style="font-size:36pt;">Сделать хорошо!<sup>*</sup></span><br /><span style="font-size:4pt;">посчитать заново</span></button>
+	<?php echo $this->model->order_message; ?>
+	<a href="<?php echo JURI::current(); ?>"><h3>Оформить новый заказ</h3></a>
  <?php } else { ?>
 <h1>Расчет стоимости отправки</h1>
 <form id="calculator" method="POST" name="calculate_form" action="">

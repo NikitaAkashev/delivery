@@ -323,6 +323,7 @@ where
 	{
 		if($this->CheckOrderData())
 		{			
+			/*
 			// сформируем тело
 			$tariff_name = ($this->from_door ? 'Дверь-Дверь ' : 'Окно-Дверь ').($this->is_express ? 'Экспресс' : 'Стандарт');
 			$city_name_from = $this->GetCity($this->city_from);
@@ -415,22 +416,29 @@ where
 {$payer}
 
 MSG;
-			// покажем на экране
-			// echo '<pre>'.$message.'</pre>';
+* */
 			
 			// сохраним в лог
-			$this->LogOrder($this->form);
+			$row = $this->LogOrder($this->form);
+			
+			$view = CalculatorHelpersView::load('email', 'normal', 'html', array('data' => $row));
+			
+			// Render our view.
+			$message = $view->render();
 			
 			// отправим мыло			
 			$to      = 'regspambox@yandex.ru';
 			$subject = 'Заказ с сайта ... дописать';
-			$headers = 'From: webmaster@example.com' . "\r\n" .
+			$headers = 'MIME-Version: 1.0' . "\r\n".
+						'Content-type: text/html; charset=utf-8' . "\r\n";
+						'From: webmaster@example.com' . "\r\n" .
 						'Reply-To: webmaster@example.com' . "\r\n" .
 						'X-Mailer: PHP/' . phpversion();
 
 			mail($to, $subject, $message, $headers);
 			
 			$this->ordered = true;
+			$this->order_message = $message;
 		}
 	}	
 	
