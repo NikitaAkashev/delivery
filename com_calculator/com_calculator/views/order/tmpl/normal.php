@@ -329,8 +329,7 @@ defined('_JEXEC') or die('Restricted access');
 <div id="third" class="form-block juridical <?php if (array_key_exists('payer', $this->model->form) && $this->model->form['payer'] == 'third') echo "payer"; ?>">
   <div class="control-group">
         <label class="control-label">Третье лицо</label>
-        <div class="controls">Только юридическое лицо</label>
-        </div>
+        <div class="controls">Только юридическое лицо</div>
   </div>
     
   <div class="control-group juridical">
