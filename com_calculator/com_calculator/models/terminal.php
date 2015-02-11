@@ -34,7 +34,7 @@ order by case when t.city = ".$db->quote($city)." then 1 else 2 end, t.name
 	}
 	
 	// Получить терминал по его идентификатору
-	function GetTerminal($terminal){
+	static function GetTerminal($terminal){
 		
 		$terminal = empty($terminal) ? -1 : $terminal;
 		

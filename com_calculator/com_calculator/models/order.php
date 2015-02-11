@@ -322,106 +322,11 @@ where
 	function MakeOrder()
 	{
 		if($this->CheckOrderData())
-		{			
-			/*
-			// сформируем тело
-			$tariff_name = ($this->from_door ? 'Дверь-Дверь ' : 'Окно-Дверь ').($this->is_express ? 'Экспресс' : 'Стандарт');
-			$city_name_from = $this->GetCity($this->city_from);
-			$city_name_to = $this->GetCity($this->city_to);
-			
-			$terminal_model = new CalculatorModelsTerminal();
-			
-			$terminal_from = $terminal_model->GetTerminal($this->form['from_terminal']);
-			$terminal_to = $terminal_model->GetTerminal($this->form['to_terminal']);
-			
-			$address_from = $this->form['from_door'] == 1 ? 
-				$this->form['from_door_street']
-					.', д. '.$this->form['from_door_house']
-					.(empty($this->form['from_door_building']) ? '' : ', корп. '.$this->form['from_door_building'])
-					.(empty($this->form['from_door_structure']) ? '' : ', стр. '.$this->form['from_door_structure'])
-					.(empty($this->form['from_door_flat']) ? '' : ', кв/оф. '.$this->form['from_door_flat'])
-				: 'терминал '.$terminal_from->name;
-			
-			$address_to = $this->form['to_door'] == 1 ? 
-				$this->form['to_door_street']
-					.', д. '.$this->form['to_door_house']
-					.(empty($this->form['to_door_building']) ? '' : ', корп. '.$this->form['to_door_building'])
-					.(empty($this->form['to_door_structure']) ? '' : ', стр. '.$this->form['to_door_structure'])
-					.(empty($this->form['to_door_flat']) ? '' : ', кв/оф. '.$this->form['to_door_flat'])
-				: 'терминал '.$terminal_to->name;
-				
-			$time_from = $this->form['from_door'] == 1 ?
-					(empty($this->form['from_door_worktime_start']) ? '' : 'с '.$this->form['from_door_worktime_start']).
-					(empty($this->form['from_door_worktime_end']) ? '' : ' до '.$this->form['from_door_worktime_end']).
-					(empty($this->form['from_door_breaktime_start']) && empty($this->form['from_door_breaktime_end']) ? '' : ', перерыв' ).
-					(empty($this->form['from_door_breaktime_start']) ? '' : ' с '.$this->form['from_door_breaktime_start']).
-					(empty($this->form['from_door_breaktime_end']) ? '' : ' до '.$this->form['from_door_breaktime_end'])
-				: 'не указано';
-				
-			$time_to = $this->form['to_door'] == 1 ?
-					(empty($this->form['to_door_worktime_start']) ? '' : 'с '.$this->form['to_door_worktime_start']).
-					(empty($this->form['to_door_worktime_end']) ? '' : ' до '.$this->form['to_door_worktime_end']).
-					(empty($this->form['to_door_breaktime_start']) && empty($this->form['to_door_breaktime_end']) ? '' : ', перерыв' ).
-					(empty($this->form['to_door_breaktime_start']) ? '' : ' с '.$this->form['to_door_breaktime_start']).
-					(empty($this->form['to_door_breaktime_end']) ? '' : ' до '.$this->form['to_door_breaktime_end'])				
-				: 'не указано';
-			
-			$fixed_time_from = $this->form['from_door'] == 1 && array_key_exists('from_door_exact_time', $this->form) && $this->form['from_door_exact_time'] == 1 ? 'Фиксированное время забора' : '';
-			$fixed_time_to = $this->form['to_door'] == 1 && array_key_exists('to_door_exact_time', $this->form) && $this->form['to_door_exact_time'] == 1 ? 'Фиксированное время доставки' : '';
-			
-			$send_price = ceil($this->price * ($this->nds + 1)*100)/100;
-			$nds_in_price = ceil($this->price * ($this->nds)*100)/100;
-			$vol = $this->width * $this->length * $this->height / 1000000;
-			$vol  = $vol < 0.01 ? "менее 0,01" : $vol;
-			
-			$sender = $this->FormatActorData('sender');
-			$receiver = $this->FormatActorData('receiver');
-			switch($this->form['payer'])
-			{
-				case 'sender': $payer = 'Плательщиком является отправитель.'; break;
-				case 'receiver': $payer = 'Плательщиком является получатель.'; break;
-				case 'third': $payer = $this->FormatActorData('third'); break;
-			};
-			
-			$message = <<<MSG
-Внимание! Новый заказ.
-Тариф: {$tariff_name}
-
-Откуда: {$city_name_from->name}, {$address_from}
-Время забора: {$time_from}. {$fixed_time_from}
-
-Куда: {$city_name_to->name}, {$address_to}
-Время доставки: {$time_to}. {$fixed_time_to}
-
-Вес: {$this->weight}кг	
-Оценка: {$this->assessed_value}руб	
-Ширина: {$this->width}см	
-Длина: {$this->length}см	
-Высота: {$this->height}см	
-
-Стоимость доставки: {$send_price}, в том числе НДС {$nds_in_price}
-Время доставки: {$this->min_delivery_time} - {$this->max_delivery_time} дн.
-Объем груза: {$vol} m3
-
-Дата выполнения заявки: {$this->form['produceDate']}
-Комментарий: {$this->form['comments']}
-
-Данные отправителя:
-{$sender}
-
-Данные получателя:
-{$receiver}
-
-Данные плательщика:
-{$payer}
-
-MSG;
-* */
-			
+		{	
 			// сохраним в лог
 			$row = $this->LogOrder($this->form);
 			
-			$view = CalculatorHelpersView::load('email', 'normal', 'html', array('data' => $row));
+			$view = CalculatorHelpersView::load('email', 'normal', 'html', array('data' => $row, 'pit' => $this)); // TODO когда будет тариф, pit станет не нужен
 			
 			// Render our view.
 			$message = $view->render();
@@ -441,34 +346,7 @@ MSG;
 			$this->order_message = $message;
 		}
 	}	
-	
-	// форматирование данных об действующих лицах
-	function FormatActorData($actor)
-	{
-		if(array_key_exists($actor.'_legal_type', $this->form) && $this->form[$actor.'_legal_type'] == 'physical'){
-			$data = 'Тип клиента: Физическое лицо'.
-				"\r\nФИО: {$this->form[$actor.'_name']}".
-				"\r\nНомер телефона: {$this->form[$actor.'_phone']}";
-			
-		}else{
-			$data = 'Тип клиента: Юридическое лицо'.
-				"\r\nНаименование: {$this->form[$actor.'_company_name']}".
-				"\r\nИНН: {$this->form[$actor.'_inn']}".
-				"\r\nЮр. адрес: Индекс "
-					.$this->form[$actor.'_ZIP_code']
-					.', г. '.$this->form[$actor.'_juridical_city']
-					.",\r\n\tул. ".$this->form[$actor.'_juridical_street']
-					.', д. '.$this->form[$actor.'_house']
-					.(empty($this->form[$actor.'_building']) ? '' : ', корп. '.$this->form[$actor.'_building'])
-					.(empty($this->form[$actor.'_structure']) ? '' : ', стр. '.$this->form[$actor.'_structure'])
-					.(empty($this->form[$actor.'_flat']) ? '' : ', кв/оф. '.$this->form[$actor.'_flat']).
-				"\r\nКонтактное лицо: {$this->form[$actor.'_contact']}".
-				"\r\nНомер телефона: {$this->form[$actor.'_phone']}";
-		}
 		
-		return $data;
-	}
-	
 	// Логирование заказа
 	function LogOrder($data){
 		$date = date("Y-m-d H:i:s");

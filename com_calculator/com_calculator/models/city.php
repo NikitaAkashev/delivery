@@ -35,7 +35,7 @@ order by c.name
 	
 	// Информация о городе
 	static function GetCity($city){
-		$results = $this->GetCities($city);
+		$results = CalculatorModelsCity::GetCities($city);
 		
 		return $results[0];
 	}
