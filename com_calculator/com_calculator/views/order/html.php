@@ -12,10 +12,9 @@ class CalculatorViewsOrderHtml extends JViewHtml
 {
         // Overwriting JView display method
         function render() 
-        {
-			$app = JFactory::getApplication();
-						 
+        {						 
 			$model = new CalculatorModelsOrder();
+			
 			$model->Calculate(1);
 			if($model->IsInnerPriceViewer()){
 				$model->Calculate(0);

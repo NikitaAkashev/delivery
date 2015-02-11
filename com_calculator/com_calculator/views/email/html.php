@@ -12,7 +12,8 @@ class CalculatorViewsEmailHtml extends JViewHtml
 {
         // Overwriting JView display method
         function render() 
-        {			
+        {
+			//  Получать здесь названия городов и терминалов			
 			return parent::render();
         }
 }
