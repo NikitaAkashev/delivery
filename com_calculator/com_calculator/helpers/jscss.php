@@ -16,10 +16,10 @@ class CalculatorHelpersJscss
 		 
 		//javascripts
 		$document->addScript(JURI::base().'media/jui/js/jquery.min.js');
-		$document->addScript(JURI::base().'components/com_calculator/assets/js/com_calculator.js');
 		$document->addScript(JURI::base().'media/chosen/chosen.jquery.min.js');
 		$document->addScript(JURI::base().'media/system/js/calendar.js');
 		$document->addScript(JURI::base().'media/system/js/calendar-setup.js');
+		$document->addScript(JURI::base().'components/com_calculator/assets/js/com_calculator.js');
 	}
 }
 ?>
