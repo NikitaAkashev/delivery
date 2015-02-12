@@ -335,7 +335,7 @@ where
 			$to      = 'regspambox@yandex.ru';
 			$subject = 'Заказ с сайта ... дописать';
 			$headers = 'MIME-Version: 1.0' . "\r\n".
-						'Content-type: text/html; charset=utf-8' . "\r\n";
+						'Content-type: text/html; charset=utf-8' . "\r\n" .
 						'From: webmaster@example.com' . "\r\n" .
 						'Reply-To: webmaster@example.com' . "\r\n" .
 						'X-Mailer: PHP/' . phpversion();
