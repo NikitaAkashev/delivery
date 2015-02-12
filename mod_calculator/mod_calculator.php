@@ -5,6 +5,11 @@ defined('_JEXEC') or die;
 // Include the syndicate functions only once
 require_once( dirname(__FILE__) . '/../../components/com_calculator/models/order.php' );
  
+$document = JFactory::getDocument();
+
+JHtml::_('jquery.framework');
+$document->addScript('media/jui/js/chosen.jquery.min.js');
+		
 $selected_city_from = 18; // екатеринбург
 
 $city_to_variants = array(38, 55, 42, 65, 47, 72, 29, 70); //москва, питер, новосиб, тюмень, пермь, челябинск, краснодар, ханты-мансийск

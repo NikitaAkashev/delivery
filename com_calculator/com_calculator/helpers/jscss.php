@@ -8,18 +8,18 @@ class CalculatorHelpersJscss
 	static function load()
 	{
 		$document = JFactory::getDocument();
-		 
+		
 		//stylesheets
-		$document->addStylesheet(JURI::base().'components/com_calculator/assets/css/com_calculator.css');
-		$document->addStylesheet(JURI::base().'media/chosen/chosen.min.css');
-		$document->addStylesheet(JURI::base().'media/system/css/calendar-jos.css');
-		 
+		$document->addStylesheet('components/com_calculator/assets/css/com_calculator.css');
+		$document->addStylesheet('media/jui/css/chosen.css');
+		$document->addStylesheet('media/system/css/calendar-jos.css');
+		
 		//javascripts
-		$document->addScript(JURI::base().'media/jui/js/jquery.min.js');
-		$document->addScript(JURI::base().'media/chosen/chosen.jquery.min.js');
-		$document->addScript(JURI::base().'media/system/js/calendar.js');
-		$document->addScript(JURI::base().'media/system/js/calendar-setup.js');
-		$document->addScript(JURI::base().'components/com_calculator/assets/js/com_calculator.js');
+		JHtml::_('jquery.framework');
+		$document->addScript('media/jui/js/chosen.jquery.min.js');
+		$document->addScript('media/system/js/calendar.js');
+		$document->addScript('media/system/js/calendar-setup.js');
+		$document->addScript('components/com_calculator/assets/js/com_calculator.js');
 	}
 }
 ?>
