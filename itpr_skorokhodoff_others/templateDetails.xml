@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
+<extension version="3.1" type="template" client="site">
+	<name>itpr_skorokhodoff_others</name>
+	<creationDate>14 April 2014</creationDate>
+	<author>Darkling</author>
+	<authorEmail>DarklingC@mail.ru</authorEmail>
+	<authorUrl>http://web-ek.ru/</authorUrl>
+	<copyright>Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<version>1.0</version>
+	<description>Шаблон для главной страницы</description>
+
+	<files>
+		<folder>css</folder>
+		<folder>html</folder>
+		<folder>images</folder>
+		<filename>error.php</filename>
+		<filename>index.html</filename>
+		<filename>index.php</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>favicon.ico</filename>
+	</files>
+
+	<positions>
+		<position>phone</position>
+		<position>topmenu</position>
+		<position>calculator</position>
+		<position>status</position>
+		<position>copyright</position>
+	</positions>
+</extension>

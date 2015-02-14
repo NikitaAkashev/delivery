@@ -1,0 +1,54 @@
+/* CSS Document */
+
+.content {
+	font-size: 14px;
+}
+
+.content * {
+	line-height: 125%;
+}
+
+.content ul li {
+	margin-left:20px;
+}
+
+.content a {
+	color:#fff;
+}
+
+.content a:hover {
+	color:#FCFFDD
+}
+
+
+.well blockquote {
+	border-color: #ea9511;
+	border-color: rgba(234,149,17,0.95);
+}
+blockquote {
+	padding: 0 0 0 15px;
+	margin: 0 0 18px;
+	border-left: 5px solid #ea9511;
+}
+
+.label-inverse, .badge-inverse {
+	background-color: #333;
+}
+
+.label {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+.label, .badge {
+	display: inline-block;
+	padding: 2px 4px;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 14px;
+	color: #fff;
+	vertical-align: baseline;
+	white-space: nowrap;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+	background-color: #999;
+}

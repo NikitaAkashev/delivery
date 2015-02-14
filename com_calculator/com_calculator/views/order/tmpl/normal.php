@@ -9,50 +9,50 @@ defined('_JEXEC') or die('Restricted access');
 <?php } else { ?>
 <h1>Расчет стоимости отправки</h1>
 <form id="calculator" method="POST" name="calculate_form" action="">
-	<table>
-		<tr>
-			<td>Вес, кг</td>
-			<td>
+	<div id="calculator_body">
+		<div class="control-group">
+			<label class="control-label">Вес, кг<span class="asterisk correct">*</span></label>
+			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->weight !== null && $this->model->weight == 0) echo 'alert-error'?>" type="text" name="weight" value="<?php echo $this->model->weight; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td>Оценка, руб</td>
-			<td>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Оценка, руб</label>
+			<div class="controls">
 				<input class="comma-replace advantage_fields" type="text" name="assessed_value" value="<?php echo $this->model->assessed_value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td>Ширина, см</td>
-			<td>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Ширина, см<span class="asterisk correct">*</span></label>
+			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td>Длина, см</td>
-			<td>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Длина, см<span class="asterisk correct">*</span></label>
+			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td>Высота, см</td>
-			<td>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Высота, см<span class="asterisk correct">*</span></label>
+			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td>Тариф</td>
-			<td>
+			</div>
+		</div>
+		<div class="control-group radio-group">
+			<label class="control-label">Тариф</label>
+			<div class="controls">
 				<label><input class="advantage_fields" type="radio" name="is_express" value="1" <?php if($this->model->is_express === null || $this->model->is_express == 1) echo "checked" ?> />
 				<span>Экспресс</span></label>
 				<b class="separate">|</b>
 				<label><input class="advantage_fields" type="radio" name="is_express" value="0" <?php if($this->model->is_express == 0) echo "checked" ?> />
 				<span>Стандарт</span></label>
-			</td>
-		</tr>
-		<tr>
-			<td>Откуда</td>
-			<td>
+			</div>
+		</div>
+		<div class="control-group border-top">
+			<label class="control-label">Откуда<span class="asterisk correct">*</span></label>
+			<div class="controls">
 				<select id="city_from" name="city_from" class="city_select advantage_fields">
 					<option value="">Нет</option>
 					<?php
@@ -62,29 +62,20 @@ defined('_JEXEC') or die('Restricted access');
 						}
 					 ?>		
 				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>Куда</td>
-			<td>
-				<select id="city_to" name="city_to" class="city_select advantage_fields">
-					<option value="">Нет</option>
-					<?php
-						foreach($this->cities as $city){
-							$selected = $city->city == $this->model->city_to ? " selected=\"selected\" " : "";
-							echo "<option ".$selected." value=\"".$city->city."\">".$city->name."</option>";
-						}
-					 ?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>Забрать</td>
-			<td><!-- по умолчанию доставка от окна -->
+			</div>
+		</div>
+       <div class="control-group radio-group from">
+			<label class="control-label">Забрать</label>
+			<div class="controls"><!-- по умолчанию доставка от окна -->
 				<label><input type="radio" class="advantage_fields" name="from_door" value="1" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "checked" ?> onchange="jQuery('.from_window').toggle(); jQuery('.from_door').toggle();" /><span>Забрать от адреса</span></label>
 				<b class="separate">|</b>
 				<label><input type="radio" class="advantage_fields" name="from_door" value="0" <?php if(JRequest::getFloat('from_door', 0) == 0) echo "checked" ?> onchange="jQuery('.from_window').toggle(); jQuery('.from_door').toggle();" /><span>Самостоятельно привезти</span></label>
-				<!-- код забора груза от окна -->
+        	</div>
+        </div>
+		<div class="control-group margin-bottom">
+			<label class="control-label"></label>
+			<div class="controls">
+            	<!-- код забора груза от окна -->
 				<div class="from_window terminal-select" <?php if(JRequest::getFloat('from_door', 0) == 1) echo "style=\"display:none;\"" ?>>
 					<select name="from_terminal" id="city_from_terminal" class="<?php if($this->model->price != null && JRequest::getFloat('from_door', 0) == 0 && count($this->terminals["from"]) == 0) echo 'alert-error'; ?>">
 						<?php foreach($this->terminals["from"] as $t){
@@ -118,18 +109,37 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="text" name="from_door_breaktime_end" value="<?php if(array_key_exists('from_door_breaktime_end', $this->model->form)) echo $this->model->form['from_door_breaktime_end']; ?>" placeholder="__:__">
 						<span>перерыв</span>
 					</div>
-					<div id="from_door_exact_time_group" class="">
+					<div id="from_door_exact_time_group" class="exact_time_group">
 						<label><input type="checkbox" name="from_door_exact_time" <?php if(array_key_exists('from_door_exact_time', $this->model->form) && $this->model->form['from_door_exact_time'] == 1) echo 'checked'; ?> value="1" /> Фиксированное время забора</label>
 					</div>
 				</div>    
-			</td>
-		</tr>
-    	<tr>
-			<td>Доставить</td>
-			<td><!-- по умолчанию доставка до двери -->
+			</div>
+		</div>
+		<div class="control-group border-top">
+			<label class="control-label">Куда<span class="asterisk correct">*</span></label>
+			<div class="controls">
+				<select id="city_to" name="city_to" class="city_select advantage_fields">
+					<option value="">Нет</option>
+					<?php
+						foreach($this->cities as $city){
+							$selected = $city->city == $this->model->city_to ? " selected=\"selected\" " : "";
+							echo "<option ".$selected." value=\"".$city->city."\">".$city->name."</option>";
+						}
+					 ?>
+				</select>
+			</div>
+		</div>
+     	<div class="control-group radio-group to">
+			<label class="control-label">Доставить</label>
+			<div class="controls"><!-- по умолчанию доставка до двери -->
 				<label><input type="radio" class="advantage_fields" name="to_door" value="1" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "checked" ?> onchange="jQuery('.to_door').toggle(); jQuery('.to_window').toggle()" /><span>Доставить на адрес</span></label>
 				<b class="separate">|</b>
 				<label><input type="radio" class="advantage_fields" name="to_door" value="0" <?php if(JRequest::getFloat('to_door', 1) == 0) echo "checked" ?> onchange="jQuery('.to_door').toggle(); jQuery('.to_window').toggle()" /><span>Самостоятельно забрать</span></label>
+            </div>
+        </div>
+    	<div class="control-group">
+			<label class="control-label"></label>
+			<div class="controls">
 				<!-- код забора груза от окна -->
 				<div class="to_window terminal-select" <?php if(JRequest::getFloat('to_door', 1) == 1) echo "style=\"display:none;\"" ?>>
 					<select name="to_terminal" id="city_to_terminal" class="<?php if($this->model->price != null && JRequest::getFloat('to_door', 1) == 0 && count($this->terminals["to"]) == 0) echo 'alert-error'; ?>">
@@ -163,14 +173,14 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="text" name="to_door_breaktime_end" value="<?php if(array_key_exists('to_door_breaktime_end', $this->model->form)) echo $this->model->form['to_door_breaktime_end']; ?>" placeholder="__:__">
 						<span>перерыв</span>
 					</div>
-					<div id="to_door_exact_time_group" class="">
+					<div id="to_door_exact_time_group" class="exact_time_group">
 						<label><input type="checkbox" name="to_door_exact_time" <?php if(array_key_exists('to_door_exact_time', $this->model->form) && $this->model->form['to_door_exact_time'] == 1) echo 'checked'; ?> value="1" /> Фиксированное время забора</label>
 					</div>
 				</div>
-			</td>
-		</tr>
-		<tr id="calculated" style="<?php if($this->model->price == null){ echo "display:none;"; }?>">
-			<td colspan="2">
+			</div>
+		</div>
+		<div class="control-group" id="calculated" style="<?php if($this->model->price == null){ echo "display:none;"; }?>">
+			<div>
 				<h2>Стоимость отправки: 
 					<span id="price"><?php echo $this->model->price; ?></span> руб 
 					<span style="text-transform:none;">(в том числе НДС <span id="nds_part"><?php echo $this->model->nds_part; ?></span> руб.)</span>
@@ -180,10 +190,10 @@ defined('_JEXEC') or die('Restricted access');
 				<span id="max_delivery_time"><?php echo $this->model->max_delivery_time; ?></span> дн.
 				Объем груза: 
 				<span id="volume"><?php echo ($this->model->volume < 0.01 ? "менее 0,01" : $this->model->volume); ?></span> м<sup>3</sup>
-			</td>
-		</tr>
-		<tr id="calculated_inner" style="<?php if($this->model->inner_price == null){ echo "display:none;"; }?>">
-			<td colspan="2">
+			</div>
+		</div>
+		<div class="control-group" id="calculated_inner" style="<?php if($this->model->inner_price == null){ echo "display:none;"; }?>">
+			<div>
 				<h2>Внутренняя стоимость отправки: 
 					<span id="inner_price"><?php echo $this->model->inner_price; ?></span> руб 
 					<span style="text-transform:none;">(в том числе НДС <span id="nds_part_inner"><?php echo $this->model->nds_part_inner; ?></span> руб.)</span>
@@ -192,23 +202,23 @@ defined('_JEXEC') or die('Restricted access');
 					<span id="profit"><?php echo $this->model->profit; ?></span> руб 
 					<span style="text-transform:none;">(в том числе НДС <span id="profit_nds_part"><?php echo $this->model->profit_nds_part; ?></span> руб.)</span>
 				</h2>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
+			</div>
+		</div>
+		<div class="control-group">
+			<div>
 				<a href="#" id="order_details_link" style="<?php if($this->model->price == null){ echo "display:none;"; }?>" onclick="jQuery('#order_form').toggle(); return false;" >Оформить заказ</a>
-			</td>
-		</tr>
-	</table>
+			</div>
+		</div>
+	</div>
 
-	<div id="order_form" style="<?php if($this->model->price == null){ echo "display:none;"; }?>">
+	<div id="order_form" class="border-top" style="<?php if($this->model->price == null){ echo "display:none;"; }?>">
 		<div id="produce_date" class="form-block">
 			<label for="produceDate" class="control-label">
 				<span>Дата выполнения заявки</span><span class="asterisk correct">*</span>
 			</label>
 			<div class="controls">
 				<input type="text" name="produceDate" class="<?php if (array_key_exists('produceDate', $this->model->form) && empty($this->model->form['produceDate'])) echo "alert-error"; ?>"  value="<?php if(array_key_exists('produceDate', $this->model->form)) echo $this->model->form['produceDate']; ?>" id="produceDate">
-				<span class="toDoor">дата забора груза</span>
+				<span class="toDoor">дата забора груза</span> /
 				<span class="terminal">дата передачи груза на терминал</span>
 			</div>
 		</div>
@@ -257,7 +267,7 @@ defined('_JEXEC') or die('Restricted access');
 					<div class="controls">
 						<div id="sender_juridical_address">
 							<input type="text" name="sender_ZIP_code" placeholder="Индекс" id="sender_ZIP_code" class="ZIP_code <?php if (!array_key_exists('sender_legal_type', $this->model->form) && array_key_exists('sender_ZIP_code', $this->model->form) && empty($this->model->form["sender_ZIP_code"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('sender_ZIP_code', $this->model->form)) echo $this->model->form['sender_ZIP_code']; ?>">
-							<input type="text" name="sender_juridical_city" placeholder="Населенный пункт" id="sender_juridical_city" class="<?php if (!array_key_exists('sender_legal_type', $this->model->form) && array_key_exists('sender_juridical_city', $this->model->form) && empty($this->model->form["sender_juridical_city"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('sender_juridical_city', $this->model->form)) echo $this->model->form['sender_juridical_city']; ?>">
+							<input type="text" name="sender_juridical_city" placeholder="Населенный пункт" id="sender_juridical_city" class="juridical_city <?php if (!array_key_exists('sender_legal_type', $this->model->form) && array_key_exists('sender_juridical_city', $this->model->form) && empty($this->model->form["sender_juridical_city"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('sender_juridical_city', $this->model->form)) echo $this->model->form['sender_juridical_city']; ?>">
 							<input type="text" name="sender_juridical_street" placeholder="Улица" id="sender_juridical_street" class=" <?php if (!array_key_exists('sender_legal_type', $this->model->form) && array_key_exists('sender_juridical_street', $this->model->form) && empty($this->model->form["sender_juridical_street"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('sender_juridical_street', $this->model->form)) echo $this->model->form['sender_juridical_street']; ?>">
 							<input type="text" name="sender_house" placeholder="Дом" id="sender_house" class="house <?php if (!array_key_exists('sender_legal_type', $this->model->form) && array_key_exists('sender_house', $this->model->form) && empty($this->model->form["sender_house"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('sender_house', $this->model->form)) echo $this->model->form['sender_house']; ?>">
 							<input type="text" name="sender_building" placeholder="Корп." id="sender_building" class="building" value="<?php if(array_key_exists('sender_building', $this->model->form)) echo $this->model->form['sender_building']; ?>">
@@ -321,7 +331,7 @@ defined('_JEXEC') or die('Restricted access');
 					<div class="controls">
 						<div id="receiver_juridical_address">
 							<input type="text" name="receiver_ZIP_code" placeholder="Индекс" id="receiver_ZIP_code" class="ZIP_code <?php if (!array_key_exists('receiver_legal_type', $this->model->form) && array_key_exists('receiver_ZIP_code', $this->model->form) && empty($this->model->form["receiver_ZIP_code"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('receiver_ZIP_code', $this->model->form)) echo $this->model->form['receiver_ZIP_code']; ?>">
-							<input type="text" name="receiver_juridical_city" placeholder="Населенный пункт" id="receiver_juridical_city" class="<?php if (!array_key_exists('receiver_legal_type', $this->model->form) && array_key_exists('receiver_juridical_city', $this->model->form) && empty($this->model->form["receiver_juridical_city"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('receiver_juridical_city', $this->model->form)) echo $this->model->form['receiver_juridical_city']; ?>">
+							<input type="text" name="receiver_juridical_city" placeholder="Населенный пункт" id="receiver_juridical_city" class="juridical_city <?php if (!array_key_exists('receiver_legal_type', $this->model->form) && array_key_exists('receiver_juridical_city', $this->model->form) && empty($this->model->form["receiver_juridical_city"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('receiver_juridical_city', $this->model->form)) echo $this->model->form['receiver_juridical_city']; ?>">
 							<input type="text" name="receiver_juridical_street" placeholder="Улица" id="receiver_juridical_street" class=" <?php if (!array_key_exists('receiver_legal_type', $this->model->form) && array_key_exists('receiver_juridical_street', $this->model->form) && empty($this->model->form["receiver_juridical_street"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('receiver_juridical_street', $this->model->form)) echo $this->model->form['receiver_juridical_street']; ?>">
 							<input type="text" name="receiver_house" placeholder="Дом" id="receiver_house" class="house <?php if (!array_key_exists('receiver_legal_type', $this->model->form) && array_key_exists('receiver_house', $this->model->form) && empty($this->model->form["receiver_house"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('receiver_house', $this->model->form)) echo $this->model->form['receiver_house']; ?>">
 							<input type="text" name="receiver_building" placeholder="Корп." id="receiver_building" class="building" value="<?php if(array_key_exists('receiver_building', $this->model->form)) echo $this->model->form['receiver_building']; ?>">
@@ -392,7 +402,7 @@ defined('_JEXEC') or die('Restricted access');
 					<div class="controls">
 						<div id="third_juridical_address">
 							<input type="text" name="third_ZIP_code" placeholder="Индекс" id="third_ZIP_code" class="ZIP_code <?php if (array_key_exists('payer', $this->model->form) && $this->model->form['payer'] == 'third' && array_key_exists('third_ZIP_code', $this->model->form) && empty($this->model->form["third_ZIP_code"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('third_ZIP_code', $this->model->form)) echo $this->model->form['third_ZIP_code']; ?>">
-							<input type="text" name="third_juridical_city" placeholder="Населенный пункт" id="third_juridical_city" class="<?php if (array_key_exists('payer', $this->model->form) && $this->model->form['payer'] == 'third' && array_key_exists('third_juridical_city', $this->model->form) && empty($this->model->form["third_juridical_city"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('third_juridical_city', $this->model->form)) echo $this->model->form['third_juridical_city']; ?>">
+							<input type="text" name="third_juridical_city" placeholder="Населенный пункт" id="third_juridical_city" class="juridical_city <?php if (array_key_exists('payer', $this->model->form) && $this->model->form['payer'] == 'third' && array_key_exists('third_juridical_city', $this->model->form) && empty($this->model->form["third_juridical_city"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('third_juridical_city', $this->model->form)) echo $this->model->form['third_juridical_city']; ?>">
 							<input type="text" name="third_juridical_street" placeholder="Улица" id="third_juridical_street" class=" <?php if (array_key_exists('payer', $this->model->form) && $this->model->form['payer'] == 'third' && array_key_exists('third_juridical_street', $this->model->form) && empty($this->model->form["third_juridical_street"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('third_juridical_street', $this->model->form)) echo $this->model->form['third_juridical_street']; ?>">
 							<input type="text" name="third_house" placeholder="Дом" id="third_house" class="house <?php if (array_key_exists('payer', $this->model->form) && $this->model->form['payer'] == 'third' && array_key_exists('third_house', $this->model->form) && empty($this->model->form["third_house"])) echo "alert-error"; ?>" value="<?php if(array_key_exists('third_house', $this->model->form)) echo $this->model->form['third_house']; ?>">
 							<input type="text" name="third_building" placeholder="Корп." id="third_building" class="building" value="<?php if(array_key_exists('third_building', $this->model->form)) echo $this->model->form['third_building']; ?>">
