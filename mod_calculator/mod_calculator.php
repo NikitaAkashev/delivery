@@ -11,6 +11,7 @@ $document = JFactory::getDocument();
 
 JHtml::_('jquery.framework');
 $document->addScript('media/jui/js/chosen.jquery.min.js');
+$document->addStylesheet('media/jui/css/chosen.css');
 		
 $selected_city_from = 18; // екатеринбург
 
