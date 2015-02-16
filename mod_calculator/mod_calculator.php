@@ -3,7 +3,9 @@
 // no direct access
 defined('_JEXEC') or die;
 // Include the syndicate functions only once
+require_once( dirname(__FILE__) . '/../../components/com_calculator/models/default.php' );
 require_once( dirname(__FILE__) . '/../../components/com_calculator/models/order.php' );
+require_once( dirname(__FILE__) . '/../../components/com_calculator/models/city.php' );
  
 $document = JFactory::getDocument();
 
