@@ -299,6 +299,11 @@ span.decoding {
 #mainbody {
 }
 
+#module_status {
+	float:right;
+	width:400px;	
+}
+
 .moduletable.status, .moduletable.loginform, .moduletable.pay {
 	float:right;
 	width:460px;
@@ -309,11 +314,12 @@ span.decoding {
 }
 
 .moduletable.loginform, .moduletable.pay {
-	width:380px;
+	width:365px;
+	margin-left:35px;
 }
 
 .moduletable.pay {
-	clear:right;
+/*	clear:right;*/
 	margin-top:20px;
 	height:auto;
 /*	padding-left:60px;
@@ -353,7 +359,12 @@ span.decoding {
 
 .pay label {
 	float:left;
-	padding-top:12px
+	padding-top:12px;
+	margin-right:5px;
+}
+
+.pay .controls {
+	margin-left:65px;
 }
 
 .pay label.two-line {
@@ -367,7 +378,8 @@ span.decoding {
 }
 
 .pay textarea {
-	width:336px;
+/*	width:336px;*/
+	width:276px;
 	height:85px;
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-size: 16px;
@@ -397,7 +409,7 @@ span.decoding {
 	float:left;
 }
 
-.status input, .loginform .controls input, .login .controls input, /*#calculator a.chzn-single*/, /*#calculator .comma-replace,*/ .moduletable.calculator a.chzn-single, .moduletable.pay input.text, .contact-form input[type=text], .contact-form input[type=email] {
+.status input, .loginform .controls input, .login .controls input, /*#calculator a.chzn-single*//*, #calculator .comma-replace,*/ .moduletable.calculator a.chzn-single, .moduletable.pay input.text, .contact-form input[type=text], .contact-form input[type=email] {
 	width:276px;
 	background:none;
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -449,13 +461,14 @@ span.decoding {
 }
 
 #form-login-remember label {
-	width:auto;
+	width:288px;
 	margin-right:5px;
+	float:right;	
 }
 
 #form-login-remember input, #remember {
-	width:20px;
-	height:20px;
+	width:16px;
+	height:16px;
 }
 
 .status button, .loginform .btn.btn-primary, .login .btn.btn-primary, #calculator .submit, .moduletable.pay input.submit, a#order_details_link {
@@ -468,6 +481,10 @@ span.decoding {
 	margin-left:20px;
 	text-shadow: #4acaff -1px -1px 1px;
 	filter: Shadow(Color=#4acaff, Direction=-60, Strength=1);
+}
+
+.loginform .unstyled {
+	margin:10px 0 0px 80px;
 }
 
 .moduletable.pay input.submit {
@@ -709,8 +726,8 @@ text-shadow: none;
 }
 .alert-danger,
 .alert-error {
-	background-color: #f2dede;
-	border-color: #eed3d7;
+	background-color: #f2dede!important;
+	border-color: #eed3d7!important;
 	color: #b94a48!important;
 }
 .alert-danger h4,
@@ -770,7 +787,9 @@ text-shadow: none;
 /* calculator */
 
 #calculator {
+	float:left;
 	width: 538px;
+	margin-bottom:50px;
 	font-size: 13px;
 	color:#f0c721;
 }
@@ -814,9 +833,9 @@ text-shadow: none;
 	cursor:pointer;
 }
 
-#calculator input[type=text], #calculator select, #calculator a.chzn-single {
+#calculator .controls > input[type=text], #calculator .controls > div > input[type=text], .to_door input[type=text], .from_door input[type=text], #calculator select, #calculator a.chzn-single {
 	width: 276px;
-	border:1px solid #25c8f5 !important;
+	border:1px solid #25c8f5;
 	border-radius:5px;
 	background:#f3f3f3;
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -826,6 +845,11 @@ text-shadow: none;
 	height: 22px;
 	padding: 9px 12px;
 	margin:5px 0;
+}
+
+#calculator .controls > input[type=text]:focus, #calculator .controls > div > input[type=text]:focus, .to_door input[type=text]:focus, .from_door input[type=text]:focus, #calculator select:focus, #calculator a.chzn-single:focus {
+/*	border:1px solid #f0c721 !important;*/
+	box-shadow: 0 0 5px rgba(37,200,245,0.9);
 }
 
 #calculator .comma-replace.alert-error {
@@ -848,8 +872,15 @@ text-shadow: none;
 }
 
 #calculator a.chzn-single, .moduletable.calculator a.chzn-single {
-	border:none;
-	margin-bottom:5px;
+	padding: 11px 12px 7px;
+}
+
+.chzn-drop {
+	width:302px !important;
+}
+
+.chzn-results {
+	color:#737373;;	
 }
 
 #calculator label input:checked + span {
@@ -984,15 +1015,17 @@ a#order_details_link {
 /*	height: 38px;
 	border:1px solid #00b8ff;
 	background:#00a6ff;*/
-	background:url(../images/bg-button-1px-blue.png) repeat-x;
-	background-color:#00a6ff;
+	background:url(../images/bg-button-1px-blue.png) repeat-x ;
+	background-color:#00aaf1;
 	border-radius:5px;
+	border-left:2px solid #007bbf;
+	border-right:2px solid #007bbf;
 	cursor:pointer;
 	transition: background-color 0.2s ease;
 }
 
 #calculator .submit:hover, a#order_details_link:hover  {
-	background-color:#fff;
+	background-color:#41c7ff;
 }
 
 /**** Calculator ****/
@@ -1049,8 +1082,8 @@ hr.divider {
 }
 
 #third .control-group:first-child .controls {
-	height:40px;
-	line-height:40px;
+	height:50px;
+	line-height:50px;
 }
 
 #calculator #counteragents .submit {
