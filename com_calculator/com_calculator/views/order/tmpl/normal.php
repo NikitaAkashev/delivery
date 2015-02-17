@@ -206,7 +206,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<div class="control-group">
 			<div>
-				<a href="#" id="order_details_link" style="<?php if($this->model->price == null || array_key_exists('produceDate', $this->model->form)){ echo "display:none;"; }?>" onclick="jQuery('#order_form').show(); jQuery('#order_details_link').hide(); return false;" >Оформить заказ</a>
+				<a href="#" id="order_details_link" style="display:none;" onclick="jQuery('#order_form').show(); jQuery('#order_details_link').hide(); return false;" >Оформить заказ</a>
 			</div>
 		</div>
 	</div>
