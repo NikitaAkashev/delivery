@@ -17,8 +17,6 @@ class CalculatorHelpersJscss
 		//javascripts
 		JHtml::_('jquery.framework');
 		$document->addScript('media/jui/js/chosen.jquery.min.js');
-		$document->addScript('media/system/js/calendar.js');
-		$document->addScript('media/system/js/calendar-setup.js');
 		$document->addScript('components/com_calculator/assets/js/com_calculator.js');
 	}
 }

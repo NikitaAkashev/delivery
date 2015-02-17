@@ -206,7 +206,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<div class="control-group">
 			<div>
-				<a href="#" id="order_details_link" style="<?php if($this->model->price == null){ echo "display:none;"; }?>" onclick="jQuery('#order_form').toggle(); return false;" >Оформить заказ</a>
+				<a href="#" id="order_details_link" style="<?php if($this->model->price == null || array_key_exists('produceDate', $this->model->form)){ echo "display:none;"; }?>" onclick="jQuery('#order_form').show(); jQuery('#order_details_link').hide(); return false;" >Оформить заказ</a>
 			</div>
 		</div>
 	</div>
@@ -217,7 +217,10 @@ defined('_JEXEC') or die('Restricted access');
 				<span>Дата выполнения заявки</span><span class="asterisk correct">*</span>
 			</label>
 			<div class="controls">
-				<input type="text" name="produceDate" class="<?php if (array_key_exists('produceDate', $this->model->form) && empty($this->model->form['produceDate'])) echo "alert-error"; ?>"  value="<?php if(array_key_exists('produceDate', $this->model->form)) echo $this->model->form['produceDate']; ?>" id="produceDate">
+				<?php
+					echo JHTML::calendar((array_key_exists('produceDate', $this->model->form) ? $this->model->form['produceDate'] : ''),'produceDate', 'produceDate', '%Y-%m-%d', array('size'=>'8','maxlength'=>'10',
+					'class'=>((array_key_exists('produceDate', $this->model->form) && empty($this->model->form['produceDate'])) ? 'alert-error' : '')));
+				?>
 				<span class="toDoor">дата забора груза</span> /
 				<span class="terminal">дата передачи груза на терминал</span>
 			</div>
