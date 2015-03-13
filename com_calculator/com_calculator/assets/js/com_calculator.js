@@ -31,8 +31,8 @@ function UseFunctionReceiver(whichOpt)
 
 
 function LoadTerminalList(id, select_id)
-{	
-	jQuery.post('?controller=terminalslist&format=json', {city: id}, function (data){
+{
+	jQuery.post('?option=com_calculator&controller=terminalslist&format=json', {city: id}, function (data){
 			jQuery('#'+select_id+'_terminal option').remove();
 			jQuery.each(data, function(index, t){
 				jQuery('#'+select_id+'_terminal').append(jQuery('<option value="'+t.terminal+'">'+t.name+'</option>'));
@@ -43,7 +43,7 @@ function LoadTerminalList(id, select_id)
 
 function Recalculate(){
 	jQuery.post(
-		'?controller=calculate&format=json', 
+		'?option=com_calculator&controller=calculate&format=json', 
 		jQuery('#calculator').serialize(), 
 		function (data) {
 			if(data.calculated){
