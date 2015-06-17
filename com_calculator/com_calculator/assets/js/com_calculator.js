@@ -11,36 +11,6 @@ jQuery(document).ready(function(){
 	jQuery('.advantage_fields').keyup(Recalculate);
 });
 
-function UseFunctionSender(whichOpt) 
-{
- 	if (whichOpt == '1') {
-		jQuery('#sender').addClass('physical');
-	} else {
-		jQuery('#sender').removeClass('physical');
-	}
-}
-
-function UseFunctionReceiver(whichOpt) 
-{
- 	if (whichOpt == '1') {
-		jQuery('#receiver').addClass('physical');
-	} else {
-		jQuery('#receiver').removeClass('physical');
-	}
-}
-
-
-function LoadTerminalList(id, select_id)
-{
-	jQuery.post('?option=com_calculator&controller=terminalslist&format=json', {city: id}, function (data){
-			jQuery('#'+select_id+'_terminal option').remove();
-			jQuery.each(data, function(index, t){
-				jQuery('#'+select_id+'_terminal').append(jQuery('<option value="'+t.terminal+'">'+t.name+'</option>'));
-			});
-		}
-	);
-}
-
 function Recalculate(){
 	jQuery.post(
 		'?option=com_calculator&controller=calculate&format=json', 
