@@ -114,18 +114,19 @@ create table `calc_delivery_city_factor`(
 )
 
 #filled
-CREATE TABLE `calc_delivery_rate` (
+create TABLE `calc_delivery_rate` (
 	`rate` int(11) not null auto_increment,
 	`city_from` int(11) NULL references `calc_delivery_city`(city),
 	`city_to` int(11) NULL references `calc_delivery_city`(city),
 	`zone` int(11) null references `calc_delivery_zone`(zone),
 	`tariff` int(11) not null references `calc_delivery_tariff`(tariff),
 	`provider` int(11) not null references `calc_delivery_provider`(provider),
-	`delivery_type` int not null references `calc_delivery_delivery_type`(delivery_type),
 	`delivery_hours` varchar(32) null ,
 	PRIMARY KEY (`rate`)
 )
 
+
+#filled
 CREATE TABLE `calc_delivery_weight_price` (
 	`rate` int NOT NULL references `calc_delivery_rate`(rate),
 	`from` decimal(10,2) NOT NULL,
@@ -201,29 +202,24 @@ from calc_calc_city c
 
 
 
-insert into calc_delivery_rate(zone, tariff, provider, delivery_type)
+insert into calc_delivery_rate(zone, tariff, provider)
 select 
-	z.zone, t.tariff, p.provider, dt.delivery_type
+	z.zone, t.tariff, p.provider
 from calc_delivery_zone z
 	join calc_delivery_tariff t on t.code = 'express_standart'
 	join calc_delivery_provider p on p.code='special'
-	join calc_delivery_delivery_type dt on 1=1
 
-insert into calc_delivery_weight_price (rate, from, to, base_price, overweight_cost)
 
+insert into calc_delivery_weight_price (rate, `from`, `to`, base_price, overweight_cost)
 select 
-	*
-	r.rate, owp.from, owp.to, owp.base_price, owp.overweight_cost,
-from calc_calc_weight_price owp
+	r.rate, owp.`from`, owp.`to`, owp.base_price, owp.overweight_cost
+from calc_calc_weight_price owp 
 	join calc_calc_tariff ot on ot.tariff = owp.tariff
 	join calc_delivery_rate r on 
 		r.zone = owp.zone
-		and (r.delivery_type = 1 and ot.tariff = 6) 
-
-select * from calc_calc_tariff
+		and ot.tariff = 6
 
 
 
-# ВЫПИЛИТЬ DELIVERY_TYPE
 
 
