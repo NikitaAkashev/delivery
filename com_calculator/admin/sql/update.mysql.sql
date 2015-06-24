@@ -136,6 +136,14 @@ CREATE TABLE `calc_delivery_weight_price` (
 )
 
 
+#filled
+create table calc_delivery_delivery_type2tariff(
+	`delivery_type` int(11) not null references `calc_delivery_delivery_type`(delivery_type),
+	`tariff` int(11) not null references `calc_delivery_tariff`(tariff)
+)
+
+
+
 insert into calc_delivery_tariff(name, code, margin)
 values ('Экспресс-Стандарт', 'express_standart', 1.3)
 
@@ -219,7 +227,9 @@ from calc_calc_weight_price owp
 		r.zone = owp.zone
 		and ot.tariff = 6
 
-
-
+insert into calc_delivery_delivery_type2tariff(delivery_type, tariff)
+select dt.delivery_type, t.tariff
+from calc_delivery_tariff t
+	cross join calc_delivery_delivery_type dt
 
 
