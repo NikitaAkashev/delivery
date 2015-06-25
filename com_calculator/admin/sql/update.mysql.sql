@@ -4,6 +4,9 @@ create table `calc_delivery_tariff` (
 	`name` varchar(255) not null,
 	`code` varchar(63) not null,
 	`margin` decimal(4,2) not null,
+	dimension_limit int(11) null,
+	weight_limit int(11) null,
+	oversize_limit_factor decimal(4,2),
 	PRIMARY KEY  (`tariff`)
 )
 
@@ -13,9 +16,6 @@ create table `calc_delivery_provider` (
 	`name` varchar(125) NOT NULL,
 	`code` varchar(125) NOT NULL,
 	`volume_weight_divider` int(11) not null,
-	dimension_limit int(11) null,
-	weight_limit int(11) null,
-	oversize_limit_factor decimal(4,2),
 	min_assessed_price decimal(15,2),
 	PRIMARY KEY  (`provider`),
 	UNIQUE (`code`)
@@ -143,12 +143,17 @@ create table calc_delivery_delivery_type2tariff(
 )
 
 
+insert into calc_delivery_tariff(name, code, margin, weight_limit,
+dimension_limit , oversize_limit_factor)
+values ('Экспресс-Стандарт', 'standart', 1.3, 300, 200, 1.5),
+('СуперЭкспресс-Стандарт', 'super', 1.3, 20, 150, 0),
+('Экспресс-Урал', 'ural', 1.3, null, 150, 1.3),
+('Экспресс-Приоритет', 'priority', 1.3, 30, 150, 0)
 
-insert into calc_delivery_tariff(name, code, margin)
-values ('Экспресс-Стандарт', 'express_standart', 1.3)
-
-insert into `calc_delivery_provider` (	`name`,	`code`,	`volume_weight_divider`,dimension_limit ,weight_limit ,	oversize_limit_factor ,	min_assessed_price )
-values ('СпецСвязь', 'special', 6000, 300, 200, 1.5, 0)
+insert into `calc_delivery_provider` (	`name`,	`code`,	`volume_weight_divider`,min_assessed_price )
+values ('СпецСвязь', 'special', 6000, 0),
+ ('СДЭК', 'cdek', 5000, 400),
+ ('ФОКС', 'fox', 5000, 400)
 
 insert into calc_delivery_delivery_type (name, from_office, to_office, code)
 values 
@@ -169,6 +174,8 @@ select z.zone, z.name, concat(p.code,'.',cast(z.zone as char)), p.provider
  from calc_calc_zone z 
 	join calc_delivery_provider p on p.code='special'
 
+insert into calc_delivery_zone(zone, name, code, provider)
+values ()
 set sql_mode='';
 
 insert into calc_delivery_direction2zone(city_from, city_to, zone)
@@ -183,7 +190,7 @@ select
 	c.overprice_percent,
 	t.tariff
 from calc_calc_assessed_value_price c
-	join calc_delivery_tariff t on t.code = 'express_standart'
+	join calc_delivery_tariff t on t.code = 'standart'
 where
 	c.is_public = 0
 
@@ -193,7 +200,7 @@ select city_from, city_to, factor, user from calc_calc_discount
 
 insert into calc_delivery_courier_price(tariff, weight_from, weight_to, price)
 select t.tariff, 0, 10000, 150 from calc_delivery_tariff t
-where t.code = 'express_standart'
+where t.code = 'standart'
 
 
 insert into calc_delivery_city2delivery_time(city, min_time, max_time, provider)
@@ -206,7 +213,7 @@ select
 	c.city, f.value_for_inner_calculations, t.tariff
 from calc_calc_city c
 	join calc_calc_factor f on f.factor = c.factor
-	join calc_delivery_tariff t on t.code = 'express_standart'
+	join calc_delivery_tariff t on t.code = 'standart'
 
 
 
@@ -214,7 +221,7 @@ insert into calc_delivery_rate(zone, tariff, provider)
 select 
 	z.zone, t.tariff, p.provider
 from calc_delivery_zone z
-	join calc_delivery_tariff t on t.code = 'express_standart'
+	join calc_delivery_tariff t on t.code = 'standart'
 	join calc_delivery_provider p on p.code='special'
 
 
@@ -227,9 +234,19 @@ from calc_calc_weight_price owp
 		r.zone = owp.zone
 		and ot.tariff = 6
 
+
 insert into calc_delivery_delivery_type2tariff(delivery_type, tariff)
 select dt.delivery_type, t.tariff
 from calc_delivery_tariff t
 	cross join calc_delivery_delivery_type dt
+where
+	t.code <> 'super'
 
+insert into calc_delivery_delivery_type2tariff(delivery_type, tariff)
+select dt.delivery_type, t.tariff
+from calc_delivery_tariff t
+	cross join calc_delivery_delivery_type dt
+where
+	t.code = 'super'
+	and dt.code = 'door.door'
 
