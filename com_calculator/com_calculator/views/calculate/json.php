@@ -16,9 +16,10 @@ class CalculatorViewsCalculateJson extends JViewHtml
 			if($model->IsInnerPriceViewer()){
 				$model->Calculate(0);
 			}
-			
-			$data['calculated'] = !empty($model->price);
-			$data['calculated_inner'] = !empty($model->inner_price);
+		
+			$data['calculated'] = !empty($model->prices);
+			$data['prices'] = $model->prices;
+			/*$data['calculated_inner'] = !empty($model->inner_price);
 			
 			$data['price'] = $model->price;
 			$data['inner_price'] = $model->inner_price;
@@ -33,7 +34,7 @@ class CalculatorViewsCalculateJson extends JViewHtml
 			
 			$data['profit'] = $model->profit;
 			$data['profit_nds_part'] = $model->profit_nds_part;
-			
+			*/
 			header('Content-Type: application/json');
 			echo json_encode($data);
         }
