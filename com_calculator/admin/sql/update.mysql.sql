@@ -121,6 +121,8 @@ create TABLE `calc_delivery_rate` (
 	`zone` int(11) null references `calc_delivery_zone`(zone),
 	`tariff` int(11) not null references `calc_delivery_tariff`(tariff),
 	`provider` int(11) not null references `calc_delivery_provider`(provider),
+	`min_days` int(11) null,
+	`max_days` int(11) null,
 	`delivery_hours` varchar(32) null ,
 	PRIMARY KEY (`rate`)
 )
