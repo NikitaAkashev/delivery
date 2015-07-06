@@ -24,12 +24,13 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 	public $assessed_value;
 	public $width;
 	public $length;
-	public $height;
-	
-	public $prices;
+	public $height;	
 	
 	public $volume;
 	
+	public $prices;
+	
+	public $calculated = false;
 	public $ordered = false;
 	
 	// и вдруг, не мудурствуя лукаво, берем и фигачим весь реквест в переменную!!!
@@ -68,13 +69,15 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 		{
 			if (in_array($agid,$usergroups)) return true;
 		}	  
-		return false;
+		//return false;
+		return true; // на время тестов
 	}
 	
 	// Производит расчет
 	function Calculate(){
 		if($this->IsFilled())
 		{
+			$this->with_inner = $this->IsInnerPriceViewer();
 			$db = JFactory::getDBO();
 			$this->volume = $this->width * $this->length * $this->height;
 			$query = "
@@ -193,8 +196,8 @@ from(
 						
 			if(is_null($result))
 			{
-				$this->prices = null;
-				return;
+				$this->CalculationSetEmpty();
+				return $this->CalculationResult();;
 			}
 			
 			foreach($result as $i => $rate){
@@ -229,35 +232,55 @@ from(
 				if($rate->min_days == null) // вычисляем время для зон
 				{
 					if($this->city_from == 38){// Москва
-						$this->prices[$i]->min_delivery_time = $rate->ct_min_time;
-						$this->prices[$i]->max_delivery_time = $rate->ct_max_time;	
+						$min_delivery_time = $rate->ct_min_time;
+						$max_delivery_time = $rate->ct_max_time;	
 					} else if($this->city_to == 38){// Москва
-						$this->prices[$i]->min_delivery_time = $rate->cf_min_time;
-						$this->prices[$i]->max_delivery_time = $rate->cf_max_time;	
+						$min_delivery_time = $rate->cf_min_time;
+						$max_delivery_time = $rate->cf_max_time;	
 					} else if ($rate->cf_min_time == 1){
-						$this->prices[$i]->min_delivery_time = $rate->ct_min_time + 1;
-						$this->prices[$i]->max_delivery_time = $rate->ct_max_time + 1;					
+						$min_delivery_time = $rate->ct_min_time + 1;
+						$max_delivery_time = $rate->ct_max_time + 1;					
 					} else if ($rate->ct_min_time == 1){
-						$this->prices[$i]->min_delivery_time = $rate->cf_min_time + 1;
-						$this->prices[$i]->max_delivery_time = $rate->cf_max_time + 1;	
+						$min_delivery_time = $rate->cf_min_time + 1;
+						$max_delivery_time = $rate->cf_max_time + 1;	
 					} else {
-						$this->prices[$i]->min_delivery_time = $rate->cf_min_time + $rate->ct_min_time;
-						$this->prices[$i]->max_delivery_time = $rate->cf_max_time + $rate->ct_max_time;
+						$min_delivery_time = $rate->cf_min_time + $rate->ct_min_time;
+						$max_delivery_time = $rate->cf_max_time + $rate->ct_max_time;
 					}
 				} 
 				else // для явных направлений
 				{
-					$this->prices[$i]->min_delivery_time = $rate->min_days;
-					$this->prices[$i]->max_delivery_time = $rate->max_days;
+					$min_delivery_time = $rate->min_days;
+					$max_delivery_time = $rate->max_days;
 				}
 				
+				$this->prices[$i]->delivery_time = $min_delivery_time == $max_delivery_time ? $max_delivery_time : $min_delivery_time . ' - ' . $max_delivery_time;
+				
 				$this->prices[$i]->displayed_volume = $this->volume / 1000000 < $this->min_exact_volume ? 'менее 0,01' : $this->volume / 1000000;
-			}			
+				$this->prices[$i]->real_weight = $rate->real_weight;
+				
+				$this->prices[$i]->tariff_name = $rate->tariff_name . ' ' . $rate->delivery_hours . ' ' . $rate->delivery_type_name;
+				
+				$this->prices[$i]->provider_name = $rate->provider_name;
+				
+				// уберем внутренние цены, если это обычный пользователь
+				if(!$this->with_inner)
+				{
+					unset($this->prices[$i]->inner_price);
+					unset($this->prices[$i]->inner_nds);
+					unset($this->prices[$i]->profit);
+					unset($this->prices[$i]->profit_nds);
+					unset($this->prices[$i]->provider_name);
+				}
+			}
+			
+			$this->calculated = true;			
 		} 
 		else 
 		{
-			$this->prices = null;
+			$this->CalculationSetEmpty();			
 		}
+		return $this->CalculationResult();
 	}
 
 	// проверим, что пришли все данные, которые нам нужны для заказа TODO: Перенести проверку в JTable::check();
@@ -268,6 +291,24 @@ from(
 			return false;
 		
 		return true;
+	}
+	
+	// возвращает объект с результатами расчетов
+	function CalculationResult()
+	{
+		$result = new stdClass();
+		$result->calculated = $this->calculated;
+		$result->with_inner = $this->with_inner;
+		$result->prices = $this->prices;
+		return $result;
+	}
+	
+	// Устанавливает пустые значения, если расчет не выполнился
+	function CalculationSetEmpty()
+	{
+		$this->calculated = false;
+		$this->with_inner = false;
+		$this->prices = null;
 	}
 	
 	// округление цены по хитрым правилам

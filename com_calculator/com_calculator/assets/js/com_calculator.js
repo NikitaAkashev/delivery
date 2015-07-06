@@ -1,11 +1,11 @@
+var calc_model = null;
+
 jQuery(document).ready(function(){
 	jQuery(".city_select").chosen();
 
 	jQuery(".comma-replace").keyup(function(){
 		jQuery(this).val(jQuery(this).val().replace(',', '.'));
 	});
-
-	jQuery('.city_select').change(function(){ LoadTerminalList(jQuery(this).val(), jQuery(this).attr('name'));});
 	
 	jQuery('.advantage_fields').change(Recalculate);
 	jQuery('.advantage_fields').keyup(Recalculate);
@@ -24,11 +24,15 @@ function Recalculate(){
 				jQuery('#order_details_link').hide();
 				jQuery('#order_form').hide();
 			}				
-			if(data.calculated_inner){
+			if(data.with_inner){
 				jQuery('#calculated_inner').show();
 			}else{
 				jQuery('#calculated_inner').hide();
 			}
+			
+			console.log(data); // выпилить по готовности
+			
+			calc_model = data;
 			
 			jQuery('#price').text(data.price);
 			jQuery('#nds_part').text(data.nds_part);

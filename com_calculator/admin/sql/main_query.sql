@@ -1,5 +1,4 @@
-#select * from calc_delivery_delivery_type2tariff where city = 500
-
+#select * from calc_delivery_weight_price
 select 
 	@weight := 4,
 	@city_from := 1,

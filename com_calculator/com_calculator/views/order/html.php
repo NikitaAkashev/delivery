@@ -15,23 +15,14 @@ class CalculatorViewsOrderHtml extends JViewHtml
         {						 
 			$model = new CalculatorModelsOrder();
 			
-			$model->Calculate(1);
-			if($model->IsInnerPriceViewer()){
-				$model->Calculate(0);
-			}
+			$model->Calculate();
 			
 			$model->MakeOrder();
 			
 			$cities = CalculatorModelsCity::GetCities();
 			
-			$terminals = array(
-				'from' => CalculatorModelsTerminal::GetTerminalsByCity($model->city_from),
-				'to' => CalculatorModelsTerminal::GetTerminalsByCity($model->city_to)
-			);
-						
 			$this->model = $model;
 			$this->cities = $cities;
-			$this->terminals =$terminals;
 			
 			return parent::render();
         }

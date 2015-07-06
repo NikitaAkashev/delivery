@@ -68,31 +68,58 @@ defined('_JEXEC') or die('Restricted access');
 				</select>
 			</div>
 		</div>
-		<div class="control-group" id="calculated" style="<?php if($this->model->price == null){ echo "display:none;"; }?>">
+		<?php 
+			$show = $this->model->calculated;			
+			$show_inner = $this->model->with_inner;
+			$selected_row = array_key_exists('calc_row_id', $this->model->form) ? $this->model->form['calc_row_id'] : 0;
+		?>		
+		<table>
+			<tr id="calc_results_head">
+				<th>Выбрать</th>
+				<th>Тариф</th>
+				<th>Стоимость, руб. (с НДС)</th>
+				<th>Срок доставки, раб. дни, не считая дня приема отправления</th>
+				<?php if($show_inner) { ?><th>Перевозчик</th><?php } ?>
+			</tr>
+			<?php foreach($this->model->prices as $i => $p ) { ?>
+				<tr class="calc_results_rows">
+					<td><input type="radio" name="calc_row_id" value="<?php echo $i; ?>" <?php echo $i == $selected_row ? 'checked="checked"' : ''; ?> /></td>
+					<td><?php echo $p->tariff_name ?></td>
+					<td><?php echo $p->customer_price ?></td>
+					<td><?php echo $p->delivery_time ?></td>
+					<?php if($show_inner) { echo '<td>'.$p->provider_name.'</td>';} ?>
+				</tr>
+			<?php } ?>
+		</table>
+		
+		<div class="control-group" id="calculated" style="<?php if(!$show){ echo "display:none;"; }?>">
 			<div>
 				<h2>Стоимость отправки: 
-					<span id="price"><?php echo $this->model->price; ?></span> руб 
-					<span style="text-transform:none;">(в том числе НДС <span id="nds_part"><?php echo $this->model->nds_part; ?></span> руб.)</span>
+					<span id="customer_price"><?php echo $show ? $this->model->prices[$selected_row]->customer_price : ''; ?></span> руб 
+					<span style="text-transform:none;">(в том числе НДС <span id="customer_nds"><?php echo $show ? $this->model->prices[$selected_row]->customer_nds : ''; ?></span> руб.)</span>
 				</h2>
 				Время доставки: 
-				<span id="min_delivery_time"><?php echo $this->model->min_delivery_time; ?></span> &mdash; 
-				<span id="max_delivery_time"><?php echo $this->model->max_delivery_time; ?></span> дн.
+				<span id="delivery_time"><?php echo $show ? $this->model->prices[$selected_row]->delivery_time : ''; ?></span> дн.
 				Объем груза: 
-				<span id="volume"><?php echo ($this->model->volume < 0.01 ? "менее 0,01" : $this->model->volume); ?></span> м<sup>3</sup>
+				<span id="displayed_volume"><?php echo $show ? $this->model->prices[$selected_row]->displayed_volume : ''; ?></span> м<sup>3</sup>
+				Расчетный вес: 
+				<span id="real_weight"><?php echo $show ? $this->model->prices[$selected_row]->real_weight : ''; ?></span> кг
 			</div>
 		</div>
-		<div class="control-group" id="calculated_inner" style="<?php if($this->model->inner_price == null){ echo "display:none;"; }?>">
-			<div>
-				<h2>Внутренняя стоимость отправки: 
-					<span id="inner_price"><?php echo $this->model->inner_price; ?></span> руб 
-					<span style="text-transform:none;">(в том числе НДС <span id="nds_part_inner"><?php echo $this->model->nds_part_inner; ?></span> руб.)</span>
-				</h2>
-				<h2>Прибыль: 
-					<span id="profit"><?php echo $this->model->profit; ?></span> руб 
-					<span style="text-transform:none;">(в том числе НДС <span id="profit_nds_part"><?php echo $this->model->profit_nds_part; ?></span> руб.)</span>
-				</h2>
+		<?php if($show_inner){ ?>
+			<div class="control-group" id="calculated_inner">
+				<div>
+					<h2>Внутренняя стоимость отправки: 
+						<span id="inner_price"><?php echo $show_inner ? $this->model->prices[$selected_row]->inner_price : ''; ?></span> руб 
+						<span style="text-transform:none;">(в том числе НДС <span id="nds_part_inner"><?php echo $show_inner ? $this->model->prices[$selected_row]->inner_nds : ''; ?></span> руб.)</span>
+					</h2>
+					<h2>Прибыль: 
+						<span id="profit"><?php echo $show_inner ? $this->model->prices[$selected_row]->profit : ''; ?></span> руб 
+						<span style="text-transform:none;">(в том числе НДС <span id="profit_nds"><?php echo $show_inner ? $this->model->prices[$selected_row]->profit_nds: ''; ?></span> руб.)</span>
+					</h2>
+				</div>
 			</div>
-		</div>
+		<?php }?>
 		<div class="control-group">
 			<div>
 				<a href="#" id="order_details_link" style="display:none;" onclick="jQuery('#order_form').show(); jQuery('#order_details_link').hide(); return false;" >Оформить заказ</a>
@@ -100,7 +127,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</div>
 
-	<div id="order_form" class="border-top" style="<?php if($this->model->price == null){ echo "display:none;"; }?>">
+	<div id="order_form" class="border-top" style="<?php if(!$show){ echo "display:none;"; }?>">
 		
 		<div id="comments" class="form-block">
 			<label for="comments" class="control-label">Комментарии:</label>
