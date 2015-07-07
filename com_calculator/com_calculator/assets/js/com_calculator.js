@@ -9,6 +9,8 @@ jQuery(document).ready(function(){
 	
 	jQuery('.advantage_fields').change(Recalculate);
 	jQuery('.advantage_fields').keyup(Recalculate);
+	
+	jQuery('input[name=calc_row_id]').change(SelectRow(this));
 });
 
 function Recalculate(){
@@ -19,30 +21,40 @@ function Recalculate(){
 			if(data.calculated){
 				jQuery('#calculated').show();
 				jQuery('#order_details_link').show();
+				jQuery('#calc_results').show();
+				if(data.with_inner){jQuery('#calculated_inner').show();}
+								
+				FillResults(data);
 			}else{
 				jQuery('#calculated').hide();
 				jQuery('#order_details_link').hide();
 				jQuery('#order_form').hide();
-			}				
-			if(data.with_inner){
-				jQuery('#calculated_inner').show();
-			}else{
-				jQuery('#calculated_inner').hide();
+				jQuery('#calc_results').hide();
+				if(data.with_inner){jQuery('#calculated_inner').hide();}
 			}
-			
-			console.log(data); // выпилить по готовности
-			
-			calc_model = data;
-			
-			jQuery('#price').text(data.price);
-			jQuery('#nds_part').text(data.nds_part);
-			jQuery('#min_delivery_time').text(data.min_delivery_time);
-			jQuery('#max_delivery_time').text(data.max_delivery_time);
-			jQuery('#volume').text(data.volume >= 0.01? data.volume : 'менее 0.01');
-			jQuery('#inner_price').text(data.inner_price);
-			jQuery('#nds_part_inner').text(data.nds_part_inner);
-			jQuery('#profit').text(data.profit);
-			jQuery('#profit_nds_part').text(data.profit_nds_part);
 		}
 	);
+}
+
+function FillResults(data){
+	calc_model = data.prices;
+		
+	jQuery('#calc_results_rows tr').remove();
+	jQuery.each(calc_model, function(i, v){
+		jQuery('#calc_results_rows').append(jQuery('<tr>'
+			+ '<td><input type="radio" name="calc_row_id" value="'+v.uid+'" /></td>'
+			+ '<td>'+v.tariff_name+'</td>'
+			+ '<td>'+v.customer_price+'</td>'
+			+ '<td>'+v.delivery_time+'</td>'
+			+ (data.with_inner ? '<td>'+v.provider_name+'</td>' : '' )
+		+'</tr>'));
+	});
+	
+	//jQuery('input[name=calc_row_id]')[0].change();	
+}
+
+
+function SelectRow(elem){
+	alert(elem.value);
+	console.log(elem.value);
 }

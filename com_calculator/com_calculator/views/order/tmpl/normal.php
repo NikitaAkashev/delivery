@@ -72,50 +72,59 @@ defined('_JEXEC') or die('Restricted access');
 			$show = $this->model->calculated;			
 			$show_inner = $this->model->with_inner;
 			$selected_row = array_key_exists('calc_row_id', $this->model->form) ? $this->model->form['calc_row_id'] : 0;
+			$current_i = 0;
 		?>		
-		<table>
-			<tr id="calc_results_head">
-				<th>Выбрать</th>
-				<th>Тариф</th>
-				<th>Стоимость, руб. (с НДС)</th>
-				<th>Срок доставки, раб. дни, не считая дня приема отправления</th>
-				<?php if($show_inner) { ?><th>Перевозчик</th><?php } ?>
-			</tr>
+		<table id="calc_results" style="<?php if(!$show){ echo "display:none;"; }?>">
+			<thead>
+				<tr id="calc_results_head">
+					<th>Выбрать</th>
+					<th>Тариф</th>
+					<th>Стоимость, руб. (с НДС)</th>
+					<th>Срок доставки, раб. дни, не считая дня приема отправления</th>
+					<?php if($show_inner) { ?><th>Перевозчик</th><?php } ?>
+				</tr>
+			</thead>
+			<tbody id="calc_results_rows">
 			<?php foreach($this->model->prices as $i => $p ) { ?>
-				<tr class="calc_results_rows">
-					<td><input type="radio" name="calc_row_id" value="<?php echo $i; ?>" <?php echo $i == $selected_row ? 'checked="checked"' : ''; ?> /></td>
+				<tr>
+					<?php 
+						$selected = ($selected_row ? $p->uid == $selected_row : $i == $selected_row );
+						if($selected) { $current_i = $i; }
+					 ?>
+					<td><input type="radio" name="calc_row_id" value="<?php echo $p->uid; ?>" <?php echo $selected ? 'checked="checked"' : ''; ?> /></td>
 					<td><?php echo $p->tariff_name ?></td>
 					<td><?php echo $p->customer_price ?></td>
 					<td><?php echo $p->delivery_time ?></td>
 					<?php if($show_inner) { echo '<td>'.$p->provider_name.'</td>';} ?>
 				</tr>
 			<?php } ?>
+			</tbody>
 		</table>
 		
 		<div class="control-group" id="calculated" style="<?php if(!$show){ echo "display:none;"; }?>">
 			<div>
 				<h2>Стоимость отправки: 
-					<span id="customer_price"><?php echo $show ? $this->model->prices[$selected_row]->customer_price : ''; ?></span> руб 
-					<span style="text-transform:none;">(в том числе НДС <span id="customer_nds"><?php echo $show ? $this->model->prices[$selected_row]->customer_nds : ''; ?></span> руб.)</span>
+					<span id="customer_price"><?php echo $show ? $this->model->prices[$current_i]->customer_price : ''; ?></span> руб 
+					<span style="text-transform:none;">(в том числе НДС <span id="customer_nds"><?php echo $show ? $this->model->prices[$current_i]->customer_nds : ''; ?></span> руб.)</span>
 				</h2>
 				Время доставки: 
-				<span id="delivery_time"><?php echo $show ? $this->model->prices[$selected_row]->delivery_time : ''; ?></span> дн.
+				<span id="delivery_time"><?php echo $show ? $this->model->prices[$current_i]->delivery_time : ''; ?></span> дн.
 				Объем груза: 
-				<span id="displayed_volume"><?php echo $show ? $this->model->prices[$selected_row]->displayed_volume : ''; ?></span> м<sup>3</sup>
+				<span id="displayed_volume"><?php echo $show ? $this->model->prices[$current_i]->displayed_volume : ''; ?></span> м<sup>3</sup>
 				Расчетный вес: 
-				<span id="real_weight"><?php echo $show ? $this->model->prices[$selected_row]->real_weight : ''; ?></span> кг
+				<span id="real_weight"><?php echo $show ? $this->model->prices[$current_i]->real_weight : ''; ?></span> кг
 			</div>
 		</div>
 		<?php if($show_inner){ ?>
-			<div class="control-group" id="calculated_inner">
+			<div class="control-group" id="calculated_inner" style="<?php if(!$show){ echo "display:none;"; }?>">
 				<div>
 					<h2>Внутренняя стоимость отправки: 
-						<span id="inner_price"><?php echo $show_inner ? $this->model->prices[$selected_row]->inner_price : ''; ?></span> руб 
-						<span style="text-transform:none;">(в том числе НДС <span id="nds_part_inner"><?php echo $show_inner ? $this->model->prices[$selected_row]->inner_nds : ''; ?></span> руб.)</span>
+						<span id="inner_price"><?php echo $show ? $this->model->prices[$current_i]->inner_price : ''; ?></span> руб 
+						<span style="text-transform:none;">(в том числе НДС <span id="nds_part_inner"><?php echo $show ? $this->model->prices[$current_i]->inner_nds : ''; ?></span> руб.)</span>
 					</h2>
 					<h2>Прибыль: 
-						<span id="profit"><?php echo $show_inner ? $this->model->prices[$selected_row]->profit : ''; ?></span> руб 
-						<span style="text-transform:none;">(в том числе НДС <span id="profit_nds"><?php echo $show_inner ? $this->model->prices[$selected_row]->profit_nds: ''; ?></span> руб.)</span>
+						<span id="profit"><?php echo $show ? $this->model->prices[$current_i]->profit : ''; ?></span> руб 
+						<span style="text-transform:none;">(в том числе НДС <span id="profit_nds"><?php echo $show ? $this->model->prices[$current_i]->profit_nds: ''; ?></span> руб.)</span>
 					</h2>
 				</div>
 			</div>

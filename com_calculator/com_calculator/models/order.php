@@ -28,7 +28,7 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 	
 	public $volume;
 	
-	public $prices;
+	public $prices = array();
 	
 	public $calculated = false;
 	public $ordered = false;
@@ -75,9 +75,9 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 	
 	// Производит расчет
 	function Calculate(){
+		$this->with_inner = $this->IsInnerPriceViewer();
 		if($this->IsFilled())
 		{
-			$this->with_inner = $this->IsInnerPriceViewer();
 			$db = JFactory::getDBO();
 			$this->volume = $this->width * $this->length * $this->height;
 			$query = "
@@ -202,7 +202,11 @@ from(
 			
 			foreach($result as $i => $rate){
 				
+				$uid = $this->GetUniqueId($rate);
+				
 				$this->prices[$i] = new stdClass();
+				
+				$this->prices[$i]->uid = $uid;
 				
 				$courier_price = 0;
 				if($rate->delivery_type_code == 'door.door')
@@ -307,8 +311,8 @@ from(
 	function CalculationSetEmpty()
 	{
 		$this->calculated = false;
-		$this->with_inner = false;
-		$this->prices = null;
+		$this->with_inner = $this->with_inner;
+		$this->prices = array();
 	}
 	
 	// округление цены по хитрым правилам
@@ -322,6 +326,12 @@ from(
 		{
 			return round($price / 50) * 50;
 		}
+	}
+	
+	// Формирует уникальный идентификатор строки
+	function GetUniqueId($rate)
+	{
+		return $rate->rate . '_' . $rate->delivery_type_code;// в настоящий момент уникальна строка и время доставки
 	}
 	
 	// Отправим заказ
