@@ -10,7 +10,9 @@ jQuery(document).ready(function(){
 	jQuery('.advantage_fields').change(Recalculate);
 	jQuery('.advantage_fields').keyup(Recalculate);
 	
-	jQuery('input[name=calc_row_id]').change(SelectRow(this));
+	jQuery('.rate_line').click(SelectRow);
+	
+	Recalculate();
 });
 
 function Recalculate(){
@@ -20,11 +22,16 @@ function Recalculate(){
 		function (data) {
 			if(data.calculated){
 				jQuery('#calculated').show();
-				jQuery('#order_details_link').show();
+				if(!jQuery('#order_form').is(':visible'))
+					jQuery('#order_details_link').show();
 				jQuery('#calc_results').show();
 				if(data.with_inner){jQuery('#calculated_inner').show();}
 								
 				FillResults(data);
+				jQuery('.rate_line').click(SelectRow);
+				if(jQuery('.rate_line')[0])
+					jQuery('.rate_line')[0].click();
+				
 			}else{
 				jQuery('#calculated').hide();
 				jQuery('#order_details_link').hide();
@@ -42,19 +49,31 @@ function FillResults(data){
 	jQuery('#calc_results_rows tr').remove();
 	jQuery.each(calc_model, function(i, v){
 		jQuery('#calc_results_rows').append(jQuery('<tr>'
-			+ '<td><input type="radio" name="calc_row_id" value="'+v.uid+'" /></td>'
+			+ '<td><input class="rate_line" type="radio" name="calc_row_id" value="'+v.uid+'" /></td>'
 			+ '<td>'+v.tariff_name+'</td>'
 			+ '<td>'+v.customer_price+'</td>'
 			+ '<td>'+v.delivery_time+'</td>'
 			+ (data.with_inner ? '<td>'+v.provider_name+'</td>' : '' )
 		+'</tr>'));
 	});
-	
-	//jQuery('input[name=calc_row_id]')[0].change();	
 }
 
 
-function SelectRow(elem){
-	alert(elem.value);
-	console.log(elem.value);
+function SelectRow(){
+	var selected = jQuery(this).val();
+	r = calc_model.filter(function(x){return x.uid == selected})[0];
+	
+	jQuery('#customer_price').text(r.customer_price);
+	jQuery('#customer_nds').text(r.customer_nds);
+	jQuery('#delivery_time').text(r.delivery_time);
+	jQuery('#displayed_volume').text(r.displayed_volume);
+	jQuery('#real_weight').text(r.real_weight);
+	jQuery('#inner_price').text(r.inner_price);
+	jQuery('#inner_nds').text(r.inner_nds);
+	jQuery('#profit').text(r.profit);
+	jQuery('#profit_nds').text(r.profit_nds);
+	
+	console.log(jQuery('#profit_nds'));
+	console.log(r.profit_nds);
+	console.log(r);
 }

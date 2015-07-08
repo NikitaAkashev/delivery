@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
 						$selected = ($selected_row ? $p->uid == $selected_row : $i == $selected_row );
 						if($selected) { $current_i = $i; }
 					 ?>
-					<td><input type="radio" name="calc_row_id" value="<?php echo $p->uid; ?>" <?php echo $selected ? 'checked="checked"' : ''; ?> /></td>
+					<td><input type="radio" class="rate_line" name="calc_row_id" value="<?php echo $p->uid; ?>" <?php echo $selected ? 'checked="checked"' : ''; ?> /></td>
 					<td><?php echo $p->tariff_name ?></td>
 					<td><?php echo $p->customer_price ?></td>
 					<td><?php echo $p->delivery_time ?></td>
@@ -120,7 +120,7 @@ defined('_JEXEC') or die('Restricted access');
 				<div>
 					<h2>Внутренняя стоимость отправки: 
 						<span id="inner_price"><?php echo $show ? $this->model->prices[$current_i]->inner_price : ''; ?></span> руб 
-						<span style="text-transform:none;">(в том числе НДС <span id="nds_part_inner"><?php echo $show ? $this->model->prices[$current_i]->inner_nds : ''; ?></span> руб.)</span>
+						<span style="text-transform:none;">(в том числе НДС <span id="inner_nds"><?php echo $show ? $this->model->prices[$current_i]->inner_nds : ''; ?></span> руб.)</span>
 					</h2>
 					<h2>Прибыль: 
 						<span id="profit"><?php echo $show ? $this->model->prices[$current_i]->profit : ''; ?></span> руб 
