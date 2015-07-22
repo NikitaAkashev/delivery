@@ -78,8 +78,8 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 		$this->with_inner = $this->IsInnerPriceViewer();
 		if($this->IsFilled())
 		{
-			$db = JFactory::getDBO();
 			$this->volume = $this->width * $this->length * $this->height;
+			$db = JFactory::getDBO();
 			$query = "
 select
 	base.*,
@@ -290,7 +290,6 @@ from(
 	// проверим, что пришли все данные, которые нам нужны для заказа TODO: Перенести проверку в JTable::check();
 	function CheckOrderData()
 	{		
-		// установлена дата заказа	
 		if (empty($this->form['comments']))
 			return false;
 		
@@ -331,7 +330,7 @@ from(
 	// Формирует уникальный идентификатор строки
 	function GetUniqueId($rate)
 	{
-		return $rate->rate . '_' . $rate->delivery_type_code;// в настоящий момент уникальна строка и время доставки
+		return $rate->rate . '_' . $rate->delivery_type_code;// в настоящий момент уникальна строка и тип доставки
 	}
 	
 	// Отправим заказ
@@ -342,7 +341,7 @@ from(
 			// сохраним в лог
 			$row = $this->LogOrder($this->form);
 			
-			$view = CalculatorHelpersView::load('email', 'normal', 'html', array('data' => $row, 'pit' => $this)); // TODO когда будет тариф, pit станет не нужен
+			$view = CalculatorHelpersView::load('email', 'normal', 'html', array('data' => $row));
 			
 			// Render our view.
 			$message = $view->render();
@@ -367,15 +366,36 @@ from(
 	function LogOrder($data){
 		$date = date("Y-m-d H:i:s");
 		
+		$order_unique = explode('_', $data['calc_row_id'], 2); // Уникальные характеристики заказа.
+				
 		$data['table'] = 'order';
 		$data['created'] = $date;
 		$data['modified'] = $date;
-		$data['price'] = $this->price;
+		$data['rate'] = $order_unique[0];
+		$data['delivery_type_code'] = $order_unique[1];
 		$data['user'] = $this->user_id;
-		$data['order_status'] = 1; // magic number, TODO переделать на получение по коду
-		$data['tariff'] = 0; // TODO После переделки системы тарифов сделать сюда вставку идентификатора тарифа
 		
 		return $this->store($data);
+	}
+	
+	// Информация о строке - ценнике
+	static function GetRateInfo($data)
+	{		
+		$db = JFactory::getDBO();
+		$query = "
+select
+	concat(
+		t.name, 
+		coalesce(concat(' ', r.delivery_hours), ''), 
+		concat(' (', dt.name, ')')) tariff_name
+from #__delivery_rate r
+	join #__delivery_tariff t on t.tariff = r.tariff
+	join #__delivery_delivery_type dt on dt.code = ".$db->quote($data->delivery_type_code)."
+where r.rate  = ".$db->quote($data->rate)."";
+		$db->setQuery($query);
+		$result = $db->loadResult();
+		
+		return $result;
 	}
 }
 ?>

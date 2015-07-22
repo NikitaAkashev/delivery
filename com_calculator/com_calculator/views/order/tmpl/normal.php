@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 	<a href="<?php echo JURI::current(); ?>"><h3>Оформить новый заказ</h3></a>
 <?php } else { ?>
 <h1>Расчет стоимости отправки</h1>
-<form id="calculator" method="POST" name="calculate_form" action="">
+<form id="calculator" method="POST" name="calculate_form" action="<?php echo JURI::current(); ?>">
 	<div id="calculator_body">
 		<div class="control-group">
 			<label class="control-label">Вес, кг<span class="asterisk correct">*</span></label>
@@ -107,6 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 					<span id="customer_price"><?php echo $show ? $this->model->prices[$current_i]->customer_price : ''; ?></span> руб 
 					<span style="text-transform:none;">(в том числе НДС <span id="customer_nds"><?php echo $show ? $this->model->prices[$current_i]->customer_nds : ''; ?></span> руб.)</span>
 				</h2>
+				<input type="hidden" id="customer_price_input" name="price" value="<?php echo $this->model->prices[$current_i]->customer_price; ?>"/>
 				Время доставки: 
 				<span id="delivery_time"><?php echo $show ? $this->model->prices[$current_i]->delivery_time : ''; ?></span> дн.
 				Объем груза: 

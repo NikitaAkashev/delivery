@@ -21,7 +21,7 @@ select
 		(case when c.city IN (38,55) then ''
 		else concat(' (', coalesce(p.region_name, c.region_name, ''), ')') end)) as name
 from #__calc_city c
-	left join #__calc_city p on p.city = c.parent
+	left join #_delivery_city p on p.city = c.parent
 ".($city == null ? '' : 'where c.city='.$db->quote($city))."
 order by c.name
 		";

@@ -26,11 +26,16 @@ function Recalculate(){
 					jQuery('#order_details_link').show();
 				jQuery('#calc_results').show();
 				if(data.with_inner){jQuery('#calculated_inner').show();}
-								
-				FillResults(data);
-				jQuery('.rate_line').click(SelectRow);
-				if(jQuery('.rate_line')[0])
+				
+				calc_model = data.prices;
+				// Нужно запомнить выбранную, перерисовать всё и кликнуть по ней.
+				if(jQuery('.rate_line:checked') && calc_model.filter(function(x){return x.uid == jQuery('.rate_line:checked').val()})[0])
+					jQuery('.rate_line:checked').click();
+				else if(jQuery('.rate_line')[0]){
 					jQuery('.rate_line')[0].click();
+					FillResults(data);
+					jQuery('.rate_line').click(SelectRow);
+				}
 				
 			}else{
 				jQuery('#calculated').hide();
@@ -43,9 +48,7 @@ function Recalculate(){
 	);
 }
 
-function FillResults(data){
-	calc_model = data.prices;
-		
+function FillResults(data){		
 	jQuery('#calc_results_rows tr').remove();
 	jQuery.each(calc_model, function(i, v){
 		jQuery('#calc_results_rows').append(jQuery('<tr>'
@@ -60,10 +63,12 @@ function FillResults(data){
 
 
 function SelectRow(){
+	jQuery(this).attr('checked', 'checked');
 	var selected = jQuery(this).val();
 	r = calc_model.filter(function(x){return x.uid == selected})[0];
 	
 	jQuery('#customer_price').text(r.customer_price);
+	jQuery('#customer_price_input').text(r.customer_price);
 	jQuery('#customer_nds').text(r.customer_nds);
 	jQuery('#delivery_time').text(r.delivery_time);
 	jQuery('#displayed_volume').text(r.displayed_volume);
@@ -72,8 +77,4 @@ function SelectRow(){
 	jQuery('#inner_nds').text(r.inner_nds);
 	jQuery('#profit').text(r.profit);
 	jQuery('#profit_nds').text(r.profit_nds);
-	
-	console.log(jQuery('#profit_nds'));
-	console.log(r.profit_nds);
-	console.log(r);
 }

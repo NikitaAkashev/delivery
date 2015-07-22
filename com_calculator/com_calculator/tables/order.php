@@ -3,7 +3,7 @@
 	{
 		function __construct( &$db )
 		{
-			parent::__construct('#__calc_order', 'order', $db);
+			parent::__construct('#__delivery_order', 'order', $db);
 		}
 	}
 ?>

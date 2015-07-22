@@ -145,6 +145,25 @@ create table calc_delivery_delivery_type2tariff(
 )
 
 
+create table calc_delivery_order(
+	`order` int primary key auto_increment,
+	`user` int(11) NULL references `calc_users(id)`,
+	`created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	`modified` TIMESTAMP,
+	`price` decimal(15,2) not null,
+	`calc_row_id` varchar(64),
+	`rate` int(11) not null references `#__delivery_rate(rate)`,
+	`delivery_type_code` varchar(64),
+    `city_from` int(11) not null references `#__delivery_city(city)`,
+    `city_to` int(11) not null references `#__delivery_city(city)`,
+    `weight` float not null,
+    `assessed_value` float,
+    `width` float not null,
+    `length` float not null,
+    `height` float not null,
+    `comments` varchar(1024)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 insert into calc_delivery_tariff(name, code, margin, weight_limit,
 dimension_limit , oversize_limit_factor)
 values ('Экспресс-Стандарт', 'standart', 1.3, 300, 200, 1.5),
