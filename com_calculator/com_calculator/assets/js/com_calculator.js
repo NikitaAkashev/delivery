@@ -1,4 +1,5 @@
 var calc_model = null;
+var current_selected = null;
 
 jQuery(document).ready(function(){
 	jQuery(".city_select").chosen();
@@ -28,14 +29,17 @@ function Recalculate(){
 				if(data.with_inner){jQuery('#calculated_inner').show();}
 				
 				calc_model = data.prices;
-				// Нужно запомнить выбранную, перерисовать всё и кликнуть по ней.
-				if(jQuery('.rate_line:checked') && calc_model.filter(function(x){return x.uid == jQuery('.rate_line:checked').val()})[0])
-					jQuery('.rate_line:checked').click();
-				else if(jQuery('.rate_line')[0]){
-					jQuery('.rate_line')[0].click();
-					FillResults(data);
-					jQuery('.rate_line').click(SelectRow);
+				current_selected = jQuery('.rate_line:checked').val();
+				FillResults(data);
+				
+				if(!current_selected){
+					if(jQuery('.rate_line')[0]){
+						jQuery('.rate_line')[0].click();
+					}
 				}
+				else
+					jQuery(".rate_line").filter(function(){return this.value==current_selected})[0].click();
+					
 				
 			}else{
 				jQuery('#calculated').hide();
@@ -59,13 +63,14 @@ function FillResults(data){
 			+ (data.with_inner ? '<td>'+v.provider_name+'</td>' : '' )
 		+'</tr>'));
 	});
+	jQuery('.rate_line').click(SelectRow);				
 }
 
 
 function SelectRow(){
 	jQuery(this).attr('checked', 'checked');
-	var selected = jQuery(this).val();
-	r = calc_model.filter(function(x){return x.uid == selected})[0];
+	current_selected = jQuery(this).val();
+	r = calc_model.filter(function(x){return x.uid == current_selected})[0];
 	
 	jQuery('#customer_price').text(r.customer_price);
 	jQuery('#customer_price_input').text(r.customer_price);
