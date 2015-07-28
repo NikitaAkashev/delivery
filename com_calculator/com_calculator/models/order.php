@@ -346,16 +346,15 @@ from(
 			// Render our view.
 			$message = $view->render();
 			
+			$requesites = $this->GetEmailRequisites();
 			// отправим мыло			
-			$to      = 'regspambox@yandex.ru';
-			$subject = 'Заказ с сайта ... дописать';
 			$headers = 'MIME-Version: 1.0' . "\r\n".
 						'Content-type: text/html; charset=utf-8' . "\r\n" .
-						'From: webmaster@example.com' . "\r\n" .
-						'Reply-To: webmaster@example.com' . "\r\n" .
+						'From: '. $requesites->to . "\r\n" .
+						'Reply-To: '. $requesites->to . "\r\n" .
 						'X-Mailer: PHP/' . phpversion();
 
-			mail($to, $subject, $message, $headers);
+			mail($requesites->to, $requesites->subject, $message, $headers);
 			
 			$this->ordered = true;
 			$this->order_message = $message;
@@ -394,6 +393,24 @@ from #__delivery_rate r
 where r.rate  = ".$db->quote($data->rate)."";
 		$db->setQuery($query);
 		$result = $db->loadResult();
+		
+		return $result;
+	}
+	
+	// Получение реквизитов для отправки письма
+	function GetEmailRequisites()
+	{		
+		$db = JFactory::getDBO();
+		$query = "
+select 
+	s.value `to`,
+	ss.value `subject`
+from calc_delivery_settings s
+	join calc_delivery_settings ss on ss.code = 'mail_subject'
+where s.code = 'mail_to'
+";
+		$db->setQuery($query);
+		$result = $db->loadObject();
 		
 		return $result;
 	}
