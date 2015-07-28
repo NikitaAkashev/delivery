@@ -90,11 +90,12 @@ select
 	t.margin,
 	t.name tariff_name,
 	t.code tariff_code,
-	p.dimension_limit,
-	p.weight_limit,
-	p.oversize_limit_factor,
+	t.dimension_limit,
+	t.weight_limit,
+	t.oversize_limit_factor,
 	p.min_assessed_price,
 	p.name provider_name,
+	p.code provider_code,
 	cf2t.min_time cf_min_time,
 	cf2t.max_time cf_max_time,
 	ct2t.min_time ct_min_time,
@@ -214,10 +215,13 @@ from(
 					$courier_price = $rate->courier_price;
 				}
 				
-				$oversize = $this->width > $rate->dimension_limit || 
+				$oversize = ($this->width > $rate->dimension_limit || 
 						$this->length > $rate->dimension_limit || 
 						$this->height > $rate->dimension_limit ||
-						$rate->real_weight > $rate->weight_limit ? $rate->oversize_limit_factor : 1;
+						$rate->real_weight > $rate->weight_limit) && // превышение размеров
+						(($rate->tariff_code == 'ural' && $rate->real_weight == $this->weight) // либо урал, расчитанный не по объемному весу
+						|| $rate->tariff_code != 'ural') // либо все остальные
+						 ? $rate->oversize_limit_factor : 1;
 				
 				$weight_price = $rate->base_price + $rate->overweight_cost * (ceil($rate->real_weight) - $rate->weight_bottom);
 				

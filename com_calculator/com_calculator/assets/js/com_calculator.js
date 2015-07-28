@@ -73,7 +73,7 @@ function SelectRow(){
 	r = calc_model.filter(function(x){return x.uid == current_selected})[0];
 	
 	jQuery('#customer_price').text(r.customer_price);
-	jQuery('#customer_price_input').text(r.customer_price);
+	jQuery('#customer_price_input').val(r.customer_price);
 	jQuery('#customer_nds').text(r.customer_nds);
 	jQuery('#delivery_time').text(r.delivery_time);
 	jQuery('#displayed_volume').text(r.displayed_volume);

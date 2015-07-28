@@ -43,15 +43,6 @@ create table `calc_delivery_city` (
 );
 
 
-CREATE TABLE `calc_delivery_terminal` (
-	`terminal` int NOT NULL AUTO_INCREMENT,
-	`name` varchar(127) NOT NULL,
-	`city` int not null references `calc_delivery_city`(city),
-	`provider` int(11) NOT NULL references `calc_delivery_provider`,
-	PRIMARY KEY  (`terminal`)
-);
-
-
 CREATE TABLE `calc_delivery_zone` (
   `zone` int NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL unique,
@@ -179,7 +170,7 @@ values ('Экспресс-Стандарт', 'standart', 1.3, 300, 200, 1.5),
 ('Экспресс-Урал', 'ural', 1.3, null, 150, 1.3),
 ('Экспресс-Приоритет', 'priority', 1.3, 30, 150, 0);
 
-insert into `calc_delivery_provider` (	`name`,	`code`,	`volume_weight_divider`,min_assessed_price )
+insert into `calc_delivery_provider` (	`name`,	`code`,	`volume_weight_divider`, `min_assessed_price` )
 values ('СпецСвязь', 'special', 6000, 0),
  ('СДЭК', 'cdek', 5000, 400),
  ('ФОКС', 'fox', 5000, 400);
@@ -192,25 +183,17 @@ values
 insert into calc_delivery_city(name, parent, region_name)
 select name, parent, region_name from calc_calc_city;
 
-
-insert into calc_delivery_terminal(city, name, provider)
-select t.city, t.name, p.provider from calc_calc_terminal t
-	join calc_delivery_provider p on p.code='special';
-
 set sql_mode='NO_AUTO_VALUE_ON_ZERO';
+
 insert into calc_delivery_zone(zone, name, code, provider)
 select z.zone, z.name, concat(p.code,'.',cast(z.zone as char)), p.provider
  from calc_calc_zone z 
 	join calc_delivery_provider p on p.code='special';
 
-insert into calc_delivery_zone(zone, name, code, provider)
-values ();
-
 set sql_mode='';
 
 insert into calc_delivery_direction2zone(city_from, city_to, zone)
 select city_from, city_to, zone from calc_calc_direction2zone;
-
 
 insert into calc_delivery_assessed_value_price (`from`, `to`, base_price, overprice_percent, tariff)
 select 
@@ -224,13 +207,32 @@ from calc_calc_assessed_value_price c
 where
 	c.is_public = 0;
 
+
+insert into calc_delivery_assessed_value_price (`from`, `to`, base_price, overprice_percent, tariff)
+select 
+	0, 100000000, 0, 0.0011, t.tariff
+from calc_delivery_tariff t
+where t.code in ('super', 'priority');
+
+#select * from calc_delivery_tariff where code = 'ural'
+#> 3
+insert into calc_delivery_assessed_value_price (`from`, `to`, base_price, overprice_percent, tariff)
+values 
+	(0, 50000, 0, 0.0011, 3),
+	(50000, 100000, 0, 0.001, 3),
+	(100000, 150000, 0, 0.0009, 3),
+	(150000, 300000, 0, 0.0008, 3),
+	(300000, 500000, 0, 0.0007, 3),
+	(500000, 1000000, 0, 0.0006, 3),
+	(1000000, 100000000, 0, 0.0005, 3);
+
 insert into calc_delivery_discount(city_from, city_to, factor, user)
 select city_from, city_to, factor, user from calc_calc_discount;
 
 
 insert into calc_delivery_courier_price(tariff, weight_from, weight_to, price)
-select t.tariff, 0, 10000, 150 from calc_delivery_tariff t
-where t.code = 'standart';
+select t.tariff, 0, 10000, 150 
+from calc_delivery_tariff t;
 
 
 insert into calc_delivery_city2delivery_time(city, min_time, max_time, provider)
@@ -254,7 +256,6 @@ from calc_delivery_zone z
 	join calc_delivery_tariff t on t.code = 'standart'
 	join calc_delivery_provider p on p.code='special';
 
-
 insert into calc_delivery_weight_price (rate, `from`, `to`, base_price, overweight_cost)
 select 
 	r.rate, owp.`from`, owp.`to`, owp.base_price, owp.overweight_cost
@@ -263,7 +264,6 @@ from calc_calc_weight_price owp
 	join calc_delivery_rate r on 
 		r.zone = owp.zone
 		and ot.tariff = 6;
-
 
 insert into calc_delivery_delivery_type2tariff(delivery_type, tariff)
 select dt.delivery_type, t.tariff
