@@ -70,7 +70,7 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 			if (in_array($agid,$usergroups)) return true;
 		}	  
 		
-		return true; // на время тестов
+		return false;
 	}
 	
 	// Производит расчет
