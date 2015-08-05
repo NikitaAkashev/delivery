@@ -45,7 +45,7 @@ create table `calc_delivery_city` (
 
 CREATE TABLE `calc_delivery_zone` (
   `zone` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL unique,
+  `name` varchar(32) NOT NULL,
   `code` varchar(32) NOT NULL unique,
 	`provider` int(11) NOT NULL references `calc_delivery_provider(provider)`,
    PRIMARY KEY  (`zone`)
