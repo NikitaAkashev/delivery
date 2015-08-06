@@ -83,6 +83,9 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 			$query = "
 select
 	base.*,
+	wp.base_price,
+	wp.overweight_cost,
+	wp.from weight_bottom,
 	vp.from avp_bottom,
 	vp.base_price avp_base_price,
 	vp.overprice_percent,
@@ -111,9 +114,6 @@ from(
 		d2z.min_days,
 		d2z.max_days,
 		r.delivery_hours,
-		wp.base_price,
-		wp.overweight_cost,
-		wp.from weight_bottom,
 		greatest(".$db->quote($this->weight).", ".$db->quote($this->volume)."/p.volume_weight_divider) real_weight
 	from #__delivery_city cf
 		join #__delivery_city ct on ct.city = ".$db->quote($this->city_to)."
@@ -122,11 +122,7 @@ from(
 		join #__delivery_zone z on z.zone = d2z.zone
 		join #__delivery_rate r on 
 							(r.zone = z.zone and r.provider = z.provider)
-		join #__delivery_provider p on p.provider = r.provider
-		join #__delivery_weight_price wp on 
-							wp.rate = r.rate 
-							and wp.from <= greatest(".$db->quote($this->weight).", ".$db->quote($this->volume)."/p.volume_weight_divider) 
-							and wp.to > greatest(".$db->quote($this->weight).", ".$db->quote($this->volume)."/p.volume_weight_divider)
+		join #__delivery_provider p on p.provider = r.provider		
 	where
 		cf.city = ".$db->quote($this->city_from)."
 
@@ -141,19 +137,12 @@ from(
 		r.min_days,
 		r.max_days,
 		r.delivery_hours,
-		wp.base_price,
-		wp.overweight_cost,
-		wp.from weight_bottom,
 		greatest(".$db->quote($this->weight).", ".$db->quote($this->volume)."/p.volume_weight_divider) real_weight
 	from #__delivery_city cf
 		join #__delivery_city ct on ct.city = ".$db->quote($this->city_to)."
 		join #__delivery_rate r on 
 							(r.city_from = cf.city and r.city_to = ct.city)
 		join #__delivery_provider p on p.provider = r.provider
-		join #__delivery_weight_price wp on 
-							wp.rate = r.rate 
-							and wp.from <= greatest(".$db->quote($this->weight).", ".$db->quote($this->volume)."/p.volume_weight_divider) 
-							and wp.to > greatest(".$db->quote($this->weight).", ".$db->quote($this->volume)."/p.volume_weight_divider)
 	where
 		cf.city = ".$db->quote($this->city_from)."
 ) base
@@ -165,6 +154,10 @@ from(
 					cp.tariff = t.tariff
 					and cp.weight_from <= base.real_weight
 					and cp.weight_to > base.real_weight
+	join #__delivery_weight_price wp on 
+							wp.rate = base.rate 
+							and (wp.from < base.real_weight or base.real_weight = 0) 
+							and wp.to >= base.real_weight
 	left join #__delivery_city_factor ff on 
 					ff.city = base.city_from
 					and ff.tariff = t.tariff
@@ -289,11 +282,11 @@ from(
 	{
 		if ($price < 1000) // округление до десятков
 		{
-			return round($price, -1);
+			return ceil(round($price, -1));
 		}
 		else // округление кратно 50
 		{
-			return round($price / 50) * 50;
+			return ceil(round($price / 50) * 50);
 		}
 	}
 	
