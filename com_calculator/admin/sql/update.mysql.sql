@@ -297,7 +297,7 @@ set
 			when cf.min_time = 1
 				then ct.min_time + 1
 			when ct.min_time = 1
-				then ct.min_time + 1
+				then cf.min_time + 1
 			else
 				cf.min_time + ct.min_time
 		end,
@@ -310,7 +310,7 @@ set
 			when cf.min_time = 1
 				then ct.max_time + 1
 			when ct.min_time = 1
-				then ct.max_time + 1
+				then cf.max_time + 1
 			else
 				cf.max_time + ct.max_time
 		end
