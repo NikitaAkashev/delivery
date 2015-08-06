@@ -37,9 +37,18 @@ function Recalculate(){
 						jQuery('.rate_line')[0].click();
 					}
 				}
-				else
-					jQuery(".rate_line").filter(function(){return this.value==current_selected})[0].click();
-					
+				else{
+					var sel = jQuery(".rate_line").filter(function(){return this.value==current_selected})[0];
+					if(sel) {
+						sel.click()
+					} 
+					else
+					{
+						if(jQuery('.rate_line')[0]){
+							jQuery('.rate_line')[0].click();
+						}
+					};
+				}
 				
 			}else{
 				jQuery('#calculated').hide();
