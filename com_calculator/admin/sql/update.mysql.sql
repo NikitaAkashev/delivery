@@ -44,20 +44,22 @@ create table `calc_delivery_city` (
 
 
 CREATE TABLE `calc_delivery_zone` (
-  `zone` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL,
-  `code` varchar(32) NOT NULL unique,
+	`zone` int NOT NULL AUTO_INCREMENT,
+	`name` varchar(32) NOT NULL,
+	`code` varchar(32) NOT NULL unique,
 	`provider` int(11) NOT NULL references `calc_delivery_provider(provider)`,
-   PRIMARY KEY  (`zone`)
+	PRIMARY KEY  (`zone`)
 );
 
 
 CREATE TABLE `calc_delivery_direction2zone` (
-  `city_from` int(11) NOT NULL references `calc_delivery_city`(city),
-  `city_to` int(11) NOT NULL references `calc_delivery_city`(city),
-  `zone` int not null references `calc_delivery_zone`(zone),
-   PRIMARY KEY  (`zone`,`city_from`,`city_to`),
-   unique  (`zone`,`city_from`,`city_to`)
+	`city_from` int(11) NOT NULL references `calc_delivery_city`(city),
+	`city_to` int(11) NOT NULL references `calc_delivery_city`(city),
+	`zone` int not null references `calc_delivery_zone`(zone),
+	min_time int(11) null,
+	max_time int(11) null,
+	PRIMARY KEY  (`zone`,`city_from`,`city_to`),
+	unique  (`zone`,`city_from`,`city_to`)
 );
 
 

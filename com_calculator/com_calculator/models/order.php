@@ -112,8 +112,8 @@ from(
 		r.rate,
 		r.tariff,
 		r.provider,
-		r.min_days,
-		r.max_days,
+		d2z.min_days,
+		d2z.max_days,
 		r.delivery_hours,
 		wp.base_price,
 		wp.overweight_cost,
@@ -123,9 +123,7 @@ from(
 		join #__delivery_city ct on ct.city = ".$db->quote($this->city_to)."
 		left join #__delivery_direction2zone d2z on d2z.city_from = COALESCE(cf.parent, cf.city) 
 							and d2z.city_to = COALESCE(ct.parent, ct.city)
-		left join #__delivery_direction2zone d2z_exact on d2z_exact.city_from = cf.city 
-							and d2z_exact.city_to = ct.city
-		join #__delivery_zone z on z.zone = d2z.zone or d2z_exact.zone = z.zone
+		join #__delivery_zone z on z.zone = d2z.zone
 		join #__delivery_rate r on 
 							(r.zone = z.zone and r.provider = z.provider)
 		join #__delivery_provider p on p.provider = r.provider
