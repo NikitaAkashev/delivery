@@ -52,18 +52,25 @@ function Recalculate(){
 	);
 }
 
-function FillResults(data){		
-	jQuery('#calc_results_rows tr').remove();
-	jQuery.each(calc_model, function(i, v){
-		jQuery('#calc_results_rows').append(jQuery('<tr>'
-			+ '<td><input class="rate_line" type="radio" name="calc_row_id" value="'+v.uid+'" /></td>'
-			+ '<td>'+v.tariff_name+'</td>'
-			+ '<td>'+v.customer_price+'</td>'
-			+ '<td>'+v.delivery_time+'</td>'
-			+ (data.with_inner ? '<td>'+v.provider_name+'</td>' : '' )
-		+'</tr>'));
-	});
-	jQuery('.rate_line').click(SelectRow);				
+function FillResults(data){
+	if(calc_model.length > 0){
+		jQuery('#calc_results_rows tr').remove();
+		jQuery.each(calc_model, function(i, v){
+			jQuery('#calc_results_rows').append(jQuery('<tr>'
+				+ '<td><input class="rate_line" type="radio" name="calc_row_id" value="'+v.uid+'" /></td>'
+				+ '<td>'+v.tariff_name+'</td>'
+				+ '<td>'+v.customer_price+'</td>'
+				+ '<td>'+v.delivery_time+'</td>'
+				+ (data.with_inner ? '<td>'+v.provider_name+'</td>' : '' )
+			+'</tr>'));
+		});
+		jQuery('.rate_line').click(SelectRow);
+		jQuery('.has_prices').show();
+		jQuery('.no_prices').hide();
+	}else{
+		jQuery('.has_prices').hide();
+		jQuery('.no_prices').show();
+	}
 }
 
 
@@ -71,15 +78,16 @@ function SelectRow(){
 	jQuery(this).attr('checked', 'checked');
 	current_selected = jQuery(this).val();
 	r = calc_model.filter(function(x){return x.uid == current_selected})[0];
-	
-	jQuery('#customer_price').text(r.customer_price);
-	jQuery('#customer_price_input').val(r.customer_price);
-	jQuery('#customer_nds').text(r.customer_nds);
-	jQuery('#delivery_time').text(r.delivery_time);
-	jQuery('#displayed_volume').text(r.displayed_volume);
-	jQuery('#real_weight').text(r.real_weight);
-	jQuery('#inner_price').text(r.inner_price);
-	jQuery('#inner_nds').text(r.inner_nds);
-	jQuery('#profit').text(r.profit);
-	jQuery('#profit_nds').text(r.profit_nds);
+	if(r){
+		jQuery('#customer_price').text(r.customer_price);
+		jQuery('#customer_price_input').val(r.customer_price);
+		jQuery('#customer_nds').text(r.customer_nds);
+		jQuery('#delivery_time').text(r.delivery_time);
+		jQuery('#displayed_volume').text(r.displayed_volume);
+		jQuery('#real_weight').text(r.real_weight);
+		jQuery('#inner_price').text(r.inner_price);
+		jQuery('#inner_nds').text(r.inner_nds);
+		jQuery('#profit').text(r.profit);
+		jQuery('#profit_nds').text(r.profit_nds);
+	}
 }

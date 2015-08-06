@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access');
 			$selected_row = array_key_exists('calc_row_id', $this->model->form) ? $this->model->form['calc_row_id'] : 0;
 			$current_i = 0;
 		?>		
-		<table id="calc_results" style="<?php if(!$show){ echo "display:none;"; }?>">
+		<table class="has_prices" id="calc_results" style="<?php if(!$show){ echo "display:none;"; }?>">
 			<thead>
 				<tr id="calc_results_head">
 					<th>Выбрать</th>
@@ -101,7 +101,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tbody>
 		</table>
 		
-		<div class="control-group" id="calculated" style="<?php if(!$show){ echo "display:none;"; }?>">
+		<div class="control-group has_prices" id="calculated" style="<?php if(!$show){ echo "display:none;"; }?>">
 			<div>
 				<h2>Стоимость отправки: 
 					<span id="customer_price"><?php echo $show ? $this->model->prices[$current_i]->customer_price : ''; ?></span> руб 
@@ -117,7 +117,7 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 		</div>
 		<?php if($show_inner){ ?>
-			<div class="control-group" id="calculated_inner" style="<?php if(!$show){ echo "display:none;"; }?>">
+			<div class="control-group has_prices" id="calculated_inner" style="<?php if(!$show){ echo "display:none;"; }?>">
 				<div>
 					<h2>Внутренняя стоимость отправки: 
 						<span id="inner_price"><?php echo $show ? $this->model->prices[$current_i]->inner_price : ''; ?></span> руб 
@@ -130,14 +130,17 @@ defined('_JEXEC') or die('Restricted access');
 				</div>
 			</div>
 		<?php }?>
-		<div class="control-group">
+		<div class="control-group has_prices">
 			<div>
 				<a href="#" id="order_details_link" style="display:none;" onclick="jQuery('#order_form').show(); jQuery('#order_details_link').hide(); return false;" >Оформить заказ</a>
 			</div>
 		</div>
+		<div class="no_prices" style="display:none;">
+			 К сожалению, по данному направлению в нашем калькуляторе нет необходимых данных для рассчета. Позвоните нам по телефону +7 (343) 266-36-16 и мы обязательно поможем доставить ваше отправление.
+		</div>
 	</div>
 
-	<div id="order_form" class="border-top" style="<?php if(!$show){ echo "display:none;"; }?>">
+	<div id="order_form" class="border-top has_prices" style="<?php if(!$show){ echo "display:none;"; }?>">
 		
 		<div id="comments" class="form-block">
 			<label for="comments" class="control-label">Комментарии:</label>
