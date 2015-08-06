@@ -96,10 +96,6 @@ select
 	p.min_assessed_price,
 	p.name provider_name,
 	p.code provider_code,
-	cf2t.min_time cf_min_time,
-	cf2t.max_time cf_max_time,
-	ct2t.min_time ct_min_time,
-	ct2t.max_time ct_max_time,
 	coalesce(ff.factor, 1) cf_factor,
 	coalesce(ft.factor, 1) ct_factor,
 	dt.name delivery_type_name,
@@ -175,12 +171,6 @@ from(
 	left join #__delivery_city_factor ft on 
 					ft.city = base.city_to
 					and ft.tariff = t.tariff
-	left join #__delivery_city2delivery_time cf2t on 
-					cf2t.provider = base.provider 
-					and cf2t.city = base.city_from
-	left join #__delivery_city2delivery_time ct2t on 
-					ct2t.provider = base.provider 
-					and ct2t.city = base.city_to
 	left join #__delivery_assessed_value_price vp on 
 					vp.from <= ".$db->quote($this->assessed_value)." 
 					and vp.to > ".$db->quote($this->assessed_value)."
@@ -235,30 +225,8 @@ from(
 				$this->prices[$i]->customer_nds = ceil($this->nds * $this->prices[$i]->customer_price / (1 + $this->nds) * 100 ) / 100;
 				$this->prices[$i]->profit_nds = ceil($this->nds * $this->prices[$i]->profit / (1 + $this->nds) * 100) / 100;
 								
-				if($rate->min_days == null) // вычисляем время для зон
-				{
-					if($this->city_from == 38){// Москва
-						$min_delivery_time = $rate->ct_min_time;
-						$max_delivery_time = $rate->ct_max_time;	
-					} else if($this->city_to == 38){// Москва
-						$min_delivery_time = $rate->cf_min_time;
-						$max_delivery_time = $rate->cf_max_time;	
-					} else if ($rate->cf_min_time == 1){
-						$min_delivery_time = $rate->ct_min_time + 1;
-						$max_delivery_time = $rate->ct_max_time + 1;					
-					} else if ($rate->ct_min_time == 1){
-						$min_delivery_time = $rate->cf_min_time + 1;
-						$max_delivery_time = $rate->cf_max_time + 1;	
-					} else {
-						$min_delivery_time = $rate->cf_min_time + $rate->ct_min_time;
-						$max_delivery_time = $rate->cf_max_time + $rate->ct_max_time;
-					}
-				} 
-				else // для явных направлений
-				{
-					$min_delivery_time = $rate->min_days;
-					$max_delivery_time = $rate->max_days;
-				}
+				$min_delivery_time = $rate->min_days;
+				$max_delivery_time = $rate->max_days;
 				
 				$this->prices[$i]->delivery_time = $min_delivery_time == $max_delivery_time ? $max_delivery_time : $min_delivery_time . ' - ' . $max_delivery_time;
 				
