@@ -78,6 +78,13 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 		$this->with_inner = $this->IsInnerPriceViewer();
 		if($this->IsFilled())
 		{
+			if($this->city_from == $this->city_to)
+			{				
+				$this->CalculationSetEmpty();
+				$this->calculated = true;
+				return $this->CalculationResult();
+			}
+			
 			$this->volume = $this->width * $this->length * $this->height;
 			$db = JFactory::getDBO();
 			$query = "
@@ -197,7 +204,7 @@ from(
 			if(is_null($result))
 			{
 				$this->CalculationSetEmpty();
-				return $this->CalculationResult();;
+				return $this->CalculationResult();
 			}
 			
 			foreach($result as $i => $rate){
@@ -281,7 +288,7 @@ from(
 				}
 			}
 			
-			$this->calculated = true;			
+			$this->calculated = true;
 		} 
 		else 
 		{
