@@ -16,10 +16,10 @@ create table `calc_delivery_provider` (
 	`code` varchar(125) NOT NULL,
 	`volume_weight_divider` int(11) not null,
 	min_assessed_price decimal(15,2),
+	is_zones_by_exact_city tinyint(1) default 1,
 	PRIMARY KEY  (`provider`),
 	UNIQUE (`code`)
 );
-
 
 create table `calc_delivery_delivery_type` (
 	`delivery_type` int(11) NOT NULL AUTO_INCREMENT,
@@ -172,10 +172,10 @@ values ('Экспресс-Стандарт', 'standart', 1.3, 300, 200, 1.5),
 ('Экспресс-Урал', 'ural', 1.3, null, 150, 1.3),
 ('Экспресс-Приоритет', 'priority', 1.3, 30, 150, 0);
 
-insert into `calc_delivery_provider` (	`name`,	`code`,	`volume_weight_divider`, `min_assessed_price` )
-values ('СпецСвязь', 'special', 6000, 0),
- ('СДЭК', 'cdek', 5000, 400),
- ('ФОКС', 'fox', 5000, 400);
+insert into `calc_delivery_provider` (	`name`,	`code`,	`volume_weight_divider`, `min_assessed_price`, `is_zones_by_exact_city` )
+values ('СпецСвязь', 'special', 6000, 0, 0),
+ ('СДЭК', 'cdek', 5000, 400, 1),
+ ('ФОКС', 'fox', 5000, 400, 1);
 
 insert into calc_delivery_delivery_type (name, from_office, to_office, code)
 values 

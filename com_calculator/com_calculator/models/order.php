@@ -119,15 +119,20 @@ from(
 		join #__delivery_city ct on ct.city = ".$db->quote($this->city_to)."
 		left join #__delivery_direction2zone d2z on d2z.city_from = COALESCE(cf.parent, cf.city) 
 							and d2z.city_to = COALESCE(ct.parent, ct.city)
-		left join #__delivery_direction2zone d2z_exact on d2z.city_from = cf.city /*для случая, когда нужно включить не областные центры*/
-							and d2z.city_to = ct.city
-		join #__delivery_zone z on z.zone = d2z.zone or z.zone = d2z_exact.zone
+		left join #__delivery_direction2zone d2z_exact on d2z_exact.city_from = cf.city /*для случая, когда нужно включить не областные центры*/
+							and d2z_exact.city_to = ct.city
+		join #__delivery_zone z on 1=1
 		join #__delivery_rate r on 
 							(r.zone = z.zone and r.provider = z.provider)
 		join #__delivery_provider p on p.provider = r.provider		
 	where
 		cf.city = ".$db->quote($this->city_from)."
-
+		and (
+			(z.zone = d2z.zone and p.is_zones_by_exact_city = 0) /*зона определяется только по областным столицам*/
+				or 
+			(z.zone = d2z_exact.zone and p.is_zones_by_exact_city = 1) /*зона определяется строго по городу*/
+		)
+		
 	union all
 
 	select
