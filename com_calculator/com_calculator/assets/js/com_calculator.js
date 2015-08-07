@@ -23,8 +23,6 @@ function Recalculate(){
 		function (data) {
 			if(data.calculated){
 				jQuery('#calculated').show();
-				if(!jQuery('#order_form').is(':visible'))
-					jQuery('#order_details_link').show();
 				jQuery('#calc_results').show();
 				if(data.with_inner){jQuery('#calculated_inner').show();}
 				
@@ -52,7 +50,7 @@ function Recalculate(){
 				
 			}else{
 				jQuery('#calculated').hide();
-				jQuery('#order_details_link').hide();
+				jQuery('.order_details_link').hide();
 				jQuery('#order_form').hide();
 				jQuery('#calc_results').hide();
 				if(data.with_inner){jQuery('#calculated_inner').hide();}
@@ -74,8 +72,11 @@ function FillResults(data){
 			+'</tr>'));
 		});
 		jQuery('.rate_line').click(SelectRow);
-		jQuery('.has_prices').show();
-		jQuery('.no_prices').hide();
+		jQuery('.no_prices').hide();		
+		
+		if(!jQuery('#order_form').is(':visible')){	
+			jQuery('.order_details_link').show();
+		}	
 	}else{
 		jQuery('.has_prices').hide();
 		jQuery('.no_prices').show();

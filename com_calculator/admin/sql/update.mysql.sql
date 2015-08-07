@@ -281,38 +281,3 @@ from calc_delivery_tariff t
 where
 	t.code = 'super'
 	and dt.code = 'door.door';
-
-# заполним поля для введенных значений
-update calc_delivery_direction2zone dz
-	join calc_delivery_city2delivery_time cf on cf.city = dz.city_from
-	join calc_delivery_city2delivery_time ct on ct.city = dz.city_to
-	join calc_delivery_zone z on z.zone = dz.zone
-set
-	dz.min_days = 
-		case
-			when cf.city = 38 #москва 
-				then ct.min_time
-			when ct.city = 38 #москва 
-				then cf.min_time
-			when cf.min_time = 1
-				then ct.min_time + 1
-			when ct.min_time = 1
-				then cf.min_time + 1
-			else
-				cf.min_time + ct.min_time
-		end,
-	dz.max_days = 
-		case
-			when cf.city = 38 #москва 
-				then ct.max_time
-			when ct.city = 38 #москва 
-				then cf.max_time
-			when cf.min_time = 1
-				then ct.max_time + 1
-			when ct.min_time = 1
-				then cf.max_time + 1
-			else
-				cf.max_time + ct.max_time
-		end
-where
-	z.provider = 1;

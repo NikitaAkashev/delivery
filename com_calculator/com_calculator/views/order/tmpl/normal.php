@@ -130,9 +130,9 @@ defined('_JEXEC') or die('Restricted access');
 				</div>
 			</div>
 		<?php }?>
-		<div class="control-group has_prices">
+		<div class="control-group has_prices order_details_link">
 			<div>
-				<a href="#" id="order_details_link" style="display:none;" onclick="jQuery('#order_form').show(); jQuery('#order_details_link').hide(); return false;" >Оформить заказ</a>
+				<a href="#" class="order_details_link" id="order_details_link" style="display:none;" onclick="jQuery('#order_form').show(); jQuery('.order_details_link').hide(); return false;" >Оформить заказ</a>
 			</div>
 		</div>
 		<div class="no_prices" style="display:none;">
