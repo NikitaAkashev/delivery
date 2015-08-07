@@ -249,7 +249,7 @@ from(
 				
 				$weight_price = $rate->base_price + $rate->overweight_cost * (ceil($rate->real_weight) - $rate->weight_bottom);
 				
-				$assessed_value_price = max($rate->avp_base_price + $rate->overprice_percent * (ceil($this->assessed_value) - $rate->avp_bottom), $rate->min_assessed_price);
+				$assessed_value_price = $this->assessed_value == 0 ? 0 : max($rate->avp_base_price + $rate->overprice_percent * (ceil($this->assessed_value) - $rate->avp_bottom), $rate->min_assessed_price);
 				
 				$this->prices[$i]->inner_price = $weight_price * (1 - $rate->discount_factor) * ($rate->cf_factor + $rate->ct_factor - 1) + $assessed_value_price + $courier_price;
 				
