@@ -1,13 +1,7 @@
 <?php
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelitem library
 jimport('joomla.application.component.modelitem');
- 
-/**
- *  Model
- */
+
 class CalculatorModelsOrder extends CalculatorModelsDefault
 {
 	private $_inner_price_viewer_group_ids = array(7,8); // ID групп, которым можно считать разницу в ценах.
@@ -233,12 +227,14 @@ from(
 				
 				$this->prices[$i]->uid = $uid;
 				
+				// определим, сколько будет курьерская цена
 				$courier_price = 0;
 				if($rate->delivery_type_code == 'door.door')
 				{
 					$courier_price = $rate->courier_price;
 				}
 				
+				// проверим коэфициенты превышения
 				$oversize = ($this->width > $rate->dimension_limit || 
 						$this->length > $rate->dimension_limit || 
 						$this->height > $rate->dimension_limit ||
@@ -247,19 +243,24 @@ from(
 						|| $rate->tariff_code != 'ural') // либо все остальные
 						 ? $rate->oversize_limit_factor : 1;
 				
+				// вычислим цену за вес
 				$weight_price = $rate->base_price + $rate->overweight_cost * (ceil($rate->real_weight) - $rate->weight_bottom);
 				
+				// вычислим оценочную стоимость
 				$assessed_value_price = $this->assessed_value == 0 ? 0 : max($rate->avp_base_price + $rate->overprice_percent * (ceil($this->assessed_value) - $rate->avp_bottom), $rate->min_assessed_price);
 				
-				$this->prices[$i]->inner_price = $weight_price * (1 - $rate->discount_factor) * ($rate->cf_factor + $rate->ct_factor - 1) + $assessed_value_price + $courier_price;
+				// вычислим внутреннюю цену (вес * скидка * коэф. городов + оценочная стоимость)
+				$this->prices[$i]->inner_price = round($weight_price * (1 - $rate->discount_factor) * ($rate->cf_factor + $rate->ct_factor - 1) + $assessed_value_price, 2);
 				
-				$this->prices[$i]->customer_price = $this->RoundPrice($this->prices[$i]->inner_price * $rate->margin);
+				// цена клиента
+				$this->prices[$i]->customer_price = $this->RoundPrice($this->prices[$i]->inner_price * $rate->margin) + $courier_price;
 				
+				// прибыль
 				$this->prices[$i]->profit = $this->prices[$i]->customer_price - $this->prices[$i]->inner_price;
 				
-				$this->prices[$i]->inner_nds = ceil($this->nds * $this->prices[$i]->inner_price / (1 + $this->nds) * 100 ) / 100;
-				$this->prices[$i]->customer_nds = ceil($this->nds * $this->prices[$i]->customer_price / (1 + $this->nds) * 100 ) / 100;
-				$this->prices[$i]->profit_nds = ceil($this->nds * $this->prices[$i]->profit / (1 + $this->nds) * 100) / 100;
+				$this->prices[$i]->inner_nds = round($this->nds * $this->prices[$i]->inner_price / (1 + $this->nds), 2);
+				$this->prices[$i]->customer_nds = round($this->nds * $this->prices[$i]->customer_price / (1 + $this->nds), 2);
+				$this->prices[$i]->profit_nds = round($this->nds * $this->prices[$i]->profit / (1 + $this->nds), 2);
 								
 				if($rate->is_zones_by_exact_city == 0) // вычисляем время для зон, которые определяются через столичные города
 				{
