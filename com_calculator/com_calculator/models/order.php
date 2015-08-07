@@ -117,6 +117,31 @@ select
 	dt.code delivery_type_code,
 	cp.price courier_price
 from(
+	/* зоны по основным городам */
+	select 
+		cf.city city_from,
+		ct.city city_to,
+		r.rate,
+		r.tariff,
+		r.provider,
+		null min_days,
+		null max_days,
+		r.delivery_hours,
+		greatest(".$db->quote($this->weight).", ".$db->quote($this->volume)."/p.volume_weight_divider) real_weight
+	from #__delivery_city cf
+		join #__delivery_city ct on ct.city = ".$db->quote($this->city_to)."
+		join #__delivery_direction2zone d2z on d2z.city_from = COALESCE(cf.parent, cf.city) 
+							and d2z.city_to = COALESCE(ct.parent, ct.city)
+		join #__delivery_zone z on z.zone = d2z.zone
+		join #__delivery_rate r on r.zone = z.zone and r.provider = z.provider
+		join #__delivery_provider p on p.provider = r.provider		
+	where
+		cf.city = ".$db->quote($this->city_from)."
+		and p.is_zones_by_exact_city = 0
+		
+	union all	
+		
+	/* зоны по всем городам */
 	select 
 		cf.city city_from,
 		ct.city city_to,
@@ -129,24 +154,17 @@ from(
 		greatest(".$db->quote($this->weight).", ".$db->quote($this->volume)."/p.volume_weight_divider) real_weight
 	from #__delivery_city cf
 		join #__delivery_city ct on ct.city = ".$db->quote($this->city_to)."
-		left join #__delivery_direction2zone d2z on d2z.city_from = COALESCE(cf.parent, cf.city) 
-							and d2z.city_to = COALESCE(ct.parent, ct.city)
-		left join #__delivery_direction2zone d2z_exact on d2z_exact.city_from = cf.city /*для случая, когда нужно включить не областные центры*/
-							and d2z_exact.city_to = ct.city
-		join #__delivery_zone z on 1=1
-		join #__delivery_rate r on 
-							(r.zone = z.zone and r.provider = z.provider)
+		join #__delivery_direction2zone d2z on d2z.city_from = cf.city and d2z.city_to = ct.city
+		join #__delivery_zone z on z.zone = d2z.zone
+		join #__delivery_rate r on r.zone = z.zone and r.provider = z.provider
 		join #__delivery_provider p on p.provider = r.provider		
 	where
 		cf.city = ".$db->quote($this->city_from)."
-		and (
-			(z.zone = d2z.zone and p.is_zones_by_exact_city = 0) /*зона определяется только по областным столицам*/
-				or 
-			(z.zone = d2z_exact.zone and p.is_zones_by_exact_city = 1) /*зона определяется строго по городу*/
-		)
+		and p.is_zones_by_exact_city = 1
 		
 	union all
 
+	/* без зон */
 	select
 		cf.city city_from,
 		ct.city city_to,
@@ -329,11 +347,11 @@ from(
 	{
 		if ($price < 1000) // округление до десятков
 		{
-			return ceil(round($price, -1));
+			return ceil($price/10) * 10;
 		}
 		else // округление кратно 50
 		{
-			return ceil(round($price / 50) * 50);
+			return ceil($price / 50) * 50;
 		}
 	}
 	
