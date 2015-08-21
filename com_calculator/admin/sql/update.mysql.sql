@@ -101,7 +101,8 @@ create table `calc_delivery_city2delivery_time`(
 
 create table `calc_delivery_city_factor`(
 	`city` int(11) NOT NULL references `calc_delivery_city`(city),
-	factor decimal(4,2) not null,
+	factor_inner decimal(4,2) not null default 1,
+	factor_outer decimal(4,2) not null default 1,
 	`tariff` int(11) NOT NULL references `calc_delivery_tariff`
 );
 
@@ -243,14 +244,12 @@ select c.city, c.express_min_delivery_time, c.express_max_delivery_time, p.provi
 from calc_calc_city c
 	join calc_delivery_provider p on p.code='special';
 
-insert into calc_delivery_city_factor (city, factor, tariff)
+insert into calc_delivery_city_factor (city, factor_inner, factor_outer, tariff)
 select 
-	c.city, f.value_for_inner_calculations, t.tariff
+	c.city, f.value_for_inner_calculations, f.value - f.value_for_inner_calculations + 1, t.tariff
 from calc_calc_city c
 	join calc_calc_factor f on f.factor = c.factor
 	join calc_delivery_tariff t on t.code = 'standart';
-
-
 
 insert into calc_delivery_rate(zone, tariff, provider)
 select 

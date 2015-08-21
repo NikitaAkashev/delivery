@@ -105,8 +105,10 @@ select
 	p.name provider_name,
 	p.code provider_code,
 	p.is_zones_by_exact_city,
-	coalesce(ff.factor, 1) cf_factor,
-	coalesce(ft.factor, 1) ct_factor,
+	coalesce(ff.factor_inner, 1) cf_factor_inner,
+	coalesce(ft.factor_inner, 1) ct_factor_inner,
+	coalesce(ff.factor_outer, 1) cf_factor_outer,
+	coalesce(ft.factor_outer, 1) ct_factor_outer,
 	dt.name delivery_type_name,
 	dt.code delivery_type_code,
 	cp.price courier_price
@@ -253,10 +255,10 @@ from(
 				$assessed_value_price = $this->assessed_value == 0 ? 0 : max($rate->avp_base_price + $rate->overprice_percent * (ceil($this->assessed_value) - $rate->avp_bottom), $rate->min_assessed_price);
 				
 				// вычислим внутреннюю цену (вес * скидка * коэф. городов + оценочная стоимость)
-				$this->prices[$i]->inner_price = round($weight_price * (1 - $rate->discount_factor) * ($rate->cf_factor + $rate->ct_factor - 1) + $assessed_value_price, 2);
+				$this->prices[$i]->inner_price = round($weight_price * (1 - $rate->discount_factor) * ($rate->cf_factor_inner + $rate->ct_factor_inner - 1) + $assessed_value_price, 2);
 				
-				// цена клиента
-				$this->prices[$i]->customer_price = $this->RoundPrice($this->prices[$i]->inner_price * $rate->margin) + $courier_price;
+				// цена клиента = внутренняя * наценку * доп. коэфициент городов
+				$this->prices[$i]->customer_price = $this->RoundPrice($this->prices[$i]->inner_price * $rate->margin * ($rate->cf_factor_outer + $rate->ct_factor_outer - 1)) + $courier_price;
 				
 				// прибыль
 				$this->prices[$i]->profit = $this->prices[$i]->customer_price - $this->prices[$i]->inner_price;
