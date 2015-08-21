@@ -116,6 +116,7 @@ create TABLE `calc_delivery_rate` (
 	`min_days` int(11) null,
 	`max_days` int(11) null,
 	`delivery_hours` varchar(32) null ,
+	`is_enabled` int(1) not null default 0,
 	PRIMARY KEY (`rate`)
 );
 

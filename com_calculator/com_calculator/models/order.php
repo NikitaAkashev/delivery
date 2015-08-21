@@ -132,6 +132,7 @@ from(
 	where
 		cf.city = ".$db->quote($this->city_from)."
 		and p.is_zones_by_exact_city = 0
+		and r.is_enabled = 1
 		
 	union all	
 		
@@ -155,6 +156,7 @@ from(
 	where
 		cf.city = ".$db->quote($this->city_from)."
 		and p.is_zones_by_exact_city = 1
+		and r.is_enabled = 1
 		
 	union all
 
@@ -176,6 +178,7 @@ from(
 		join #__delivery_provider p on p.provider = r.provider
 	where
 		cf.city = ".$db->quote($this->city_from)."
+		and r.is_enabled = 1
 ) base
 	join #__delivery_provider p on p.provider = base.provider
 	join #__delivery_tariff t on t.tariff = base.tariff
