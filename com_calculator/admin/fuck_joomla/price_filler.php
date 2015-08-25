@@ -29,6 +29,7 @@ TXT;
 	if (($handle = fopen($_FILES["input"]["tmp_name"], "r")) !== FALSE) {
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 			$r = array_map("FormatValue", $data);
+			$r[7] = $r[7] == 'null' ? $r[7] : "'".$r[7]."'";
 			
 			$query .= <<<TXT
 INSERT INTO {$prefix}_delivery_rate (`city_from`, `city_to`, `zone`, `tariff`, `provider`, `min_days`, `max_days`, `delivery_hours`, `is_enabled`)
