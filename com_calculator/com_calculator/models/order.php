@@ -439,8 +439,8 @@ where r.rate  = ".$db->quote($data->rate)."";
 select 
 	s.value `to`,
 	ss.value `subject`
-from calc_delivery_settings s
-	join calc_delivery_settings ss on ss.code = 'mail_subject'
+from #__delivery_settings s
+	join #__delivery_settings ss on ss.code = 'mail_subject'
 where s.code = 'mail_to'
 ";
 		$db->setQuery($query);
