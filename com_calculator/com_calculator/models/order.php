@@ -130,7 +130,9 @@ from(
 							and d2z.city_to = COALESCE(ct.parent, ct.city)
 		join #__delivery_zone z on z.zone = d2z.zone
 		join #__delivery_rate r on r.zone = z.zone and r.provider = z.provider
-		join #__delivery_provider p on p.provider = r.provider		
+		join #__delivery_provider p on p.provider = r.provider
+		join #__delivery_city2provider fc2p on fc2p.provider = p.provider and fc2p.city = cf.city /* в __delivery_city2provider заполняются связки только для поставщиков с is_zones_by_exact_city = 0 */ 
+		join #__delivery_city2provider tc2p on tc2p.provider = p.provider and tc2p.city = ct.city		
 	where
 		cf.city = ".$db->quote($this->city_from)."
 		and p.is_zones_by_exact_city = 0

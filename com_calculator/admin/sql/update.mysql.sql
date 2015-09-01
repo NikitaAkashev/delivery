@@ -164,6 +164,12 @@ create table calc_delivery_settings(
 	UNIQUE(`code`)
 );
 
+CREATE TABLE IF NOT EXISTS `calc_delivery_city2provider` (
+  `city` int(11) NOT NULL references calc_delivery_city(city),
+  `provider` int(11) NOT NULL references calc_delivery_provider(provider),
+  PRIMARY KEY (`city`,`provider`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 insert into calc_delivery_settings(value, code)
 values ('regspambox@yandex.ru','mail_to'), ('Заказ с сайта','mail_subject');
 
@@ -281,3 +287,10 @@ from calc_delivery_tariff t
 where
 	t.code = 'super'
 	and dt.code = 'door.door';
+
+
+insert into calc_delivery_city2provider(city, provider)
+select c.city, p.provider 
+from calc_delivery_city c
+	join calc_delivery_provider p on p.code = 'special'
+where c.city < 2115 -- Все, кто для спецсвязи
