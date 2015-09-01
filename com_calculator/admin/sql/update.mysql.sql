@@ -257,6 +257,14 @@ from calc_calc_city c
 	join calc_calc_factor f on f.factor = c.factor
 	join calc_delivery_tariff t on t.code = 'standart';
 
+insert into calc_delivery_city_factor(city, tariff, factor_outer, factor_inner)
+select c.city, t.tariff, 1.1, 1
+from calc_delivery_city c
+	join calc_delivery_tariff t on t.code = 'ural'
+where 
+	 c.parent in (68, 31, 47, 18, 65, 20, 72);/*Уфа, Курган, Пермь, Екб, Тюмень, Ижевск, Че*/
+
+
 insert into calc_delivery_rate(zone, tariff, provider)
 select 
 	z.zone, t.tariff, p.provider
