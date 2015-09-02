@@ -215,6 +215,7 @@ from(
 	left join #__delivery_discount d on
 					d.city_from = base.city_from
 					and d.city_to = base.city_to
+					and d.tariff = t.tariff
 					and (d.user is null or d.user = ".$db->quote($this->user_id).");	
 ";
 			$db->setQuery($query);
@@ -279,10 +280,10 @@ from(
 						$max_delivery_time = $rate->cf_max_time;	
 					} else if ($rate->cf_min_time == 1){
 						$min_delivery_time = $rate->ct_min_time + 1;
-						$max_delivery_time = $rate->ct_max_time + 1;					
+						$max_delivery_time = $rate->ct_max_time + 2;					
 					} else if ($rate->ct_min_time == 1){
 						$min_delivery_time = $rate->cf_min_time + 1;
-						$max_delivery_time = $rate->cf_max_time + 1;	
+						$max_delivery_time = $rate->cf_max_time + 2;	
 					} else {
 						$min_delivery_time = $rate->cf_min_time + $rate->ct_min_time;
 						$max_delivery_time = $rate->cf_max_time + $rate->ct_max_time;
