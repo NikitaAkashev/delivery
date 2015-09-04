@@ -9,6 +9,7 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 	private $user_id;
 	
 	private $min_exact_volume = 0.01; // минимальный объем. Все что меньше, заменяется на "менее Х"
+	public $weight_no_size = 0.5; // до этого веса размеры указывать необязательно	
 	
 	public $nds = 0.18;
 	
@@ -48,12 +49,25 @@ class CalculatorModelsOrder extends CalculatorModelsDefault
 	
 	// проверяет, что переданы все необходимые данные для расчета
 	function IsFilled(){
-		return isset($this->city_from) && isset($this->city_to) && isset($this->weight) &&
-				isset($this->assessed_value) && isset($this->width) &&
-				isset($this->length) && isset($this->height) && 
-				$this->city_from != 0 && $this->city_to != 0 && 
-				$this->weight != 0 && $this->width != 0 &&
-				$this->length != 0 && $this->height != 0;
+		return 
+			isset($this->city_from) 
+			&& isset($this->city_to) 
+			&& $this->city_from != 0 
+			&& $this->city_to != 0 
+			&& isset($this->weight) 
+			&& $this->weight != 0 
+			&& isset($this->assessed_value) 
+			&&(
+				$this->weight <= $this->weight_no_size || // либо вес меньше граничного, либо размеры заполнены
+				(
+					isset($this->width) 
+					&& isset($this->length) 
+					&& isset($this->height) 
+					&& $this->width != 0 
+					&& $this->length != 0 
+					&& $this->height != 0
+				)
+			);
 	}
 	
 	// проверяет, можно ли пользователю смотреть внутреннюю стоимость отправки

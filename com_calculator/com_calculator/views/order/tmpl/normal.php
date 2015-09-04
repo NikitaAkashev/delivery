@@ -25,19 +25,19 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="control-group">
 			<label class="control-label">Ширина, см<span class="asterisk correct">*</span></label>
 			<div class="controls">
-				<input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" />
+				<input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0 && $this->model->weight !== null && $this->model->weight >= $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">Длина, см<span class="asterisk correct">*</span></label>
 			<div class="controls">
-				<input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" />
+				<input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0 && $this->model->weight !== null && $this->model->weight >= $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">Высота, см<span class="asterisk correct">*</span></label>
 			<div class="controls">
-				<input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" />
+				<input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0 && $this->model->weight !== null && $this->model->weight >= $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" />
 			</div>
 		</div>
 		<div class="control-group border-top">
