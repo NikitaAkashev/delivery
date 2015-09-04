@@ -17,6 +17,11 @@ jQuery(document).ready(function(){
 });
 
 function Recalculate(){
+	if(jQuery('#weight_input').val() >= jQuery('#weight_no_size').val()){
+		jQuery('.noneed').show();
+	}else{
+		jQuery('.noneed').hide();
+	}
 	jQuery.post(
 		'?option=com_calculator&controller=calculate&format=json', 
 		jQuery('#calculator').serialize(), 

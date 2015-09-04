@@ -7,13 +7,14 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->model->order_message; ?>
 	<a href="<?php echo JURI::current(); ?>"><h3>Оформить новый заказ</h3></a>
 <?php } else { ?>
+<input type="hidden" name="weight_no_size" id="weight_no_size" value="<?php echo $this->model->weight_no_size; ?>" />
 <h1>Расчет стоимости отправки</h1>
 <form id="calculator" method="POST" name="calculate_form" action="<?php echo JURI::current(); ?>">
 	<div id="calculator_body">
 		<div class="control-group">
 			<label class="control-label">Вес, кг<span class="asterisk correct">*</span></label>
 			<div class="controls">
-				<input class="comma-replace advantage_fields <?php if($this->model->weight !== null && $this->model->weight == 0) echo 'alert-error'?>" type="text" name="weight" value="<?php echo $this->model->weight; ?>" />
+				<input class="comma-replace advantage_fields <?php if($this->model->weight !== null && $this->model->weight == 0) echo 'alert-error'?>" type="text" name="weight" id="weight_input" value="<?php echo $this->model->weight; ?>" />
 			</div>
 		</div>
 		<div class="control-group">
@@ -23,19 +24,19 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">Ширина, см<span class="asterisk correct">*</span></label>
+			<label class="control-label">Ширина, см<span class="asterisk correct noneed">*</span></label>
 			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0 && $this->model->weight !== null && $this->model->weight >= $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">Длина, см<span class="asterisk correct">*</span></label>
+			<label class="control-label">Длина, см<span class="asterisk correct noneed">*</span></label>
 			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0 && $this->model->weight !== null && $this->model->weight >= $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">Высота, см<span class="asterisk correct">*</span></label>
+			<label class="control-label">Высота, см<span class="asterisk correct noneed">*</span></label>
 			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0 && $this->model->weight !== null && $this->model->weight >= $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" />
 			</div>
