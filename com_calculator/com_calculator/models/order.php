@@ -90,7 +90,7 @@ select
 	vp.from avp_bottom,
 	vp.base_price avp_base_price,
 	vp.overprice_percent,
-	d.factor discount_factor,
+	greatest(d_t_u.factor, d_t_a.factor, d_a_u.factor, d_a_a.factor) discount_factor,
 	t.margin,
 	t.name tariff_name,
 	t.code tariff_code,
@@ -212,11 +212,31 @@ from(
 					vp.from <= ".$db->quote($this->assessed_value)." 
 					and vp.to > ".$db->quote($this->assessed_value)."
 					and vp.tariff = base.tariff
-	left join #__delivery_discount d on
-					d.city_from = base.city_from
-					and d.city_to = base.city_to
-					and d.tariff = t.tariff
-					and (d.user is null or d.user = ".$db->quote($this->user_id).");	
+					
+	-- скидка по пользователю и тарифу				
+	left join #__delivery_discount d_t_u on
+					d_t_u.city_from = base.city_from
+					and d_t_u.city_to = base.city_to
+					and d_t_u.tariff = t.tariff
+					and d_t_u.user = ".$db->quote($this->user_id)."
+	-- скидка по пользователю и всем тарифам				
+	left join #__delivery_discount d_a_u on
+					d_a_u.city_from = base.city_from
+					and d_a_u.city_to = base.city_to
+					and d_a_u.tariff is null
+					and d_t_u.user = ".$db->quote($this->user_id)."
+	-- скидка по всем пользователям и тарифу				
+	left join #__delivery_discount d_t_a on
+					d_t_a.city_from = base.city_from
+					and d_t_a.city_to = base.city_to
+					and d_t_a.tariff = t.tariff
+					and d_t_a.user is null
+	-- скидка по всем пользователям и всем тарифам				
+	left join #__delivery_discount d_a_a on
+					d_t_a.city_from = base.city_from
+					and d_t_a.city_to = base.city_to
+					and d_t_a.tariff is null
+					and d_t_a.user is null;	
 ";
 			$db->setQuery($query);
 			$result = $db->loadObjectList();
