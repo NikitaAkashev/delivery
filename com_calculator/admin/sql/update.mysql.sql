@@ -17,6 +17,7 @@ create table `calc_delivery_provider` (
 	`volume_weight_divider` int(11) not null,
 	min_assessed_price decimal(15,2),
 	is_zones_by_exact_city tinyint(1) default 1,
+	prices_with_nds tinyint(1) default 0,
 	PRIMARY KEY  (`provider`),
 	UNIQUE (`code`)
 );
@@ -181,10 +182,10 @@ values ('Экспресс-Стандарт', 'standart', 1.3, 300, 200, 1.5),
 ('Экспресс-Урал', 'ural', 1.3, null, 150, 1.3),
 ('Экспресс-Приоритет', 'priority', 1.3, 30, 150, 0);
 
-insert into `calc_delivery_provider` (	`name`,	`code`,	`volume_weight_divider`, `min_assessed_price`, `is_zones_by_exact_city` )
-values ('СпецСвязь', 'special', 6000, 0, 0),
- ('СДЭК', 'cdek', 5000, 400, 1),
- ('ФОКС', 'fox', 5000, 400, 1);
+insert into `calc_delivery_provider` (	`name`,	`code`,	`volume_weight_divider`, `min_assessed_price`, `is_zones_by_exact_city`, `prices_with_nds` )
+values ('СпецСвязь', 'special', 6000, 0, 0, 0),
+ ('СДЭК', 'cdek', 5000, 400, 1, 0),
+ ('ФОКС', 'fox', 5000, 400, 1, 1);
 
 insert into calc_delivery_delivery_type (name, from_office, to_office, code)
 values 

@@ -101,6 +101,7 @@ function SelectRow(){
 		jQuery('#displayed_volume').text(r.displayed_volume);
 		jQuery('#real_weight').text(r.real_weight);
 		jQuery('#inner_price').text(r.inner_price);
+		jQuery('#inner_price_no_nds').text(r.inner_price_no_nds);
 		jQuery('#inner_nds').text(r.inner_nds);
 		jQuery('#profit').text(r.profit);
 		jQuery('#profit_nds').text(r.profit_nds);

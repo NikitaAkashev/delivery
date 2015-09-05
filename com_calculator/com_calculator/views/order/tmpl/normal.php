@@ -123,6 +123,7 @@ defined('_JEXEC') or die('Restricted access');
 					<h2>Внутренняя стоимость отправки: 
 						<span id="inner_price"><?php echo $show ? $this->model->prices[$current_i]->inner_price : ''; ?></span> руб 
 						<span style="text-transform:none;">(в том числе НДС <span id="inner_nds"><?php echo $show ? $this->model->prices[$current_i]->inner_nds : ''; ?></span> руб.)</span>
+						<span>Стоимость без НДС <span id="inner_price_no_nds"><?php echo $show ? $this->model->prices[$current_i]->inner_price_no_nds : ''; ?></span> руб</span>
 					</h2>
 					<h2>Прибыль: 
 						<span id="profit"><?php echo $show ? $this->model->prices[$current_i]->profit : ''; ?></span> руб 

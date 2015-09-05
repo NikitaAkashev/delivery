@@ -119,6 +119,7 @@ select
 	p.name provider_name,
 	p.code provider_code,
 	p.is_zones_by_exact_city,
+	p.prices_with_nds,
 	coalesce(ff.factor_inner, 1) cf_factor_inner,
 	coalesce(ft.factor_inner, 1) ct_factor_inner,
 	coalesce(ff.factor_outer, 1) cf_factor_outer,
@@ -291,8 +292,8 @@ from(
 				// вычислим оценочную стоимость
 				$assessed_value_price = $this->assessed_value == 0 ? 0 : max($rate->avp_base_price + $rate->overprice_percent * (ceil($this->assessed_value) - $rate->avp_bottom), $rate->min_assessed_price);
 				
-				// вычислим внутреннюю цену (вес * скидка * коэф. городов + оценочная стоимость)
-				$this->prices[$i]->inner_price = round($weight_price * (1 - $rate->discount_factor) * ($rate->cf_factor_inner + $rate->ct_factor_inner - 1) + $assessed_value_price, 2);
+				// вычислим внутреннюю цену (НДС, если цена без него * вес * скидка * коэф. городов + оценочная стоимость)
+				$this->prices[$i]->inner_price = round(($rate->prices_with_nds == 0 ? 1 + $this->nds : 1) * $weight_price * (1 - $rate->discount_factor) * ($rate->cf_factor_inner + $rate->ct_factor_inner - 1) + $assessed_value_price, 2);
 				
 				// цена клиента = внутренняя * наценку * доп. коэфициент городов
 				$this->prices[$i]->customer_price = $this->RoundPrice($this->prices[$i]->inner_price * $rate->margin * ($rate->cf_factor_outer + $rate->ct_factor_outer - 1)) + $courier_price;
@@ -303,6 +304,8 @@ from(
 				$this->prices[$i]->inner_nds = round($this->nds * $this->prices[$i]->inner_price / (1 + $this->nds), 2);
 				$this->prices[$i]->customer_nds = round($this->nds * $this->prices[$i]->customer_price / (1 + $this->nds), 2);
 				$this->prices[$i]->profit_nds = round($this->nds * $this->prices[$i]->profit / (1 + $this->nds), 2);
+				
+				$this->prices[$i]->inner_price_no_nds = $this->prices[$i]->inner_price - $this->prices[$i]->inner_nds;
 								
 				if($rate->is_zones_by_exact_city == 0) // вычисляем время для зон, которые определяются через столичные города
 				{
@@ -342,6 +345,7 @@ from(
 				if(!$this->with_inner)
 				{
 					unset($this->prices[$i]->inner_price);
+					unset($this->prices[$i]->inner_price_no_nds);
 					unset($this->prices[$i]->inner_nds);
 					unset($this->prices[$i]->profit);
 					unset($this->prices[$i]->profit_nds);
