@@ -22,6 +22,7 @@ function Recalculate(){
 	}else{
 		jQuery('.noneed').hide();
 	}
+	jQuery('#advantage_area').addClass("loading");
 	jQuery.post(
 		'?option=com_calculator&controller=calculate&format=json', 
 		jQuery('#calculator').serialize(), 
@@ -86,6 +87,7 @@ function FillResults(data){
 		jQuery('.has_prices').hide();
 		jQuery('.no_prices').show();
 	}
+	jQuery('#advantage_area').removeClass("loading");
 }
 
 

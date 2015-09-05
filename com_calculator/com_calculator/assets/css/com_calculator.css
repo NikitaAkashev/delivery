@@ -30,3 +30,11 @@
 #third.payer {
 	display:block;	
 }
+
+#advantage_area.loading{
+	background: rgba(0, 0, 0, 0) url("/components/com_calculator/assets/images/loading.gif") no-repeat scroll center center;
+}
+
+.loading > * {
+	opacity:0.2;
+}
