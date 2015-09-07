@@ -17,7 +17,7 @@ jQuery(document).ready(function(){
 });
 
 function Recalculate(){
-	if(jQuery('#weight_input').val() >= jQuery('#weight_no_size').val()){
+	if(jQuery('#weight_input').val() > jQuery('#weight_no_size').val()){
 		jQuery('.noneed').show();
 	}else{
 		jQuery('.noneed').hide();
