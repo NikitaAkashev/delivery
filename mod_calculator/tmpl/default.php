@@ -41,11 +41,10 @@
 		<input class="comma-replace" size="2" maxlength="3" type="text" name="length"  value="<?php echo $parcel["length"]; ?>" /> <span class="decoding">см</span> <span class="separator">x</span>
 		<input class="comma-replace" size="2" maxlength="3" type="text" name="height"  value="<?php echo $parcel["height"]; ?>" /> <span class="decoding">см</span>
 		<input type="hidden" value="" name="assessed_value" />
-		<input type="hidden" value="0" name="from_door" />
+		<input type="hidden" value="<?php echo $price->uid; ?>" name="calc_row_id" />
 	</div>
-
-	<div id="result"><span class="data"><?php echo $model->min_delivery_time;  ?>–<?php echo $model->max_delivery_time; ?></span> дн. <b><span class="data"><?php echo ceil($model->price*100)/100; ?></span> руб.</b></div>
-	
+	<div id="result">
+			<span class="data"><?php echo $price->delivery_time; ?></span> дн. <b><span class="data"><?php echo $price->customer_price; ?></span> руб.</b><br />(<?php echo $price->tariff_name; ?>)</div>
 	<button class="roboto">заказать</button>	
 	
 </form>
