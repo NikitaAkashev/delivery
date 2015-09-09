@@ -36,10 +36,8 @@ $model->assessed_value = 0;
 $model->Calculate();
 $price = null;
 
-$calc_row_id = '11_office.door';
-
 foreach($model->prices as $p){
-	if($p->uid == $calc_row_id){
+	if(strpos($p->tariff_name, 'Экспресс-Приоритет') !== false){
 		$price = $p;		
 		break;
 	}
