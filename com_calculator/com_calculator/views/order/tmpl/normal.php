@@ -26,19 +26,19 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="control-group">
 			<label class="control-label">Ширина, см<span class="asterisk correct noneed">*</span></label>
 			<div class="controls">
-				<input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0 && $this->model->weight !== null && $this->model->weight >= $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" />
+				<input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0 && $this->model->weight !== null && $this->model->weight > $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">Длина, см<span class="asterisk correct noneed">*</span></label>
 			<div class="controls">
-				<input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0 && $this->model->weight !== null && $this->model->weight >= $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" />
+				<input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0 && $this->model->weight !== null && $this->model->weight > $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">Высота, см<span class="asterisk correct noneed">*</span></label>
 			<div class="controls">
-				<input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0 && $this->model->weight !== null && $this->model->weight >= $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" />
+				<input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0 && $this->model->weight !== null && $this->model->weight > $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" />
 			</div>
 		</div>
 		<div class="control-group border-top">
@@ -145,6 +145,27 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 
 	<div id="order_form" class="border-top has_prices" style="<?php if(!$show){ echo "display:none;"; }?>">
+		
+		<div id="customer_name" class="form-block">
+			<label for="customer_name" class="control-label">Ваше имя:</label>
+			<div class="controls">
+				<input type="text" name="customer_name" value="<?php if(array_key_exists('customer_name', $this->model->form)) echo $this->model->form['customer_name']; ?>"/>
+			</div>
+		</div>
+		
+		<div id="customer_phone" class="form-block">
+			<label for="phone" class="control-label">Телефон*:</label>
+			<div class="controls">
+				<input type="text" class="<?php if(array_key_exists('phone', $this->model->form) && $this->model->form['phone'] == '') echo 'alert-error' ?>" name="phone" value="<?php if(array_key_exists('phone', $this->model->form)) echo $this->model->form['phone']; ?>"/>
+			</div>
+		</div>
+		
+		<div id="email" class="form-block">
+			<label for="email" class="control-label">Email:</label>
+			<div class="controls">
+				<input type="text" name="email" value="<?php if(array_key_exists('email', $this->model->form)) echo $this->model->form['email']; ?>"/>
+			</div>
+		</div>
 		
 		<div id="comments" class="form-block">
 			<label for="comments" class="control-label">Комментарии:</label>

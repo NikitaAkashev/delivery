@@ -139,7 +139,7 @@ create table calc_delivery_delivery_type2tariff(
 );
 
 
-create table calc_delivery_order(
+create table calc_delisvery_order(
 	`order` int primary key auto_increment,
 	`user` int(11) NULL references `calc_users(id)`,
 	`created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -155,6 +155,9 @@ create table calc_delivery_order(
     `width` float not null,
     `length` float not null,
     `height` float not null,
+    `customer_name` varchar(1024),
+    `email` varchar(1024),
+    `phone` varchar(1024),
     `comments` varchar(1024)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

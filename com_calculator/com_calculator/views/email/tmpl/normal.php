@@ -26,6 +26,9 @@ defined('_JEXEC') or die('Restricted access');
 			Стоимость доставки: <?php echo $this->data->price; ?> р<br />
 		</p>
 		<p>
+			ФИО: <?php echo $this->data->customer_name; ?><br />
+			Телефон: <?php echo $this->data->phone; ?><br />
+			Email: <?php echo $this->data->email; ?><br />
 			Комментарий: <p><?php echo $this->data->comments; ?></p>
 		</p>
 	</body>

@@ -365,7 +365,7 @@ from(
 	// проверим, что пришли все данные, которые нам нужны для заказа TODO: Перенести проверку в JTable::check();
 	function CheckOrderData()
 	{		
-		if (empty($this->form['comments']))
+		if (empty($this->form['phone']))
 			return false;
 		
 		return true;
