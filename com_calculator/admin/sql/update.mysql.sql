@@ -73,13 +73,14 @@ CREATE TABLE `calc_delivery_assessed_value_price` (
 );
 
 
-CREATE TABLE `calc_delivery_discount` (
-	`city_from` int(11) NOT NULL references `calc_delivery_city`(city),
-	`city_to` int(11) NOT NULL references `calc_delivery_city`(city),
+create TABLE `calc_delivery_discount` (
+	`discount` int(11) NOT NULL AUTO_INCREMENT primary key,
+	`city_from` int(11) NULL references `calc_delivery_city`(city),
+	`city_to` int(11) NULL references `calc_delivery_city`(city),
 	`tariff` int(11) NULL references `calc_delivery_tariff`(tariff),
 	`factor` decimal(4,2) not null,
 	`user` int(11) NULL references `calc_users(id)`,
-	PRIMARY KEY  (`city_from`, `city_to`, `tariff`)
+	unique  (`city_from`, `city_to`, `tariff`, `user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
