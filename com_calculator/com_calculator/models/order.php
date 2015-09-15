@@ -106,7 +106,7 @@ select
 	vp.overprice_percent,
 	(
 		select max(d.factor)
-		from calc_delivery_discount d
+		from #__delivery_discount d
 		where
 			(d.city_from = base.city_from or d.city_from is null)
 			and (d.city_to = base.city_to or d.city_to is null)
