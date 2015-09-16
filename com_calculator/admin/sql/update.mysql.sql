@@ -140,17 +140,17 @@ create table calc_delivery_delivery_type2tariff(
 );
 
 
-create table calc_delisvery_order(
+create table calc_delivery_order(
 	`order` int primary key auto_increment,
 	`user` int(11) NULL references `calc_users(id)`,
 	`created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`modified` TIMESTAMP,
 	`price` decimal(15,2) not null,
 	`calc_row_id` varchar(64),
-	`rate` int(11) not null references `#__delivery_rate(rate)`,
+	`rate` int(11) not null references `calc_delivery_rate(rate)`,
 	`delivery_type_code` varchar(64),
-    `city_from` int(11) not null references `#__delivery_city(city)`,
-    `city_to` int(11) not null references `#__delivery_city(city)`,
+    `city_from` int(11) not null references `calc_delivery_city(city)`,
+    `city_to` int(11) not null references `calc_delivery_city(city)`,
     `weight` float not null,
     `assessed_value` float,
     `width` float not null,

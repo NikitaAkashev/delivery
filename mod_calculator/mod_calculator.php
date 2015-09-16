@@ -37,7 +37,7 @@ $model->Calculate();
 $price = null;
 
 foreach($model->prices as $p){
-	if(strpos($p->tariff_name, 'Экспресс-Приоритет') !== false){
+	if(strpos($p->tariff_name, 'Экспресс-Приоритет') !== false && $p->delivery_type_code == 'office.door'){
 		$price = $p;		
 		break;
 	}

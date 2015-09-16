@@ -176,6 +176,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		<div id="counteragents">
 			<hr class="divider">
+			<input type="hidden" name="make_order" value="sure" />
 			<input class="submit" type="submit" name="submit" value="Оформить заказ" />
 		</div>
 	</div>	

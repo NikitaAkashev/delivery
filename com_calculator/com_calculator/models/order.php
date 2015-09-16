@@ -323,6 +323,7 @@ from(
 				$this->prices[$i]->tariff_name = $rate->tariff_name . ' ' . $rate->delivery_hours . ' ' . $rate->delivery_type_name;
 				
 				$this->prices[$i]->provider_name = $rate->provider_name;
+				$this->prices[$i]->delivery_type_code = $rate->delivery_type_code;
 				
 				// уберем внутренние цены, если это обычный пользователь
 				if(!$this->with_inner)
@@ -348,6 +349,9 @@ from(
 	// проверим, что пришли все данные, которые нам нужны для заказа TODO: Перенести проверку в JTable::check();
 	function CheckOrderData()
 	{		
+		if (empty($this->form['make_order']) || $this->form['make_order'] != 'sure')
+			return false;
+		
 		if (empty($this->form['phone']))
 			return false;
 		

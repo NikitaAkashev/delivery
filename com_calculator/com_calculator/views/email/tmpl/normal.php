@@ -6,8 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 	<head>
 		<title>Заказ с Сайта</title>
 	</head>
-	<body>
-		<a href="<?php echo JURI::current() . '?weight=' . $this->data->weight . '&assessed_value=' . $this->data->assessed_value . '&width=' . $this->data->width . '&length=' . $this->data->length . '&height=' . $this->data->height . '&city_from=' . $this->data->city_from . '&city_to=' . $this->data->city_to . '&calc_row_id=' . $this->data->calc_row_id ?>"><h3>Ссылка на заказ</h3></a>		
+	<body>		
 		<p>
 			Тариф: <?php echo $this->extra->tariff_name; ?>
 		</p>
@@ -31,5 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 			Email: <?php echo $this->data->email; ?><br />
 			Комментарий: <p><?php echo $this->data->comments; ?></p>
 		</p>
+		<a href="<?php echo JURI::current() . '?weight=' . $this->data->weight . '&assessed_value=' . $this->data->assessed_value . '&width=' . $this->data->width . '&length=' . $this->data->length . '&height=' . $this->data->height . '&city_from=' . $this->data->city_from . '&city_to=' . $this->data->city_to . '&calc_row_id=' . $this->data->calc_row_id . '&customer_name=' . urlencode($this->data->customer_name) . '&phone=' . urlencode($this->data->phone) . '&email=' . urlencode($this->data->email) . '&comments=' . urlencode($this->data->comments) ?>"><h3>Новый заказ на основе текущего</h3></a>
+		<br />
 	</body>
 </html>
