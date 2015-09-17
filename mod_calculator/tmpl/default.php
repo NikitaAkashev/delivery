@@ -44,7 +44,7 @@
 		<input type="hidden" value="<?php echo $price->uid; ?>" name="calc_row_id" />
 	</div>
 	<div id="result">
-			<span class="data"><?php echo $price->delivery_time; ?></span> дн. <b><span class="data"><?php echo $price->customer_price; ?></span> руб.</b><br />(<?php echo $price->tariff_name; ?>)</div>
-	<button class="roboto">заказать</button>	
+			<span class="data"><?php echo $price->delivery_time; ?></span> дн. <b><span class="data"><?php echo $price->customer_price; ?></span> руб.</b><br /><span class="tariff-name">(<?php echo $price->tariff_name; ?>)</span></div>
+	<button class="roboto">рассчитать</button>	
 	
 </form>
