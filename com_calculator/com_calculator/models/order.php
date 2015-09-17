@@ -234,7 +234,8 @@ from(
 	left join #__delivery_assessed_value_price vp on 
 					vp.from <= ".$db->quote($this->assessed_value)." 
 					and vp.to > ".$db->quote($this->assessed_value)."
-					and vp.tariff = base.tariff;	
+					and vp.tariff = base.tariff
+order by t.name, base.delivery_hours;
 ";
 			$db->setQuery($query);
 			$result = $db->loadObjectList();
@@ -320,7 +321,8 @@ from(
 				$this->prices[$i]->displayed_volume = $this->volume / 1000000 < $this->min_exact_volume ? 'менее 0,01' : $this->volume / 1000000;
 				$this->prices[$i]->real_weight = $rate->real_weight;
 				
-				$this->prices[$i]->tariff_name = $rate->tariff_name . ' ' . $rate->delivery_hours . ' ' . $rate->delivery_type_name;
+				// для супер-экспресса не пишем тип доставки
+				$this->prices[$i]->tariff_name = CalculatorModelsOrder::MakeFullTariffName($rate->tariff_name, $rate->delivery_hours, $rate->tariff_code, $rate->delivery_type_name);
 				
 				$this->prices[$i]->provider_name = $rate->provider_name;
 				$this->prices[$i]->delivery_type_code = $rate->delivery_type_code;
@@ -439,24 +441,32 @@ from(
 		return $this->store($data);
 	}
 	
+	// Получение полного названия тарифа
+	static function MakeFullTariffName($tariff_name, $delivery_hours, $tariff_code, $delivery_type_name)
+	{
+		return $tariff_name . ($delivery_hours ? ' до ' . $delivery_hours : '') . ($tariff_code == 'super' ? '' : ' ' .$delivery_type_name);
+	}
+	
 	// Информация о строке - ценнике
 	static function GetRateInfo($data)
 	{		
 		$db = JFactory::getDBO();
 		$query = "
 select
-	concat(
-		t.name, 
-		coalesce(concat(' ', r.delivery_hours), ''), 
-		concat(' (', dt.name, ')')) tariff_name
+	t.name tariff_name, 
+	t.code tariff_code, 
+	r.delivery_hours,
+	dt.name delivery_type_name
 from #__delivery_rate r
 	join #__delivery_tariff t on t.tariff = r.tariff
 	join #__delivery_delivery_type dt on dt.code = ".$db->quote($data->delivery_type_code)."
-where r.rate  = ".$db->quote($data->rate)."";
+where r.rate  = ".$db->quote($data->rate)."
+limit 1
+";
 		$db->setQuery($query);
-		$result = $db->loadResult();
+		$result = $db->loadObject();
 		
-		return $result;
+		return CalculatorModelsOrder::MakeFullTariffName($result->tariff_name, $result->delivery_hours, $result->tariff_code, $result->delivery_type_name);
 	}
 	
 	// Получение реквизитов для отправки письма
