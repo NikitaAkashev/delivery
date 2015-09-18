@@ -163,7 +163,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div id="email" class="form-block">
 			<label for="email" class="control-label">Email:</label>
 			<div class="controls">
-				<input type="text" name="email" value="<?php if(array_key_exists('email', $this->model->form)) echo $this->model->form['email']; ?>"/>
+				<input type="text" id="client_email" name="email" value="<?php if(array_key_exists('email', $this->model->form)) echo $this->model->form['email']; ?>"/>
 			</div>
 		</div>
 		

@@ -13,6 +13,9 @@ jQuery(document).ready(function(){
 	
 	jQuery('.rate_line').click(SelectRow);
 	
+	jQuery('#client_email').change(ValidateEmail);
+	jQuery('#client_email').keyup(ValidateEmail);
+	
 	Recalculate();
 });
 
@@ -107,5 +110,15 @@ function SelectRow(){
 		jQuery('#inner_nds').text(r.inner_nds);
 		jQuery('#profit').text(r.profit);
 		jQuery('#profit_nds').text(r.profit_nds);
+	}
+}
+
+function ValidateEmail()
+{
+	var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+	if(!jQuery('#client_email').val() || re.test(jQuery('#client_email').val())){
+		jQuery('#client_email').removeClass('alert-error');
+	}else{
+		jQuery('#client_email').addClass('alert-error');
 	}
 }

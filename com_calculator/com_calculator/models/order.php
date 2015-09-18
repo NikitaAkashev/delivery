@@ -411,12 +411,14 @@ order by t.name, base.delivery_hours;
 			$message = $view->render();
 			
 			$requesites = $this->GetEmailRequisites();
+					
 			// отправим мыло			
 			$headers = 'MIME-Version: 1.0' . "\r\n".
 						'Content-type: text/html; charset=utf-8' . "\r\n" .
 						'From: '. $requesites->to . "\r\n" .
 						'Reply-To: '. $requesites->to . "\r\n" .
-						'X-Mailer: PHP/' . phpversion();
+						'X-Mailer: PHP/' . phpversion() . "\r\n" .
+						(!empty($this->form['email']) && filter_var($this->form['email'], FILTER_VALIDATE_EMAIL) ? 'BCC: ' . $this->form['email'] . "\r\n" : ''); // Если есть мыло клиента, то пошлем копию ему
 
 			mail($requesites->to, $requesites->subject, $message, $headers);
 			
