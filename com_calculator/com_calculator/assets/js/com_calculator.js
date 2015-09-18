@@ -15,9 +15,12 @@ jQuery(document).ready(function(){
 	
 	jQuery('#client_email').change(ValidateEmail);
 	jQuery('#client_email').keyup(ValidateEmail);
+	jQuery('#client_phone').change(ValidatePhone);
+	jQuery('#client_phone').keyup(ValidatePhone);
 	
 	Recalculate();
 	ValidateEmail();
+	ValidatePhone();
 });
 
 function Recalculate(){
@@ -121,5 +124,15 @@ function ValidateEmail()
 		jQuery('#client_email').removeClass('alert-error');
 	}else{
 		jQuery('#client_email').addClass('alert-error');
+	}
+}
+
+function ValidatePhone()
+{
+	var re = /^[\d \+\-\(\)]+$/;
+	if(re.test(jQuery('#client_phone').val())){
+		jQuery('#client_phone').removeClass('alert-error');
+	}else{
+		jQuery('#client_phone').addClass('alert-error');
 	}
 }

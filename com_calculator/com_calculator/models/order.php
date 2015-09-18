@@ -354,7 +354,7 @@ order by t.name, base.delivery_hours;
 		if (empty($this->form['make_order']) || $this->form['make_order'] != 'sure')
 			return false;
 		
-		if (empty($this->form['phone']))
+		if (!preg_match("/^[\d \+\-\(\)]+$/", $this->form['phone']))
 			return false;
 		
 		return true;

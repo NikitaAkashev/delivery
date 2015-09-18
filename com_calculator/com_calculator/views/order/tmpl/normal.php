@@ -156,7 +156,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div id="customer_phone" class="form-block">
 			<label for="phone" class="control-label">Телефон*:</label>
 			<div class="controls">
-				<input type="text" class="<?php if(array_key_exists('phone', $this->model->form) && $this->model->form['phone'] == '') echo 'alert-error' ?>" name="phone" value="<?php if(array_key_exists('phone', $this->model->form)) echo $this->model->form['phone']; ?>"/>
+				<input type="text" id="client_phone" name="phone" value="<?php if(array_key_exists('phone', $this->model->form)) echo $this->model->form['phone']; ?>"/>
 			</div>
 		</div>
 		
