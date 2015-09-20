@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `calc_delivery_city2provider` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 insert into calc_delivery_settings(value, code)
-values ('regspambox@yandex.ru','mail_to'), ('Заказ с сайта','mail_subject');
+values ('regspambox@yandex.ru','mail_to'), ('regspambox@yandex.ru','mail_from'), ('Заказ с сайта','mail_subject');
 
 insert into calc_delivery_tariff(name, code, margin, weight_limit,
 dimension_limit , oversize_limit_factor)

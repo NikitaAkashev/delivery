@@ -129,7 +129,7 @@ function ValidateEmail()
 
 function ValidatePhone()
 {
-	var re = /^[\d \+\-\(\)]+$/;
+	var re = /^[\d \+\-\(\)]*$/;
 	if(re.test(jQuery('#client_phone').val())){
 		jQuery('#client_phone').removeClass('alert-error');
 	}else{

@@ -415,7 +415,7 @@ order by t.name, base.delivery_hours;
 			// отправим мыло			
 			$headers = 'MIME-Version: 1.0' . "\r\n".
 						'Content-type: text/html; charset=utf-8' . "\r\n" .
-						'From: '. $requesites->to . "\r\n" .
+						'From: '. $requesites->from . "\r\n" .
 						'Reply-To: '. $requesites->to . "\r\n" .
 						'X-Mailer: PHP/' . phpversion() . "\r\n" .
 						(!empty($this->form['email']) && filter_var($this->form['email'], FILTER_VALIDATE_EMAIL) ? 'BCC: ' . $this->form['email'] . "\r\n" : ''); // Если есть мыло клиента, то пошлем копию ему
@@ -478,9 +478,11 @@ limit 1
 		$query = "
 select 
 	s.value `to`,
-	ss.value `subject`
+	ss.value `subject`,
+	mf.value `from`
 from #__delivery_settings s
 	join #__delivery_settings ss on ss.code = 'mail_subject'
+	join #__delivery_settings mf on ss.code = 'mail_from'
 where s.code = 'mail_to'
 ";
 		$db->setQuery($query);
