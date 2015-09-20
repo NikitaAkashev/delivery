@@ -4,7 +4,7 @@ jimport('joomla.application.component.modelitem');
 
 class CalculatorModelsOrder extends CalculatorModelsDefault
 {
-	private $_inner_price_viewer_group_ids = array(7,8); // ID групп, которым можно считать разницу в ценах.
+	private $_inner_price_viewer_group_ids = array(6, 7, 8); // ID групп, которым можно считать разницу в ценах.
 	
 	private $user_id;
 	
