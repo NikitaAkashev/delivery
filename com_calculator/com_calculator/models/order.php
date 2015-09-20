@@ -491,7 +491,7 @@ select
 	mf.value `from`
 from #__delivery_settings s
 	join #__delivery_settings ss on ss.code = 'mail_subject'
-	join #__delivery_settings mf on ss.code = 'mail_from'
+	join #__delivery_settings mf on mf.code = 'mail_from'
 where s.code = 'mail_to'
 ";
 		$db->setQuery($query);
