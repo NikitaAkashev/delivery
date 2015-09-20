@@ -348,13 +348,22 @@ order by t.name, base.delivery_hours;
 		return $this->CalculationResult();
 	}
 
+	// проверка корректности заполнения телефонного номера
+	static function IsPhoneValid($phone)
+	{
+		if (!preg_match("/^[\d \+\-\(\)]+$/", $phone))
+			return false;
+		
+		return true;
+	}
+
 	// проверим, что пришли все данные, которые нам нужны для заказа TODO: Перенести проверку в JTable::check();
 	function CheckOrderData()
 	{		
 		if (empty($this->form['make_order']) || $this->form['make_order'] != 'sure')
 			return false;
 		
-		if (!preg_match("/^[\d \+\-\(\)]+$/", $this->form['phone']))
+		if (!CalculatorModelsOrder::IsPhoneValid($this->form['phone']))
 			return false;
 		
 		return true;
