@@ -67,6 +67,7 @@ function Recalculate(){
 				jQuery('#calc_results').hide();
 				if(data.with_inner){jQuery('#calculated_inner').hide();}
 			}
+			jQuery('#advantage_area').removeClass("loading");
 		}
 	);
 }
@@ -93,7 +94,6 @@ function FillResults(data){
 		jQuery('.has_prices').hide();
 		jQuery('.no_prices').show();
 	}
-	jQuery('#advantage_area').removeClass("loading");
 }
 
 
