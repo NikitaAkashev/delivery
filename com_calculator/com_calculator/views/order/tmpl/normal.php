@@ -69,6 +69,9 @@ defined('_JEXEC') or die('Restricted access');
 				</select>
 			</div>
 		</div>
+        <div class="explanation">
+        	<span class="asterisk correct">*</span> Поля, отмеченные звёздочкой, обязательны для заполнения
+		</div>        
 		<?php 
 			$show = $this->model->calculated;			
 			$show_inner = $this->model->with_inner;
@@ -82,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 						<th>Выбрать</th>
 						<th>Тариф</th>
 						<th>Стоимость, руб. (с НДС)</th>
-						<th>Срок доставки, раб. дни, не считая дня приема отправления</th>
+						<th>Срок доставки<span class="asterisk correct">**</span></th>
 						<?php if($show_inner) { ?><th>Перевозчик</th><?php } ?>
 					</tr>
 				</thead>
@@ -102,6 +105,9 @@ defined('_JEXEC') or die('Restricted access');
 				<?php } ?>
 				</tbody>
 			</table>
+			<div id="calc_results_explanation" class="explanation has_prices" style="<?php if(!$show){ echo "display:none;"; }?>">
+                <span class="asterisk correct">**</span> Раб. дни, не считая дня приема отправления
+			</div> 
 			
 			<div class="control-group has_prices" id="calculated" style="<?php if(!$show){ echo "display:none;"; }?>">
 				<div>
@@ -154,7 +160,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		
 		<div id="customer_phone" class="form-block">
-			<label for="phone" class="control-label">Телефон*:</label>
+			<label for="phone" class="control-label">Телефон<span class="asterisk correct">*</span>:</label>
 			<div class="controls">
 				<input type="text" id="client_phone" class="<?php if(array_key_exists('phone', $this->model->form) && !CalculatorModelsOrder::IsPhoneValid($this->model->form['phone'])) echo 'alert-error'; ?>" name="phone" value="<?php if(array_key_exists('phone', $this->model->form)) echo $this->model->form['phone']; ?>"/>
 			</div>
