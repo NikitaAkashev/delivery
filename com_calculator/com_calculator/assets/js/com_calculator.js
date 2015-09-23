@@ -36,6 +36,7 @@ function Recalculate(){
 			if(data.calculated){
 				jQuery('#calculated').show();
 				jQuery('#calc_results').show();
+				jQuery('#calc_results_explanation').show();
 				if(data.with_inner){jQuery('#calculated_inner').show();}
 				
 				calc_model = data.prices;
