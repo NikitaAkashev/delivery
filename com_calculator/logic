@@ -1,5 +1,5 @@
 
-insert into `calc_zone`(`name`)
+insert into `calc_zone`(`name`) 
 values ('Зона 1'),('Зона 2'),('Зона 3'),('Зона 4'),('Зона 5'),('Зона 6');
 
 insert into `calc_direction2zone`(`city_from`, `city_to`, `zone`)
