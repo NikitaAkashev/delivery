@@ -50,11 +50,11 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->width !== null && $this->model->width == 0 && $this->model->weight !== null && $this->model->weight > $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="width" value="<?php echo $this->model->width; ?>" />
 			</div>
-			<label class="control-label">X</label>
+			<label class="label-x">X</label>
 			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->length !== null && $this->model->length == 0 && $this->model->weight !== null && $this->model->weight > $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="length" value="<?php echo $this->model->length; ?>" />
 			</div>
-			<label class="control-label">X</label>
+			<label class="label-x">X</label>
 			<div class="controls">
 				<input class="comma-replace advantage_fields <?php if($this->model->height !== null && $this->model->height == 0 && $this->model->weight !== null && $this->model->weight > $this->model->weight_no_size) echo 'alert-error'?>" type="text" name="height" value="<?php echo $this->model->height; ?>" />
 			</div>
@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 						<th>Выбрать</th>
 						<th>Тариф</th>
 						<th>Стоимость, руб.<br>(с НДС)</th>
-						<th>Срок доставки (раб.<br>дни, не считая дня<br>приема отправления)</th>
+						<th>Срок доставки (раб. <br>дни, не считая дня <br>приема отправления)</th>
 						<?php if($show_inner) { ?><th>Перевозчик</th><?php } ?>
 					</tr>
 				</thead>
