@@ -7,7 +7,7 @@ create table `calc_delivery_tariff` (
 	weight_limit int(11) null,
 	oversize_limit_factor decimal(4,2),
 	PRIMARY KEY  (`tariff`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 create table `calc_delivery_provider` (
@@ -20,7 +20,7 @@ create table `calc_delivery_provider` (
 	prices_with_nds tinyint(1) default 0,
 	PRIMARY KEY  (`provider`),
 	UNIQUE (`code`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 create table `calc_delivery_delivery_type` (
 	`delivery_type` int(11) NOT NULL AUTO_INCREMENT,
@@ -31,7 +31,7 @@ create table `calc_delivery_delivery_type` (
 	PRIMARY KEY  (`delivery_type`),
 	UNIQUE (`from_office`, `to_office`),
 	UNIQUE (`code`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 create table `calc_delivery_city` (
@@ -41,7 +41,7 @@ create table `calc_delivery_city` (
 	`region_name` varchar(127) null,
 	PRIMARY KEY  (`city`),
 	UNIQUE (`name`, `parent`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `calc_delivery_zone` (
@@ -50,7 +50,7 @@ CREATE TABLE `calc_delivery_zone` (
 	`code` varchar(32) NOT NULL unique,
 	`provider` int(11) NOT NULL references `calc_delivery_provider(provider)`,
 	PRIMARY KEY  (`zone`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `calc_delivery_direction2zone` (
@@ -61,7 +61,7 @@ CREATE TABLE `calc_delivery_direction2zone` (
 	max_days int(11) null,
 	PRIMARY KEY  (`zone`,`city_from`,`city_to`),
 	unique  (`zone`,`city_from`,`city_to`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `calc_delivery_assessed_value_price` (
@@ -70,7 +70,7 @@ CREATE TABLE `calc_delivery_assessed_value_price` (
 	`base_price` decimal(15,2) not null,
 	`overprice_percent` decimal(15,10) not null default 0,
 	`tariff` int(11) not null references `calc_delivery_tariff`(tariff)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 create TABLE `calc_delivery_discount` (
@@ -99,7 +99,7 @@ create table `calc_delivery_city2delivery_time`(
 	min_time int(11) not null,
 	max_time int(11) not null,
 	`provider` int(11) NOT NULL references `calc_delivery_provider`
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 create table `calc_delivery_city_factor`(
@@ -107,7 +107,7 @@ create table `calc_delivery_city_factor`(
 	factor_inner decimal(4,2) not null default 1,
 	factor_outer decimal(4,2) not null default 1,
 	`tariff` int(11) NOT NULL references `calc_delivery_tariff`
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 create TABLE `calc_delivery_rate` (
@@ -122,7 +122,7 @@ create TABLE `calc_delivery_rate` (
 	`delivery_hours` varchar(32) null ,
 	`is_enabled` int(1) not null default 0,
 	PRIMARY KEY (`rate`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `calc_delivery_weight_price` (
@@ -131,13 +131,13 @@ CREATE TABLE `calc_delivery_weight_price` (
 	`to` decimal(10,2) NOT NULL,
 	`base_price` decimal(15,2) not null,
 	`overweight_cost` decimal(15,2) not null default 0
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 create table calc_delivery_delivery_type2tariff(
 	`delivery_type` int(11) not null references `calc_delivery_delivery_type`(delivery_type),
 	`tariff` int(11) not null references `calc_delivery_tariff`(tariff)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 create table calc_delivery_order(
@@ -168,13 +168,61 @@ create table calc_delivery_settings(
 	`value` varchar(1024) not null,
 	`code` varchar(64) not null,
 	UNIQUE(`code`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `calc_delivery_city2provider` (
   `city` int(11) NOT NULL references calc_delivery_city(city),
   `provider` int(11) NOT NULL references calc_delivery_provider(provider),
   PRIMARY KEY (`city`,`provider`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+create table if not exists `calc_delivery_user`(
+	`user` int not null primary key references `calc_users(id)` ,
+	`contract_name` varchar(64) not null,
+	unique(`contract_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+create table if not exists `calc_delivery_parcel`(
+	`parcel` int primary key auto_increment,
+	`is_enabled` tinyint(1) not null default 1,
+	`owner` int(11) NULL references `calc_users(id)`,
+	`creator` int(11) not NULL references `calc_users(id)`,
+	`parcel_number` varchar(64) not null,
+	`created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	`sender` varchar(1024) not null,
+	`receiver` varchar(1024) not null,
+	`payer` varchar(1024) not null,
+	`address_from` varchar(1024) not null,
+	`address_to` varchar(1024) not null,
+	`mem` varchar(4096) null,
+	UNIQUE(`parcel_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+create table if not exists `calc_delivery_parcel_status`(
+	`parcel_status` int primary key auto_increment,
+	`name` varchar(32) not null,
+	`code` varchar(32) not null,
+	UNIQUE(`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+create table if not exists `calc_delivery_parcel2parcel_status`(
+	`parcel2parcel_status` int primary key auto_increment,
+	`parcel` int not null references `calc_delivery_parcel(parcel)`,
+	`parcel_status` int not null references `calc_delivery_parcel_status(parcel_status)`,
+	`dt` timestamp not null default current_timestamp,
+	UNIQUE(`parcel`, `parcel_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into calc_delivery_parcel_status(name, code)
+values 
+	('принято', 'taken'), 
+	('отправлено', 'sent'), 
+	('на скалде', 'stock'),
+	('готов к выдаче', 'ready'),
+	('врученно', 'executed');
 
 insert into calc_delivery_settings(value, code)
 values ('regspambox@yandex.ru','mail_to'), ('regspambox@yandex.ru','mail_from'), ('Заказ с сайта','mail_subject');
