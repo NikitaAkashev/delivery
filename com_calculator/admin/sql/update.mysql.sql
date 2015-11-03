@@ -193,7 +193,7 @@ create table if not exists `calc_delivery_parcel`(
 	`created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`sender` varchar(1024) not null,
 	`receiver` varchar(1024) not null,
-	`payer` varchar(1024) not null,
+	`payer` varchar(1024) null,
 	`address_from` varchar(1024) not null,
 	`address_to` varchar(1024) not null,
 	`mem` varchar(4096) null,
@@ -355,4 +355,38 @@ insert into calc_delivery_city2provider(city, provider)
 select c.city, p.provider 
 from calc_delivery_city c
 	join calc_delivery_provider p on p.code = 'special'
-where c.city < 2115 -- Все, кто для спецсвязи
+where c.city < 2115; -- Все, кто для спецсвязи
+
+
+insert into calc_delivery_parcel(
+	`creator`,
+	`parcel_number`,
+	`created` ,
+	`sender` ,
+	`receiver` ,
+	`address_from`,
+	`address_to` ,
+	`mem`)
+select 
+	created_by,
+	alias,
+	created,
+	SUBSTRING_INDEX(title,'—',1),
+	SUBSTRING_INDEX(title,'—',-1),
+	napravlenie_from,
+	napravlenie_to,
+	komentariy
+from ejtsu_status;
+
+
+insert into calc_delivery_parcel2parcel_status(parcel, parcel_status)
+select p.parcel, ps.parcel_status
+from calc_delivery_parcel p
+	join ejtsu_status s on s.alias = p.parcel_number
+	join calc_delivery_parcel_status ps on
+		ps.code = case s.statusname
+				when 'Получатель получил груз' then 'executed'
+				when 'Принято к отправке' then 'taken'
+				when 'Груз в точке получения' then 'ready'
+				when 'Груз отправлен получателю' then 'sent'
+			end
