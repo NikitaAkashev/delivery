@@ -35,39 +35,39 @@ insert into #__delivery_parcel_status(name, code)
 values 
 	('принято', 'taken'), 
 	('отправлено', 'sent'), 
-	('на скалде', 'stock'),
+	('на складе', 'stock'),
 	('готов к выдаче', 'ready'),
-	('врученно', 'executed');
+	('вручено', 'executed');
 
 insert into #__delivery_parcel(
--	`creator`,
--	`parcel_number`,
--	`created` ,
--	`sender` ,
--	`receiver` ,
--	`address_from`,
--	`address_to` ,
--	`mem`)
--select 
--	created_by,
--	alias,
--	created,
--	SUBSTRING_INDEX(title,'—',1),
--	SUBSTRING_INDEX(title,'—',-1),
--	napravlenie_from,
--	napravlenie_to,
--	komentariy
--from ejtsu_status;
--
--
--insert into calc_delivery_parcel2parcel_status(parcel, parcel_status)
--select p.parcel, ps.parcel_status
--from #__delivery_parcel p
--	join ejtsu_status s on s.alias = p.parcel_number
--	join #__delivery_parcel_status ps on
--		ps.code = case s.statusname
--				when 'Получатель получил груз' then 'executed'
--				when 'Принято к отправке' then 'taken'
--				when 'Груз в точке получения' then 'ready'
--				when 'Груз отправлен получателю' then 'sent'
--			end
+	`creator`,
+	`parcel_number`,
+	`created` ,
+	`sender` ,
+	`receiver` ,
+	`address_from`,
+	`address_to` ,
+	`mem`)
+select 
+	created_by,
+	alias,
+	created,
+	SUBSTRING_INDEX(title,'—',1),
+	SUBSTRING_INDEX(title,'—',-1),
+	napravlenie_from,
+	napravlenie_to,
+	komentariy
+from u7508_skorokhodoff.ejtsu_status;
+
+
+insert into calc_delivery_parcel2parcel_status(parcel, parcel_status)
+select p.parcel, ps.parcel_status
+from #__delivery_parcel p
+	join u7508_skorokhodoff.ejtsu_status s on s.alias = p.parcel_number
+	join #__delivery_parcel_status ps on
+		ps.code = case s.statusname
+				when 'Получатель получил груз' then 'executed'
+				when 'Принято к отправке' then 'taken'
+				when 'Груз в точке получения' then 'ready'
+				when 'Груз отправлен получателю' then 'sent'
+			end

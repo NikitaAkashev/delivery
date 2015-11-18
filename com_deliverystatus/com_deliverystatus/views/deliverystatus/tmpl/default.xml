@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_DELIVERY_STATUS_VIEW_DEFAULT_TITLE">
-		<message>COM_DELIVERY_STATUS_VIEW_DEFAULT_DESC</message>
+	<layout title="COM_DELIVERYSTATUS_VIEW_DEFAULT_TITLE">
+		<message>COM_DELIVERYSTATUS_VIEW_DEFAULT_DESC</message>
 	</layout>
 	<fields name="request" addfieldpath="/administrator/components/com_deliverystatus/models/fields">
 		<fieldset name="request">
 			<field name="parcel_number" type="deliverystatus"
-					label="COM_DELIVERY_STATUS_FIELD_GREETING_LABEL"
-					description="COM_DELIVERY_STATUS_FIELD_GREETING_DESC" />
+					label="COM_DELIVERYSTATUS_FIELD_PARCEL_NUMBER_LABEL"
+					description="COM_DELIVERYSTATUS_FIELD_PARCEL_NUMBER_DESC" />
 		</fieldset>
 	</fields>
 </metadata>
