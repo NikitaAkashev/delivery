@@ -9,6 +9,7 @@ class DeliveryStatusViewParcel extends JViewLegacy
 	{
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
+		$this->script = $this->get('Script');
 		
 		if (count($errors = $this->get('Errors')))
 		{
@@ -54,6 +55,10 @@ class DeliveryStatusViewParcel extends JViewLegacy
 		$document->setTitle($isNew ? 
 					JText::_('COM_DELIVERYSTATUS_MANAGER_PARCEL_NEW') 
 						: JText::_('COM_DELIVERYSTATUS_MANAGER_PARCEL_EDIT'));
+		$document->addScript(JURI::root() . $this->script);		
+		$document->addScript(JURI::root() . "administrator/components/com_deliverystatus"
+				            . "/views/parcel/submitbutton.js");
+		JText::script('COM_DELIVERYSTATUS_ERROR_UNACCEPTABLE');
 	}
 }
 ?>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addrulepath="/administrator/components/com_deliverystatus/models/rules">
 	<fieldset>
 		<field
 				name="parcel"
@@ -11,8 +11,10 @@
 				label="COM_DELIVERYSTATUS_PARCEL_NUMBER_LABEL"
 				description="COM_DELIVERYSTATUS_PARCEL_NUMBER_DESC"
 				size="40"
-				class="inputbox"
-				default=""
+				class="inputbox validate-parcelnumber"
+				default=""			
+				required="true"
+				validate="parcelnumber"
 				/>
 	</fieldset>
 </form>

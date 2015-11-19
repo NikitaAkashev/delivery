@@ -41,6 +41,10 @@ class DeliveryStatusModelParcel extends JModelAdmin
 
 		return $data;
 	}
+	public function getScript() 	
+	{		
+		return 'administrator/components/com_deliverystatus/models/forms/parcel.js';	
+	}
 }
 
 ?>

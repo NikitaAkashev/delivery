@@ -1,8 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
+JHtml::_('behavior.formvalidation');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_deliverystatus&layout=edit&parcel=' . (int) $this->item->parcel); ?>"
-    method="post" name="adminForm" id="adminForm">
+    method="post" name="adminForm" id="adminForm" class="form-validate">
     <div class="form-horizontal">
         <fieldset class="adminform">
             <legend><?php echo JText::_('COM_DELIVERYSTATUS_PARCEL_DETAILS'); ?></legend>
