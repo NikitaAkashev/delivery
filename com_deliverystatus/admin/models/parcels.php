@@ -7,7 +7,7 @@ class DeliveryStatusModelParcels extends JModelList
 	{		
 		if (empty($config['filter_fields']))		
 		{			
-			$config['filter_fields'] = array('parcel', 'parcel_number',	'is_enabled');		
+			$config['filter_fields'] = array('parcel', 'parcel_number',	'published');		
 		} 		
 		parent::__construct($config);	
 	}
@@ -26,14 +26,14 @@ class DeliveryStatusModelParcels extends JModelList
 			$like = $db->quote('%' . $search . '%');			
 			$query->where('parcel_number LIKE ' . $like);		
 		} 
-		$is_enabled = $this->getState('filter.is_enabled');
-		if (is_numeric($is_enabled))
+		$published = $this->getState('filter.published');
+		if (is_numeric($published))
 		{			
-			$query->where('is_enabled = ' . (int) $is_enabled);		
+			$query->where('published = ' . (int) $published);		
 		}		
-		elseif ($is_enabled === '')		
+		elseif ($published === '')		
 		{			
-			$query->where('(is_enabled IN (0, 1))');
+			$query->where('(published IN (0, 1))');
 		} 
 		$orderCol	= $this->state->get('list.ordering', 'parcel_number');
 		$orderDirn 	= $this->state->get('list.direction', 'asc');

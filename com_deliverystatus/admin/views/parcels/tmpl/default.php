@@ -24,7 +24,7 @@ $listDirn = $this->escape($this->filter_order_Dir);
 				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_PARCEL_NUMBER', 'parcel_number', $listDirn, $listOrder); ?>
 			</th>
 			<th width="5%">
-				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_IS_ENABLED', 'is_enabled', $listDirn, $listOrder); ?>
+				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_PUBLISHED', 'published', $listDirn, $listOrder); ?>
 			</th>
 			<th width="2%">
 				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_ID', 'parcel', $listDirn, $listOrder); ?>
@@ -57,7 +57,7 @@ $listDirn = $this->escape($this->filter_order_Dir);
 							</a>
 						</td>
 						<td align="center">
-							<?php echo JHtml::_('jgrid.published', $row->is_enabled, $i, 'parcels.', true, 'cb'); ?>
+							<?php echo JHtml::_('jgrid.published', $row->published, $i, 'parcels.', true, 'cb'); ?>
 						</td>
 						<td align="center">
 							<?php echo $row->parcel; ?>

@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class DeliveryStatusModelParcel extends JModelAdmin
 {
-	public function getTable($type = 'DeliveryStatus', $prefix = 'DeliveryStatusTable', $config = array())
+	public function getTable($type = 'DeliveryParcel', $prefix = 'DeliveryStatusTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}

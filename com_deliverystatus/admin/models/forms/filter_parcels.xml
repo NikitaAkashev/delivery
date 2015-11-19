@@ -9,7 +9,7 @@
 			class="js-stools-search-string"
 		/>
 		<field
-			name="is_enabled"
+			name="published"
 			type="status"
 			label="JOPTION_SELECT_PUBLISHED"
 			statuses="0,1"

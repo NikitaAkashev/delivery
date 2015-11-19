@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form addrulepath="/administrator/components/com_deliverystatus/models/rules">
+<form addrulepath="/administrator/components/com_deliverystatus/models/rules"
+		addfieldpath="/administrator/components/com_deliverystatus/models/fields" >
 	<fieldset>
 		<field
 				name="parcel"
@@ -15,6 +16,17 @@
 				default=""			
 				required="true"
 				validate="parcelnumber"
+				/>
+		<field
+				name="sender"
+				type="sender"
+				label="COM_DELIVERYSTATUS_SENDER_LABEL"
+				description="COM_DELIVERYSTATUS_SENDER_DESC"
+				size="40"
+				class="inputbox validate-sender"
+				default=""			
+				required="true"
+				validate="sender"
 				/>
 	</fieldset>
 </form>

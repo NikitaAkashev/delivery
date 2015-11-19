@@ -4,4 +4,9 @@ jQuery(function() {
             regex=/^[0-9]+$/;
             return regex.test(value);
         });
+    document.formvalidator.setHandler('sender',
+            function (value) {
+                regex=/^.+$/;
+                return regex.test(value);
+            });
 });

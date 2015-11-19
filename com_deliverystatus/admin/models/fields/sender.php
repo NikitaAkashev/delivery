@@ -2,18 +2,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JFormHelper::loadFieldClass('list');
+JFormHelper::loadFieldClass('combo');
 
-class JFormFieldDeliveryStatus extends JFormFieldList
+class JFormFieldSender extends JFormFieldCombo
 {
-	protected $type = 'DeliveryStatus';
+	protected $type = 'Sender';
 
 	protected function getOptions()
 	{
 		$db    = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$query->select('parcel_number,parcel_number');
+		$query->select('distinct sender');
 		$query->from('#__delivery_parcel');
+		$query->order('sender ASC');
 		$db->setQuery((string) $query);
 		$messages = $db->loadObjectList();
 		$options  = array();
@@ -22,7 +23,7 @@ class JFormFieldDeliveryStatus extends JFormFieldList
 		{
 			foreach ($messages as $message)
 			{
-				$options[] = JHtml::_('select.option', $message->parcel_number, $message->parcel_number);
+				$options[] = JHtml::_('select.option', $message->sender, $message->sender);
 			}
 		}
 

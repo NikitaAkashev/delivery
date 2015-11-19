@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-class DeliveryStatusTableDeliveryStatus extends JTable
+class DeliveryStatusTableDeliveryParcel extends JTable
 {
 	function __construct(&$db)
 	{

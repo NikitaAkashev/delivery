@@ -176,15 +176,6 @@ CREATE TABLE IF NOT EXISTS `calc_delivery_city2provider` (
   PRIMARY KEY (`city`,`provider`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-create table if not exists `calc_delivery_user`(
-	`user` int not null primary key references `calc_users(id)` ,
-	`contract_name` varchar(64) not null,
-	unique(`contract_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 insert into calc_delivery_settings(value, code)
 values ('regspambox@yandex.ru','mail_to'), ('regspambox@yandex.ru','mail_from'), ('Заказ с сайта','mail_subject');
 

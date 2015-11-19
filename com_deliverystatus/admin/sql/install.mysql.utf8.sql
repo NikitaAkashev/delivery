@@ -1,7 +1,7 @@
 
 create table if not exists `#__delivery_parcel`(
 	`parcel` int primary key auto_increment,
-	`is_enabled` tinyint(1) not null default 1,
+	`published` tinyint(4) not null default 1,
 	`owner` int(11) NULL references `calc_users(id)`,
 	`creator` int(11) not NULL references `calc_users(id)`,
 	`parcel_number` varchar(64) not null,
@@ -29,6 +29,12 @@ create table if not exists `#__delivery_parcel2parcel_status`(
 	`parcel_status` int not null references `calc_delivery_parcel_status(parcel_status)`,
 	`dt` timestamp not null default current_timestamp,
 	UNIQUE(`parcel`, `parcel_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+create table if not exists `#__delivery_user`(
+	`user` int not null primary key references `#__users(id)` ,
+	`contract_name` varchar(64) not null,
+	unique(`contract_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 insert into #__delivery_parcel_status(name, code)
