@@ -3,8 +3,21 @@
 		addfieldpath="/administrator/components/com_deliverystatus/models/fields" >
 	<fieldset>
 		<field
-				name="parcel"
-				type="hidden"
+				name="created"
+				type="calendar"
+				label="COM_DELIVERYSTATUS_CREATED_LABEL"
+				description="COM_DELIVERYSTATUS_CREATED_DESC"
+				class="inputbox"
+				default="NOW"			
+				required="true"
+				/>
+		<field
+				name="owner"
+				type="owner"
+				label="COM_DELIVERYSTATUS_OWNER_LABEL"
+				description="COM_DELIVERYSTATUS_OWNER_DESC"
+				class="inputbox"
+				default=""
 				/>
 		<field
 				name="parcel_number"
@@ -27,6 +40,21 @@
 				default=""			
 				required="true"
 				validate="sender"
+				/>
+		<field
+				name="receiver"
+				type="receiver"
+				label="COM_DELIVERYSTATUS_RECEIVER_LABEL"
+				description="COM_DELIVERYSTATUS_RECEIVER_DESC"
+				size="40"
+				class="inputbox validate-receiver"
+				default=""			
+				required="true"
+				validate="receiver"
+				/>
+		<field
+				name="parcel"
+				type="hidden"
 				/>
 	</fieldset>
 </form>

@@ -39,9 +39,11 @@ class DeliveryStatusViewParcels extends JViewLegacy
 			$title .= "<span style='font-size: 0.5em; vertical-align: middle;'>(" . $this->pagination->total . ")</span>";
 		}
 		JToolBarHelper::title($title, 'deliverystatus');
-		JToolBarHelper::deleteList('', 'parcels.delete');
-		JToolBarHelper::editList('parcel.edit');
 		JToolBarHelper::addNew('parcel.add');
+		JToolBarHelper::editList('parcel.edit');
+		JToolBarHelper::deleteList('', 'parcels.delete');
+		JToolBarHelper::publishList('parcels.publish');
+		JToolBarHelper::unpublishList('parcels.unpublish');
 	}
 	
 	protected function setDocument()

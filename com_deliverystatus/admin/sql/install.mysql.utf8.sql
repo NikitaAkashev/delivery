@@ -15,6 +15,7 @@ create table if not exists `#__delivery_parcel`(
 	UNIQUE(`parcel_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 create table if not exists `#__delivery_parcel_status`(
 	`parcel_status` int primary key auto_increment,
 	`name` varchar(32) not null,
@@ -32,7 +33,7 @@ create table if not exists `#__delivery_parcel2parcel_status`(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 create table if not exists `#__delivery_user`(
-	`user` int not null primary key references `#__users(id)` ,
+	`user` int not null primary key references `#__users(id)`,
 	`contract_name` varchar(64) not null,
 	unique(`contract_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -58,8 +59,8 @@ select
 	created_by,
 	alias,
 	created,
-	SUBSTRING_INDEX(title,'—',1),
-	SUBSTRING_INDEX(title,'—',-1),
+	TRIM(SUBSTRING_INDEX(title,'—',1)),
+	TRIM(SUBSTRING_INDEX(title,'—',-1)),
 	napravlenie_from,
 	napravlenie_to,
 	komentariy

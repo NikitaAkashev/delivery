@@ -9,4 +9,9 @@ jQuery(function() {
                 regex=/^.+$/;
                 return regex.test(value);
             });
+    document.formvalidator.setHandler('receiver',
+            function (value) {
+                regex=/^.+$/;
+                return regex.test(value);
+            });
 });
