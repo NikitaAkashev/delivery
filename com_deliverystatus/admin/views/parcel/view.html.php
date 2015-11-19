@@ -20,6 +20,8 @@ class DeliveryStatusViewParcel extends JViewLegacy
 		$this->addToolBar();
 		
 		parent::display($tpl);
+		
+		$this->setDocument();
 	}
 	
 	
@@ -42,10 +44,16 @@ class DeliveryStatusViewParcel extends JViewLegacy
 
 		JToolBarHelper::title($title, 'deliverystatus');
 		JToolBarHelper::save('parcel.save');
-		JToolBarHelper::cancel(
-		'parcel.cancel',
-		$isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE'
-				);
+		JToolBarHelper::cancel('parcel.cancel',	$isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
+	}
+	
+	protected function setDocument() 
+	{
+		$isNew = ($this->item->parcel < 1);
+		$document = JFactory::getDocument();
+		$document->setTitle($isNew ? 
+					JText::_('COM_DELIVERYSTATUS_MANAGER_PARCEL_NEW') 
+						: JText::_('COM_DELIVERYSTATUS_MANAGER_PARCEL_EDIT'));
 	}
 }
 ?>

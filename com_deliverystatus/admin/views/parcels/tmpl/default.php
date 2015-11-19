@@ -1,8 +1,18 @@
 <?php
 defined('_JEXEC') or die('Restricted Access');
 JHtml::_('script', 'system/core.js', false, true);
+JHtml::_('formbehavior.chosen', 'select');
+
+$listOrder = $this->escape($this->filter_order);
+$listDirn = $this->escape($this->filter_order_Dir);
 ?>
 <form action="index.php?option=com_deliverystatus&view=parcels" method="post" id="adminForm" name="adminForm">
+	<div class="row-fluid">
+		<div class="span6">
+			<?php echo JText::_('COM_DELIVERYSTATUS_PARCELS_FILTER'); ?>
+			<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
+		</div>
+	</div>
 	<table class="table table-striped table-hover">
 		<thead>
 		<tr>
@@ -11,13 +21,13 @@ JHtml::_('script', 'system/core.js', false, true);
 				<?php echo JHtml::_('grid.checkall'); ?>
 			</th>
 			<th width="90%">
-				<?php echo JText::_('COM_DELIVERYSTATUS_PARCEL_NUMBER') ;?>
+				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_PARCEL_NUMBER', 'parcel_number', $listDirn, $listOrder); ?>
 			</th>
 			<th width="5%">
-				<?php echo JText::_('COM_DELIVERYSTATUS_IS_ENABLED'); ?>
+				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_IS_ENABLED', 'is_enabled', $listDirn, $listOrder); ?>
 			</th>
 			<th width="2%">
-				<?php echo JText::_('COM_DELIVERYSTATUS_ID'); ?>
+				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_ID', 'parcel', $listDirn, $listOrder); ?>
 			</th>
 		</tr>
 		</thead>
@@ -59,5 +69,7 @@ JHtml::_('script', 'system/core.js', false, true);
 	</table>
 	<input type="hidden" name="task" value=""/>	
 	<input type="hidden" name="boxchecked" value="0"/>	
+	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
 	<?php echo JHtml::_('form.token'); ?>
 </form>

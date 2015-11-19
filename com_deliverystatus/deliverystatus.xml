@@ -7,7 +7,7 @@
 	<authorUrl>http://scorokhodoff.ru/</authorUrl>
 	<copyright>Scorokhodoff 2015</copyright>
 	<license></license>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<description>COM_DELIVERYSTATUS_DESCRIPTION</description>
  
 	<install> 
@@ -26,6 +26,11 @@
 		</schemas>
 	</update>
 
+	<media destination="com_deliverystatus" folder="media">		
+		<filename>index.html</filename>
+		<folder>images</folder>
+	</media>
+
 	<files folder="com_deliverystatus">
 		<filename>index.html</filename>
 		<filename>deliverystatus.php</filename>
@@ -36,7 +41,7 @@
 	</files>
  
 	<administration>
-		<menu link='index.php?option=com_deliverystatus'>COM_DELIVERYSTATUS_MENU</menu>
+		<menu link='index.php?option=com_deliverystatus' img="../media/com_deliverystatus/images/tux-16x16.png">COM_DELIVERYSTATUS_MENU</menu>
 		
 		<files folder="admin">
 			<filename>index.html</filename>
