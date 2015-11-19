@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field
+				name="parcel"
+				type="hidden"
+				/>
+		<field
+				name="parcel_number"
+				type="text"
+				label="COM_DELIVERYSTATUS_PARCEL_NUMBER_LABEL"
+				description="COM_DELIVERYSTATUS_PARCEL_NUMBER_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+	</fieldset>
+</form>

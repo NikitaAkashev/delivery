@@ -14,7 +14,17 @@ class DeliveryStatusViewParcels extends JViewLegacy
 
 			return false;
 		}
-
+		
+		$this->addToolBar();
+		
 		parent::display($tpl);
+	}
+	
+	protected function addToolBar()	
+	{		
+		JToolBarHelper::title(JText::_('COM_DELIVERYSTATUS_MANAGER_PARCELS'));		
+		JToolBarHelper::addNew('parcel.add');		
+		JToolBarHelper::editList('parcel.edit');		
+		JToolBarHelper::deleteList('', 'parcels.delete');	
 	}
 }

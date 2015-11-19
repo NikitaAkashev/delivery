@@ -30,7 +30,9 @@ JHtml::_('script', 'system/core.js', false, true);
 		</tfoot>
 		<tbody>
 			<?php if (!empty($this->items)) : ?>
-				<?php foreach ($this->items as $i => $row) : ?>
+				<?php foreach ($this->items as $i => $row) : 
+					$link = JRoute::_('index.php?option=com_deliverystatus&task=parcel.edit&parcel=' . $row->parcel);
+				?>
  
 					<tr>
 						<td>
@@ -40,7 +42,9 @@ JHtml::_('script', 'system/core.js', false, true);
 							<?php echo JHtml::_('grid.id', $i, $row->parcel); ?>
 						</td>
 						<td>
-							<?php echo $row->parcel_number; ?>
+							<a href="<?php echo $link; ?>" title="<?php echo JText::_('COM_DELIVERYSTATUS_EDIT_PARCEL'); ?>">
+								<?php echo $row->parcel_number; ?>
+							</a>
 						</td>
 						<td align="center">
 							<?php echo JHtml::_('jgrid.published', $row->is_enabled, $i, 'parcels.', true, 'cb'); ?>
@@ -53,4 +57,7 @@ JHtml::_('script', 'system/core.js', false, true);
 			<?php endif; ?>
 		</tbody>
 	</table>
+	<input type="hidden" name="task" value=""/>	
+	<input type="hidden" name="boxchecked" value="0"/>	
+	<?php echo JHtml::_('form.token'); ?>
 </form>
