@@ -16,17 +16,23 @@ $listDirn = $this->escape($this->filter_order_Dir);
 	<table class="table table-striped table-hover">
 		<thead>
 		<tr>
-			<th width="1%"><?php echo JText::_('COM_DELIVERYSTATUS_NUM'); ?></th>
-			<th width="2%">
+			<th width=""><?php echo JText::_('COM_DELIVERYSTATUS_NUM'); ?></th>
+			<th width="">
 				<?php echo JHtml::_('grid.checkall'); ?>
 			</th>
-			<th width="90%">
+			<th width="">
 				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_PARCEL_NUMBER', 'parcel_number', $listDirn, $listOrder); ?>
 			</th>
-			<th width="5%">
+			<th width="">
+				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_SENDER', 'sender', $listDirn, $listOrder); ?>
+			</th>
+			<th width="">
+				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_RECEIVER', 'receiver', $listDirn, $listOrder); ?>
+			</th>
+			<th width="">
 				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_PUBLISHED', 'published', $listDirn, $listOrder); ?>
 			</th>
-			<th width="2%">
+			<th width="">
 				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_ID', 'parcel', $listDirn, $listOrder); ?>
 			</th>
 		</tr>
@@ -54,6 +60,16 @@ $listDirn = $this->escape($this->filter_order_Dir);
 						<td>
 							<a href="<?php echo $link; ?>" title="<?php echo JText::_('COM_DELIVERYSTATUS_EDIT_PARCEL'); ?>">
 								<?php echo $row->parcel_number; ?>
+							</a>
+						</td>
+						<td>
+							<a href="<?php echo $link; ?>" title="<?php echo JText::_('COM_DELIVERYSTATUS_EDIT_PARCEL'); ?>">
+								<?php echo $row->sender; ?>
+							</a>
+						</td>
+						<td>
+							<a href="<?php echo $link; ?>" title="<?php echo JText::_('COM_DELIVERYSTATUS_EDIT_PARCEL'); ?>">
+								<?php echo $row->receiver; ?>
 							</a>
 						</td>
 						<td align="center">

@@ -53,6 +53,53 @@
 				validate="receiver"
 				/>
 		<field
+				name="payer"
+				type="payer"
+				label="COM_DELIVERYSTATUS_PAYER_LABEL"
+				description="COM_DELIVERYSTATUS_PAYER_DESC"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+		<field
+				name="address_from"
+				type="address"
+				label="COM_DELIVERYSTATUS_ADDRESS_FROM_LABEL"
+				description="COM_DELIVERYSTATUS_ADDRESS_FROM_DESC"
+				size="40"
+				class="inputbox validate-address"
+				default=""			
+				required="true"
+				validate="address"
+				/>
+		<field
+				name="address_to"
+				type="address"
+				label="COM_DELIVERYSTATUS_ADDRESS_TO_LABEL"
+				description="COM_DELIVERYSTATUS_ADDRESS_TO_DESC"
+				size="40"
+				class="inputbox validate-address"
+				default=""			
+				required="true"
+				validate="address"
+				/>
+		<field
+				name="creator"
+				type="user"
+				label="COM_DELIVERYSTATUS_CREATOR_LABEL"
+				description="COM_DELIVERYSTATUS_CREATOR_DESC"
+				class="inputbox"	
+				required="true"
+				default=""
+				/>
+		<field
+				name="mem"
+				type="textarea"
+				label="COM_DELIVERYSTATUS_MEM_LABEL"
+				description="COM_DELIVERYSTATUS_MEM_DESC"
+				class="inputbox"
+				/>
+		<field
 				name="parcel"
 				type="hidden"
 				/>

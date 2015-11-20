@@ -14,4 +14,11 @@ jQuery(function() {
                 regex=/^.+$/;
                 return regex.test(value);
             });
+    document.formvalidator.setHandler('address',
+            function (value) {
+                regex=/^.+$/;
+                return regex.test(value);
+            });
+    
+    jQuery("#jform_dt").datetimepicker();
 });

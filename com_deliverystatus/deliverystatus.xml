@@ -7,7 +7,7 @@
 	<authorUrl>http://scorokhodoff.ru/</authorUrl>
 	<copyright>Scorokhodoff 2015</copyright>
 	<license></license>
-	<version>0.1.2</version>
+	<version>0.1.9</version>
 	<description>COM_DELIVERYSTATUS_DESCRIPTION</description>
  
 	<install> 
@@ -53,6 +53,7 @@
 			<folder>views</folder>
 			<folder>language</folder>
 			<folder>controllers</folder>
+			<folder>assets</folder>
 		</files>
 	</administration>
  

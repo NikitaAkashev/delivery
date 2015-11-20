@@ -7,7 +7,7 @@ class DeliveryStatusModelParcels extends JModelList
 	{		
 		if (empty($config['filter_fields']))		
 		{			
-			$config['filter_fields'] = array('parcel', 'parcel_number',	'published');		
+			$config['filter_fields'] = array('parcel', 'parcel_number','sender', 'receiver', 'published');		
 		} 		
 		parent::__construct($config);	
 	}

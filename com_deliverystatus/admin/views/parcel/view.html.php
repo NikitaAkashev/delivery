@@ -8,8 +8,13 @@ class DeliveryStatusViewParcel extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$this->form = $this->get('Form');
+		$this->status_form = $this->get('StatusForm');
 		$this->item = $this->get('Item');
-		$this->script = $this->get('Script');
+		$this->scripts = $this->get('Scripts');
+		$this->styles = $this->get('Styles');
+		
+		$model = $this->getModel();
+		$this->statuses = $model->getStatuses($this->item->parcel);
 		
 		if (count($errors = $this->get('Errors')))
 		{
@@ -45,6 +50,8 @@ class DeliveryStatusViewParcel extends JViewLegacy
 
 		JToolBarHelper::title($title, 'deliverystatus');
 		JToolBarHelper::save('parcel.save');
+		if (!$isNew)
+			JToolBarHelper::apply('parcel.apply');
 		JToolBarHelper::cancel('parcel.cancel',	$isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 	}
 	
@@ -55,7 +62,13 @@ class DeliveryStatusViewParcel extends JViewLegacy
 		$document->setTitle($isNew ? 
 					JText::_('COM_DELIVERYSTATUS_MANAGER_PARCEL_NEW') 
 						: JText::_('COM_DELIVERYSTATUS_MANAGER_PARCEL_EDIT'));
-		$document->addScript(JURI::root() . $this->script);		
+
+		foreach ($this->styles as $style)
+			$document->addStyleSheet(JURI::root() . $style);
+		
+		foreach ($this->scripts as $script)
+			$document->addScript(JURI::root() . $script);
+			
 		$document->addScript(JURI::root() . "administrator/components/com_deliverystatus"
 				            . "/views/parcel/submitbutton.js");
 		JText::script('COM_DELIVERYSTATUS_ERROR_UNACCEPTABLE');
