@@ -20,5 +20,12 @@ jQuery(function() {
                 return regex.test(value);
             });
     
-    jQuery("#jform_dt").datetimepicker();
+    var dt = new Date();
+    var val = dt.getDay()+'.'+dt.getMonth()+'.'+dt.getFullYear();
+    jQuery("#jform_dt").datetimepicker(
+    	{value: val,
+		format:	'd.m.Y H:i',
+		formatTime:	'H:i',
+		formatDate:	'd.m.Y'}
+    );
 });

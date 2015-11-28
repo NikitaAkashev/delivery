@@ -52,7 +52,7 @@ class DeliveryStatusModelParcel extends JModelAdmin
 				'com_deliverystatus.edit.parcel.data',
 				array()
 		);
-
+		
 		if (empty($data))
 		{
 			$data = $this->getItem();
@@ -98,11 +98,35 @@ class DeliveryStatusModelParcel extends JModelAdmin
 			return false;
 		}
 		
-		if($data['delivery_status'])
+		$parcel = $data['parcel'];
+		if(!$parcel){
+			$parcel = $this->getState($this->getName() . '.id');
+		}
+		
+		$jinput = JFactory::getApplication()->input;
+		$data_status = $jinput->post->get('jform', array(), 'array');
+		$form_status = $this->getStatusForm($data_status, false);
+		$data_status_valid = $this->validate($form_status, $data_status);
+		$data_status_valid['parcel'] = $parcel;
+		
+		if($data_status_valid['parcel_status'])
 		{
 			$table = $this->GetTable('DeliveryParcel2ParcelStatus', $prefix = 'DeliveryStatusTable');
-			
-			die(print_r($data));
+			if (!$table->bind($data_status_valid))
+			{
+				$this->setError($table->getError());	
+				return false;
+			}
+			if (!$table->check())
+			{
+				$this->setError($table->getError());			
+				return false;
+			}
+			if (!$table->store())
+			{
+				$this->setError($table->getError());			
+				return false;
+			}
 		}
 		
 		return true;
