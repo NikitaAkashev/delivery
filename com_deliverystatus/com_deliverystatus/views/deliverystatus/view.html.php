@@ -11,7 +11,12 @@ class DeliveryStatusViewDeliveryStatus extends JViewLegacy
 		
 		JLoader::import( 'Parcel', JPATH_ADMINISTRATOR . '/' . 'components' . '/' . 'com_deliverystatus/models' );
 		$status_model = new DeliveryStatusModelParcel();
-		$this->statuses = $status_model->getStatuses($this->parcel['parcel']);
+		if (array_key_exists('parcel', $this->parcel)) {
+			$this->statuses = $status_model->getStatuses($this->parcel['parcel']);
+		}else 
+		{
+			$this->statuses = array();
+		}	
 		
 		if (count($errors = $this->get('Errors')))
 		{
