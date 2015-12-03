@@ -10,7 +10,6 @@
 				class="inputbox"
 				default="NOW"			
 				required="true"
-				format="%d.%m.%Y"
 				/>
 		<field
 				name="owner"

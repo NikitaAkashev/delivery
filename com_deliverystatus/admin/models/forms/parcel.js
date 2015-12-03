@@ -21,11 +21,11 @@ jQuery(function() {
             });
     
     var dt = new Date();
-    var val = dt.getDay()+'.'+dt.getMonth()+'.'+dt.getFullYear();
+    var val = dt.getFullYear()+'-'+dt.getMonth()+'-'+dt.getDay();
     jQuery("#jform_dt").datetimepicker(
     	{value: val,
-		format:	'd.m.Y H:i',
+		format:	'Y-m-d H:i',
 		formatTime:	'H:i',
-		formatDate:	'd.m.Y'}
+		formatDate:	'Y-m-d'}
     );
 });

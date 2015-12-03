@@ -108,7 +108,7 @@ class DeliveryStatusModelParcel extends JModelAdmin
 		$form_status = $this->getStatusForm($data_status, false);
 		$data_status_valid = $this->validate($form_status, $data_status);
 		$data_status_valid['parcel'] = $parcel;
-		
+
 		if($data_status_valid['parcel_status'])
 		{
 			$table = $this->GetTable('DeliveryParcel2ParcelStatus', $prefix = 'DeliveryStatusTable');
