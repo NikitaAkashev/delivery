@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<extension type="module" version="1.0.0" method="upgrade" client="site">
+    <name>MOD_DELIVERYSTATUS</name>
+    <author>Darkling</author>
+    <authorEmail>darkling69@mail.ru</authorEmail>
+    <authorUrl>http://skorokhodoff.ru</authorUrl>
+    <copyright></copyright>
+    <license></license>
+    <version>1.0</version>
+    <description>MOD_DELIVERYSTATUS_DESC</description>
+    <files>
+        <filename module="mod_deliverystatus">mod_deliverystatus.php</filename>
+        <filename>index.html</filename>
+        <folder>tmpl</folder>
+        <folder>language</folder>
+    </files>
+</extension>
