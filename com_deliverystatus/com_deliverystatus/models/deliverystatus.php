@@ -32,7 +32,7 @@ class DeliveryStatusModelDeliveryStatus extends JModelItem
 			$table = $this->getTable();
 			$fields = array('parcel_number' => (INT)$parcel_number);
 			$table->load($fields);
-			if(!$table->published)
+			if(!$table->published || !$table->parcel)
 				return array();
 			$this->info = $table->getProperties();
 			$this->SecureData();
