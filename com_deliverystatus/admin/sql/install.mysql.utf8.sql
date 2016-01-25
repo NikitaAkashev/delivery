@@ -2,8 +2,8 @@
 create table if not exists `#__delivery_parcel`(
 	`parcel` int primary key auto_increment,
 	`published` tinyint(4) not null default 1,
-	`owner` int(11) NULL references `calc_users(id)`,
-	`creator` int(11) not NULL references `calc_users(id)`,
+	`owner` int(11) NULL references `#__users(id)`,
+	`creator` int(11) not NULL references `#__users(id)`,
 	`parcel_number` varchar(64) not null,
 	`created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`sender` varchar(1024) not null,
@@ -26,8 +26,8 @@ create table if not exists `#__delivery_parcel_status`(
 
 create table if not exists `#__delivery_parcel2parcel_status`(
 	`parcel2parcel_status` int primary key auto_increment,
-	`parcel` int not null references `calc_delivery_parcel(parcel)`,
-	`parcel_status` int not null references `calc_delivery_parcel_status(parcel_status)`,
+	`parcel` int not null references `#__delivery_parcel(parcel)`,
+	`parcel_status` int not null references `#__delivery_parcel_status(parcel_status)`,
 	`dt` timestamp not null default current_timestamp,
 	UNIQUE(`parcel`, `parcel_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -67,8 +67,10 @@ select
 from u7508_skorokhodoff.ejtsu_status;
 
 
-insert into calc_delivery_parcel2parcel_status(parcel, parcel_status)
-select p.parcel, ps.parcel_status
+insert into #__delivery_parcel2parcel_status(parcel, parcel_status, dt) 
+select p.parcel, ps.parcel_status,
+	case when s.komentariy like 'Доставлено %' then STR_TO_DATE(TRIM(SUBSTRING_INDEX(s.komentariy,' ',-1)), '%d.%m.%Y')
+	else null end
 from #__delivery_parcel p
 	join u7508_skorokhodoff.ejtsu_status s on s.alias = p.parcel_number
 	join #__delivery_parcel_status ps on

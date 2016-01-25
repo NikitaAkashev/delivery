@@ -36,7 +36,7 @@ class DeliveryStatusModelParcels extends JModelList
 			$query->where('(published IN (0, 1))');
 		} 
 		$orderCol	= $this->state->get('list.ordering', 'parcel_number');
-		$orderDirn 	= $this->state->get('list.direction', 'asc');
+		$orderDirn 	= $this->state->get('list.direction', 'desc');
 		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
 		
 		return $query;
