@@ -30,6 +30,9 @@ $listDirn = $this->escape($this->filter_order_Dir);
 				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_RECEIVER', 'receiver', $listDirn, $listOrder); ?>
 			</th>
 			<th width="">
+				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_LAST_STATUS', 'status_name', $listDirn, $listOrder); ?>
+			</th>
+			<th width="">
 				<?php echo JHtml::_('grid.sort', 'COM_DELIVERYSTATUS_PUBLISHED', 'published', $listDirn, $listOrder); ?>
 			</th>
 			<th width="">
@@ -70,6 +73,11 @@ $listDirn = $this->escape($this->filter_order_Dir);
 						<td>
 							<a href="<?php echo $link; ?>" title="<?php echo JText::_('COM_DELIVERYSTATUS_EDIT_PARCEL'); ?>">
 								<?php echo $row->receiver; ?>
+							</a>
+						</td>
+						<td>
+							<a href="<?php echo $link; ?>" title="<?php echo JText::_('COM_DELIVERYSTATUS_EDIT_PARCEL'); ?>">
+								<?php echo $row->status_name; ?>
 							</a>
 						</td>
 						<td align="center">
