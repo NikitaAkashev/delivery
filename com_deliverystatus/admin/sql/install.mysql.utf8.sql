@@ -70,7 +70,7 @@ from u7508_skorokhodoff.ejtsu_status;
 insert into #__delivery_parcel2parcel_status(parcel, parcel_status, dt) 
 select p.parcel, ps.parcel_status,
 	case when s.komentariy like 'Доставлено %' then STR_TO_DATE(TRIM(SUBSTRING_INDEX(s.komentariy,' ',-1)), '%d.%m.%Y')
-	else null end
+	else now() end
 from #__delivery_parcel p
 	join u7508_skorokhodoff.ejtsu_status s on s.alias = p.parcel_number
 	join #__delivery_parcel_status ps on
