@@ -36,6 +36,18 @@ defined('_JEXEC') or die('Restricted access');
 	<p><?php echo $this->parcel['mem'] ?></p>
 <?php } ?>
 
+<?php if (array_key_exists('places_amount', $this->parcel) && $this->parcel['places_amount']) { ?>
+	Количество мест: <?php echo $this->parcel['places_amount'] ?> <br />
+<?php } ?>
+
+<?php if (array_key_exists('weight', $this->parcel) && $this->parcel['weight']) { ?>
+	Вес: <?php echo $this->parcel['weight'] ?> <br />
+<?php } ?>
+
+<?php if (array_key_exists('volume', $this->parcel) && $this->parcel['volume']) { ?>
+	Объем: <?php echo $this->parcel['volume'] ?> <br />
+<?php } ?>
+
 <?php if (count($this->statuses)) { ?>
 	Статус доставки: <br />
 	<?php foreach($this->statuses as $status) :?>

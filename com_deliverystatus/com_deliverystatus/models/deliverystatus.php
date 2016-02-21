@@ -17,7 +17,7 @@ class DeliveryStatusModelDeliveryStatus extends JModelItem
 		$jinput = JFactory::getApplication()->input;
 		$parcel_number_string = $jinput->get('parcel_number', 0, 'string');
 		
-		$info = explode('/', $parcel_number_string);
+		$info = explode('*', $parcel_number_string);
 		$parcel_number = $info[0];
 		
 		$contract_name = null;

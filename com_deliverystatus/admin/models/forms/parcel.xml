@@ -100,6 +100,30 @@
 				class="inputbox"
 				/>
 		<field
+				name="places_amount"
+				type="text"
+				label="COM_DELIVERYSTATUS_PLACES_AMOUNT_LABEL"
+				description="COM_DELIVERYSTATUS_PLACES_AMOUNT_DESC"
+				size="40"
+				class="inputbox"
+				/>
+		<field
+				name="weight"
+				type="text"
+				label="COM_DELIVERYSTATUS_WEIGHT_LABEL"
+				description="COM_DELIVERYSTATUS_WEIGHT_DESC"
+				size="40"
+				class="inputbox"
+				/>
+		<field
+				name="volume"
+				type="text"
+				label="COM_DELIVERYSTATUS_VOLUME_LABEL"
+				description="COM_DELIVERYSTATUS_VOLUME_DESC"
+				size="40"
+				class="inputbox"
+				/>
+		<field
 				name="parcel"
 				type="hidden"
 				/>
