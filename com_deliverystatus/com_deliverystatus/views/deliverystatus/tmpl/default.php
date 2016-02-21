@@ -39,6 +39,6 @@ defined('_JEXEC') or die('Restricted access');
 <?php if (count($this->statuses)) { ?>
 	Статус доставки: <br />
 	<?php foreach($this->statuses as $status) :?>
-		<?php echo $status->dt . ' ' . $status->name; ?><br />
+		<?php echo date("d.m.Y", strtotime($status->dt)) . ' ' . $status->name; ?><br />
 	<?php endforeach;?>
 <?php } ?>
