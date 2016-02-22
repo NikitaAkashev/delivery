@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 		$href = '"#" onclick="window.print(); return false;"';
 	} else {
 		$href = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
-		$href = "window.open(this.href,'win2','".$href."'); return false;";
+		$href = "onclick=\"window.open(this.href,'win2','".$href."'); return false;\"";
 		$href = '"'.substr(JURI::getInstance()->toString(array('path', 'query')), 1).'&tmpl=component&print=1" '.$href;
 	}
 ?>
