@@ -85,12 +85,11 @@
 				/>
 		<field
 				name="creator"
-				type="user"
+				type="creator"
 				label="COM_DELIVERYSTATUS_CREATOR_LABEL"
 				description="COM_DELIVERYSTATUS_CREATOR_DESC"
 				class="inputbox"	
 				required="true"
-				default=""
 				/>
 		<field
 				name="mem"
