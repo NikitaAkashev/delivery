@@ -35,6 +35,7 @@
 		<filename>index.html</filename>
 		<filename>deliverystatus.php</filename>
 		<filename>controller.php</filename>
+		<filename>router.php</filename>
 		<folder>views</folder>
 		<folder>models</folder>
 		<folder>language</folder>
