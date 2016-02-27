@@ -12,6 +12,16 @@ class DeliveryStatusModelDeliveryStatus extends JModelItem
 		return JTable::getInstance($type, $prefix, $config);
 	}
 	
+	public function getItemid( $component = 'com_deliverystatus', $view = 'deliverystatus' )
+{
+    $items = JFactory::getApplication()->getMenu( 'site' )->getItems( 'component', $component );
+    foreach ( $items as $item ) {
+        if($item->query['view'] === $view){
+            return $item->id;
+        }
+    }
+}
+	
 	public function getParcelInfo()
 	{		
 		$jinput = JFactory::getApplication()->input;

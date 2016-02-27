@@ -91,7 +91,7 @@ class DeliverystatusRouter extends JComponentRouterBase
  */
 function deliverystatusBuildRoute(&$query)
 {
-	$router = new DeliverystatusRouter;
+	$router = new DeliverystatusRouter();
 
 	return $router->build($query);
 }
@@ -110,7 +110,7 @@ function deliverystatusBuildRoute(&$query)
  */
 function deliverystatusParseRoute($segments)
 {
-	$router = new DeliverystatusRouter;
+	$router = new DeliverystatusRouter();
 
 	return $router->parse($segments);
 }

@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 	} else {
 		$href = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
 		$href = "onclick=\"window.open(this.href,'win2','".$href."'); return false;\"";
-		$href = '"'.substr(JURI::getInstance()->toString(array('path', 'query')), 1).'&tmpl=component&print=1" '.$href;
+		$href = '"'.JRoute::_('index.php?option=com_deliverystatus&Itemid='.$this->item_id.'&parcel_number='.$this->parcel_number.'&tmpl=component&print=1').'" '.$href;
 	}
 ?>
  	<a href=<?php echo $href; ?> >Печать</a>

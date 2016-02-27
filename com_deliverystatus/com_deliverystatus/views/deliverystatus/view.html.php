@@ -8,6 +8,10 @@ class DeliveryStatusViewDeliveryStatus extends JViewLegacy
 	function display($tpl = null)
 	{		
 		$this->parcel = $this->get('ParcelInfo');
+		$this->item_id = $this->get('Itemid');
+
+		$jinput = JFactory::getApplication()->input;
+		$this->parcel_number = $jinput->get('parcel_number', 0, 'string');
 		
 		JLoader::import( 'Parcel', JPATH_ADMINISTRATOR . '/' . 'components' . '/' . 'com_deliverystatus/models' );
 		$status_model = new DeliveryStatusModelParcel();

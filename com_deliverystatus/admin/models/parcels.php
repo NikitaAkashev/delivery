@@ -6,7 +6,7 @@ class DeliveryStatusModelParcels extends JModelList
 	{		
 		if (empty($config['filter_fields']))		
 		{			
-			$config['filter_fields'] = array('parcel', 'parcel_number','sender', 'receiver', 'published');		
+			$config['filter_fields'] = array('parcel', 'parcel_number','sender', 'receiver', 'status_name', 'published');		
 		} 		
 		parent::__construct($config);	
 	}
@@ -44,7 +44,6 @@ class DeliveryStatusModelParcels extends JModelList
 		$orderCol	= $this->state->get('list.ordering', 'parcel_number');
 		$orderDirn 	= $this->state->get('list.direction', 'desc');
 		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
-		
 		return $query;
 	}
 }

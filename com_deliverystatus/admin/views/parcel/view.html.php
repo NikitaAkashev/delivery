@@ -49,10 +49,9 @@ class DeliveryStatusViewParcel extends JViewLegacy
 		}
 
 		JToolBarHelper::title($title, 'deliverystatus');
+		JToolBarHelper::apply('parcel.apply');
 		JToolbarHelper::save2new('parcel.save2new');
 		JToolBarHelper::save('parcel.save');
-		if (!$isNew)
-			JToolBarHelper::apply('parcel.apply');
 		JToolBarHelper::cancel('parcel.cancel',	$isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 	}
 	
