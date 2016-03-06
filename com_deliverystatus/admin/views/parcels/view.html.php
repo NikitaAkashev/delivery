@@ -44,6 +44,10 @@ class DeliveryStatusViewParcels extends JViewLegacy
 		JToolBarHelper::deleteList('', 'parcels.delete');
 		JToolBarHelper::publishList('parcels.publish');
 		JToolBarHelper::unpublishList('parcels.unpublish');
+		// Options button.
+		if (JFactory::getUser()->authorise('core.admin', 'com_deliverystatus'))     {	
+			JToolBarHelper::preferences('com_deliverystatus');
+		}
 	}
 	
 	protected function setDocument()
