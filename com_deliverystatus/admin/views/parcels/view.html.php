@@ -3,17 +3,25 @@ defined('_JEXEC') or die('Restricted access');
 
 class DeliveryStatusViewParcels extends JViewLegacy
 {
+	protected $items;
+	
+	protected $pagination;
+	
+	protected $state;
+	
 	function display($tpl = null)
 	{
 		$app = JFactory::getApplication();
-		$context = "deliverystatus.list.admin.parcel";
+		
+		$context = 'delivery_status.admin.list';		
+		$this->state		= $this->get('State');
+		// костыль для определения сортировки при возврате из редактирования
+		$this->state->set('list.ordering', $app->getUserStateFromRequest($context.'filter_order', 'filter_order', 'parcel', 'cmd'));
+		$this->state->set('list.direction', $app->getUserStateFromRequest($context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd'));
 		
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		
-		$this->state = $this->get('State');
-		$this->filter_order = $app->getUserStateFromRequest($context.'filter_order', 'filter_order', 'parcel_number', 'cmd');
-		$this->filter_order_Dir = $app->getUserStateFromRequest($context.'filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
 		$this->filterForm = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 		

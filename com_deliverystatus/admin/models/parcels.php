@@ -6,9 +6,21 @@ class DeliveryStatusModelParcels extends JModelList
 	{		
 		if (empty($config['filter_fields']))		
 		{			
-			$config['filter_fields'] = array('parcel', 'parcel_number','sender', 'receiver', 'status_name', 'published');		
+			$config['filter_fields'] = array(
+					'parcel', 'p.parcel', 
+					'parcel_number', 'p.parcel_number',
+					'sender', 'p.sender', 
+					'receiver', 'p.receiver', 
+					'status_name', 
+					'published', 'p.published');		
 		} 		
 		parent::__construct($config);	
+	}
+	
+	protected function populateState($ordering = null, $direction = null)
+	{
+		// List state information.
+		parent::populateState('parcel', 'desc');
 	}
 	
 	protected function getListQuery()
@@ -41,8 +53,9 @@ class DeliveryStatusModelParcels extends JModelList
 		{			
 			$query->where('(published IN (0, 1))');
 		} 
-		$orderCol	= $this->state->get('list.ordering', 'parcel_number');
+		$orderCol	= $this->state->get('list.ordering', 'parcel');
 		$orderDirn 	= $this->state->get('list.direction', 'desc');
+
 		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
 		return $query;
 	}

@@ -3,8 +3,8 @@ defined('_JEXEC') or die('Restricted Access');
 JHtml::_('script', 'system/core.js', false, true);
 JHtml::_('formbehavior.chosen', 'select');
 
-$listOrder = $this->escape($this->filter_order);
-$listDirn = $this->escape($this->filter_order_Dir);
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <form action="index.php?option=com_deliverystatus&view=parcels" method="post" id="adminForm" name="adminForm">
 	<div class="row-fluid">
