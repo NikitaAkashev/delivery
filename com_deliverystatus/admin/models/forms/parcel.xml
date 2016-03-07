@@ -85,7 +85,7 @@
 				/>
 		<field
 				name="creator"
-				type="creator"
+				type="user"
 				label="COM_DELIVERYSTATUS_CREATOR_LABEL"
 				description="COM_DELIVERYSTATUS_CREATOR_DESC"
 				class="inputbox"	
