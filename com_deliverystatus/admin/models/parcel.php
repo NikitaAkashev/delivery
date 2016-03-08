@@ -94,6 +94,10 @@ class DeliveryStatusModelParcel extends JModelAdmin
 	
 	public function save($data)
 	{
+		// костыль для указания автора, если не укзан явно
+		if(!$data['creator'])
+			$data['creator'] = JFactory::getUser()->id;
+		
 		if (!parent::save($data)) {
 			return false;
 		}
@@ -102,7 +106,6 @@ class DeliveryStatusModelParcel extends JModelAdmin
 		if(!$parcel){
 			$parcel = $this->getState($this->getName() . '.id');
 		}
-		
 		$jinput = JFactory::getApplication()->input;
 		$data_status = $jinput->post->get('jform', array(), 'array');
 		$form_status = $this->getStatusForm($data_status, false);

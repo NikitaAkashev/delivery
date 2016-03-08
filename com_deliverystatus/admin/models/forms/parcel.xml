@@ -88,8 +88,7 @@
 				type="user"
 				label="COM_DELIVERYSTATUS_CREATOR_LABEL"
 				description="COM_DELIVERYSTATUS_CREATOR_DESC"
-				class="inputbox"	
-				required="true"
+				class="inputbox"
 				/>
 		<field
 				name="mem"
