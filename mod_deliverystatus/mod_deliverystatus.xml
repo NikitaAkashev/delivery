@@ -14,4 +14,33 @@
         <folder>tmpl</folder>
         <folder>language</folder>
     </files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+				<field 
+						name="param1"
+						type="text"
+						label="MOD_STATUS_PARAM1"
+						required="false"
+						default=""
+						size="10"
+						class=""
+						readonly="false"
+						disabled="false"
+						filter="">
+				</field>
+            </fieldset>
+            <fieldset name="advanced">
+                <field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL"
+                       description="JFIELD_ALT_MODULE_LAYOUT_DESC"/>
+                <field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                       description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
+                <field name="cache" type="list" label="COM_MODULES_FIELD_CACHING_LABEL"
+                       description="COM_MODULES_FIELD_CACHING_DESC" default="1">
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
 </extension>
