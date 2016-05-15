@@ -42,11 +42,11 @@ defined('_JEXEC') or die('Restricted access');
 <?php } ?>
 
 <?php if (array_key_exists('weight', $this->parcel) && $this->parcel['weight']) { ?>
-	<b>Вес:</b> <?php echo $this->parcel['weight'] ?> кг<br />
+	<b>Вес:</b> <?php echo $this->parcel['weight'] ?> <br />
 <?php } ?>
 
 <?php if (array_key_exists('volume', $this->parcel) && $this->parcel['volume']) { ?>
-	<b>Объем:</b> <?php echo $this->parcel['volume'] ?> м<sup>3</sup><br />
+	<b>Объем:</b> <?php echo $this->parcel['volume'] ?> <br />
 <?php } ?>
 
 <?php if (count($this->statuses)) { ?>
