@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.0" method="upgrade"> 
+	<name>COM_CDEK</name>
+	<creationDate>17.05.2016</creationDate>
+	<author>Akashev Nikita</author>
+	<authorEmail>regspambox@yandex.ru</authorEmail>
+	<version>0.1</version>
+	<description>COM_CDEK_DESCRIPTION</description>
+
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall> 
+
+	<files folder="com_cdek">
+		<filename>index.html</filename>
+		<filename>cdek.php</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>tables</folder>
+		<folder>assets</folder>
+		<folder>helpers</folder>
+		<folder>controllers</folder>
+	</files>
+
+	<administration>
+		<menu link="index.php?option=com_cdek">COM_CDEK</menu>
+		
+		<files folder="admin">
+			<filename>index.html</filename>
+			<folder>sql</folder>
+		</files>
+	</administration>
+</extension>
