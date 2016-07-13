@@ -23,13 +23,6 @@ class CdekModelsOrder extends CdekModelsDefault
 	public $calculated = false;
 	public $ordered = false;
 
-	// список тарифов
-	public $tariffs = array(
-		"1" => "Экспресс лайт дверь-дверь",
-		"10" => "Экспресс лайт склад-склад",
-		"61" => "Супер-экспресс до 16"
-	);
-
 	function __construct() {
 		parent::__construct();
 				
@@ -69,13 +62,14 @@ class CdekModelsOrder extends CdekModelsDefault
 			$settings = $this->GetSettings();
 			$interest = $settings->interest;
 			$result = array();
-			foreach ($this->tariffs as $tariff => $name)
+			$tariffs = $this->GetTariffs();
+			foreach ($tariffs as $tariff)
 			{
-				$res = $this->CalculateByTariff($tariff);
+				$res = $this->CalculateByTariff($tariff->tariff_id);
 				if($res)
 				{
 					$res['price'] = $res['price'] * $interest;
-					$res['name'] = $name;
+					$res['name'] = $tariff->tariff_name;
 					$res['delivery_time'] = $res['deliveryPeriodMin'] == $res['deliveryPeriodMax'] ? $res['deliveryPeriodMax'] : $res['deliveryPeriodMin'] . ' - ' . $res['deliveryPeriodMax'];
 					$result[] = $res;
 				}
@@ -219,11 +213,11 @@ class CdekModelsOrder extends CdekModelsDefault
 
 		return $this->store($data);
 	}
-	
-	
+
+
 	// Получение реквизитов для отправки письма
 	function GetSettings()
-	{		
+	{
 		$db = JFactory::getDBO();
 		$query = "
 select 
@@ -235,7 +229,24 @@ from #__cdek_settings s
 ";
 		$db->setQuery($query);
 		$result = $db->loadObject();
-		
+
+		return $result;
+	}
+
+	// Получение списка тарифов
+	function GetTariffs()
+	{
+		$db = JFactory::getDBO();
+		$query = "
+select 
+	s.tariff_id,
+	s.tariff_name
+from #__cdek_tariff s
+where s.published = 1
+";
+		$db->setQuery($query);
+		$result = $db->loadObjectList();
+
 		return $result;
 	}
 }
