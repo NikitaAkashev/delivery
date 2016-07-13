@@ -14,10 +14,6 @@ defined('_JEXEC') or die('Restricted access');
 	#city { width: 25em; }
 	#log { height: 200px; width: 600px; overflow: auto; }
 	</style>
-	<script type="text/javascript">
-	
-
-	</script>
 <h1>Расчет стоимости отправки</h1>
 <form id="calculator" method="POST" name="calculate_form" action="<?php echo JURI::current(); ?>">
 	<div id="calculator_body">
@@ -38,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="control-group weight pull-left">
 			<label class="control-label">Вес, кг<span class="asterisk correct">*</span></label>
 			<div class="controls">
-				<input class="comma-replace advantage_fields" type="text" name="weight" id="weight_input" value="" />
+				<input class="comma-replace advantage_fields" type="text" name="weight" id="weight_input" value="<?php echo $this->model->GetSettings()->weight_no_size; ?>" />
 			</div>
 		</div>
 		<div class="control-group dimension pull-left">
@@ -120,6 +116,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div id="counteragents">
 			<hr class="divider">
 			<input type="hidden" name="make_order" value="sure" />
+			<input type="hidden" name="weight_no_size" id="weight_no_size" value="<?php echo $this->model->GetSettings()->weight_no_size; ?>" />
 			<input type="hidden" id="tariff_name" name="tariff_name" value="" />
 			<input type="hidden" id="price" name="price" value="" />
 			<input class="submit" type="submit" name="submit" id="orderbutton" value="Оформить заказ" />

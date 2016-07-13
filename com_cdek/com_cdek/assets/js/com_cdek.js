@@ -74,6 +74,10 @@ function ValidateCalc()
 		jQuery('#weight_input').addClass('alert-error');
 		has_errors = true;
 	};
+
+	if(jQuery('#weight_input').val() <= jQuery('#weight_no_size').val())
+		return !has_errors;
+
 	if(jQuery('#width_input').val() == '') {
 		jQuery('#width_input').addClass('alert-error');
 		has_errors = true;

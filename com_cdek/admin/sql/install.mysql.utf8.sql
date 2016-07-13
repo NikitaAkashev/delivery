@@ -31,7 +31,8 @@ create table #__cdek_settings(
 	`mail_to` varchar(64) not null,
 	`mail_from` varchar(64) not null,
 	`mail_subject` varchar(128) not null,
-	`interest` decimal(4,2) not null
+	`interest` decimal(4,2) not null,
+	`weight_no_size` decimal(4,2) not null
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -42,5 +43,5 @@ create table #__cdek_tariff(
 	published int(4)
 );
 
-insert into #__cdek_settings(mail_to, mail_from, mail_subject, interest)
-values ('regspambox@yandex.ru', 'regspambox@yandex.ru', 'Заказ с сайта', 1.3);
+insert into #__cdek_settings(mail_to, mail_from, mail_subject, interest, weight_no_size)
+values ('regspambox@yandex.ru', 'regspambox@yandex.ru', 'Заказ с сайта', 1.3, 0.5);

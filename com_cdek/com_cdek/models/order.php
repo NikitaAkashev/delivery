@@ -23,6 +23,8 @@ class CdekModelsOrder extends CdekModelsDefault
 	public $calculated = false;
 	public $ordered = false;
 
+	public $settings;
+
 	function __construct() {
 		parent::__construct();
 				
@@ -47,12 +49,15 @@ class CdekModelsOrder extends CdekModelsDefault
 			&& $this->city_to != 0 
 			&& isset($this->weight) 
 			&& $this->weight != 0
-			&& isset($this->width)
-			&& isset($this->length)
-			&& isset($this->height)
-			&& $this->width != 0
-			&& $this->length != 0
-			&& $this->height != 0;
+			&& ( $this->weight <= $this->GetSettings()->weight_no_size
+				||
+				(isset($this->width)
+				&& isset($this->length)
+				&& isset($this->height)
+				&& $this->width != 0
+				&& $this->length != 0
+				&& $this->height != 0)
+			);
 	}
 	
 	// Производит расчет
@@ -107,7 +112,7 @@ class CdekModelsOrder extends CdekModelsDefault
 		$calc->setTariffId($tariff);
 
 		//добавляем места в отправление
-		$calc->addGoodsItemBySize($this->weight, $this->length, $this->width, $this->height);
+		$calc->addGoodsItemBySize($this->weight, $this->length ? $this->length : 1, $this->width ? $this->width : 1, $this->height ? $this->height : 1);
 		//$calc->addGoodsItemByVolume($_REQUEST['weight2'], $_REQUEST['volume2']);
 
 		if ($calc->calculate() === true) {
@@ -129,7 +134,7 @@ class CdekModelsOrder extends CdekModelsDefault
 		return true;
 	}
 
-	// проверим, что пришли все данные, которые нам нужны для заказа TODO: Перенести проверку в JTable::check();
+	// проверим, что пришли все данные, которые нам нужны для заказа
 	function CheckOrderData()
 	{		
 		if (empty($this->form['make_order']) || $this->form['make_order'] != 'sure')
@@ -218,19 +223,21 @@ class CdekModelsOrder extends CdekModelsDefault
 	// Получение реквизитов для отправки письма
 	function GetSettings()
 	{
-		$db = JFactory::getDBO();
-		$query = "
+		if(!$this->settings) {
+			$db = JFactory::getDBO();
+			$query = "
 select 
 	mail_to,
 	mail_from,
 	mail_subject,
-	interest
-from #__cdek_settings s
+	interest,
+	weight_no_size
+from #__cdek_settings
 ";
-		$db->setQuery($query);
-		$result = $db->loadObject();
-
-		return $result;
+			$db->setQuery($query);
+			$this->settings = $db->loadObject();
+		}
+		return $this->settings;
 	}
 
 	// Получение списка тарифов
