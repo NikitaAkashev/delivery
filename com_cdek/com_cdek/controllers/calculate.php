@@ -5,9 +5,8 @@ class CdekControllersCalculate extends CdekControllersDefault
 {
 	function execute()
 	{
-		$app = JFactory::getApplication();
-		$viewName = $app->input->get('view', 'calculate');
-		$app->input->set('view', $viewName);
+		$app = $this->getApplication();
+		$app->input->set('view', 'calculate');
 		
 		return parent::execute();
 	}

@@ -14,7 +14,7 @@ JLoader::registerPrefix('Cdek', JPATH_COMPONENT);
 JPluginHelper::importPlugin('cdek');
 
 //Load styles and javascripts
-CalculatorHelpersJscss::load();
+CdekHelpersJscss::load();
 
 //application
 $app = JFactory::getApplication();

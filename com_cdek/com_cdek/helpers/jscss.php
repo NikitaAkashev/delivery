@@ -11,12 +11,11 @@ class CdekHelpersJscss
 		
 		//stylesheets
 		$document->addStylesheet('components/com_cdek/assets/css/com_cdek.css');
-		$document->addStylesheet('media/jui/css/chosen.css');
-		$document->addStylesheet('media/system/css/calendar-jos.css');
+		$document->addStylesheet('components/com_cdek/assets/css/jquery-ui-1.8.21.custom.css');
 		
 		//javascripts
 		JHtml::_('jquery.framework');
-		$document->addScript('media/jui/js/chosen.jquery.min.js');
+		$document->addScript('components/com_cdek/assets/js/jquery-ui-1.8.21.custom.min.js');
 		$document->addScript('components/com_cdek/assets/js/com_cdek.js');
 	}
 }

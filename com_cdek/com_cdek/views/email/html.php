@@ -10,13 +10,8 @@ jimport('joomla.application.component.view');
  */
 class CdekViewsEmailHtml extends JViewHtml
 {
-	function render() 
-	{			
-		$this->extra = new stdClass();
-		$this->extra->city_name_from = CalculatorModelsCity::GetCity($this->data->city_from);
-		$this->extra->city_name_to = CalculatorModelsCity::GetCity($this->data->city_to);
-		$this->extra->tariff_name = CalculatorModelsOrder::GetRateInfo($this->data);
-					
+	function render()
+	{
 		return parent::render();
 	}
 }

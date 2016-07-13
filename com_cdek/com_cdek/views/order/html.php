@@ -18,11 +18,8 @@ class CdekViewsOrderHtml extends JViewHtml
 			$model->Calculate();
 			
 			$model->MakeOrder();
-			
-			$cities = CalculatorModelsCity::GetCities();
-			
+						
 			$this->model = $model;
-			$this->cities = $cities;
 			
 			return parent::render();
         }

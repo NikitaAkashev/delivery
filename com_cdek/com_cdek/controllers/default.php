@@ -8,7 +8,6 @@ class CdekControllersDefault extends JControllerBase
 		 
 		// Get the document object.
 		$document = $app->getDocument();
-		
 		$viewName = $app->input->getWord('view', 'order');
 		$viewFormat = $document->getType();
 		$layoutName = $app->input->getWord('layout', 'normal');

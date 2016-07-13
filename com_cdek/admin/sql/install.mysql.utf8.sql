@@ -1,26 +1,38 @@
 
+DROP TABLE IF EXISTS `#__cdek_order`;
+DROP TABLE IF EXISTS `#__cdek_settings`;
 
-DROP TABLE IF EXISTS `#__cdek_order_status`;
-
-create table #__cdek_order_status(
-	`order_status` int primary key auto_increment,
-	`name` varchar(64),
-	`code` varchar(32) unique
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `#__calc_order`;
  
 create table #__cdek_order(
 	`order` int primary key auto_increment,
-	`user` int(11) NULL references `calc_users(id)`,
 	`created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`modified` TIMESTAMP,
-    `order_status` int(11) references `#__calc_order_status(order_status)`,
-    `outer_id` varchar(100)
+    `outer_tariff_id` int,    
+    `outer_tariff_name` varchar(64),
+    `outer_city_from_id` int,
+    `outer_city_from_name` varchar(128),
+    `outer_city_to_id` int,
+    `outer_city_to_name` varchar(128),
+    `weight` decimal(15,4),
+    `width` decimal(15,4),
+    `height` decimal(15,4),
+    `length` decimal(15,4),
+    `price` decimal(15,4),
+    `customer_name` varchar(64),
+    `email` varchar(128),
+    `phone` varchar(20),
+    `mem` varchar(1024)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-insert into #__cdek_order_status(name, code)
-values ('Новый','new')
+create table #__cdek_settings(
+	`settings` int primary key auto_increment,
+	`mail_to` varchar(64) not null,
+	`mail_from` varchar(64) not null,
+	`mail_subject` varchar(128) not null,
+	`interest` decimal(4,2) not null
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-	
+
+insert into #__cdek_settings(mail_to, mail_from, mail_subject, interest)
+values ('regspambox@yandex.ru', 'regspambox@yandex.ru', 'Заказ с сайта', 1.3);
