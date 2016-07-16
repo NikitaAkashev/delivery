@@ -66,6 +66,7 @@ class CdekModelsOrder extends CdekModelsDefault
 		{
 			$settings = $this->GetSettings();
 			$interest = $settings->interest;
+			$ceil_to = $settings->ceil_to;
 			$result = array();
 			$tariffs = $this->GetTariffs();
 			foreach ($tariffs as $tariff)
@@ -74,6 +75,11 @@ class CdekModelsOrder extends CdekModelsDefault
 				if($res)
 				{
 					$res['price'] = $res['price'] * $interest;
+
+					// если указано, до куда округлять, округлим
+					if($ceil_to)
+						$res['price'] = ceil($res['price']/$ceil_to) * $ceil_to;
+
 					$res['name'] = $tariff->tariff_name;
 					$res['delivery_time'] = $res['deliveryPeriodMin'] == $res['deliveryPeriodMax'] ? $res['deliveryPeriodMax'] : $res['deliveryPeriodMin'] . ' - ' . $res['deliveryPeriodMax'];
 					$result[] = $res;
@@ -122,7 +128,6 @@ class CdekModelsOrder extends CdekModelsDefault
 		}
 
 		return null;
-
 	}
 
 	// проверка корректности заполнения телефонного номера
@@ -231,7 +236,8 @@ select
 	mail_from,
 	mail_subject,
 	interest,
-	weight_no_size
+	weight_no_size,
+	ceil_to
 from #__cdek_settings
 ";
 			$db->setQuery($query);
