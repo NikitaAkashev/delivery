@@ -14,6 +14,11 @@ jQuery(document).ready(function(){
 
 	jQuery('#calculate').click(Recalculate);
 	jQuery('#orderbutton').click(ValidateOrder);
+	
+	jQuery('#weight_input').change(CheckSizeRequired);
+	jQuery('#weight_input').keyup(CheckSizeRequired);
+	
+	CheckSizeRequired();
 });
 /**
  * подтягиваем список городов ajax`ом, данные jsonp в зависмости от введённых символов
@@ -197,4 +202,16 @@ function ValidateOrder()
 		has_errors = true;
 
 	return !has_errors;
+}
+
+function CheckSizeRequired()
+{
+	if(jQuery('#weight_input').val() <= jQuery('#weight_no_size').val())
+	{
+		jQuery('.dimension .asterisk').hide();
+	}
+	else
+	{
+		jQuery('.dimension .asterisk').show();
+	}
 }
