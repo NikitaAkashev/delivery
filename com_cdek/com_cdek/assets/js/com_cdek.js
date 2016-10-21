@@ -1,7 +1,5 @@
 jQuery(document).ready(function(){
 
-	jQuery.curCSS = jQuery.css;
-
 	autocity("#city_from");
 	autocity("#city_to");
 
