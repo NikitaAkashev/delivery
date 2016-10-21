@@ -133,6 +133,9 @@ function FillResults(data){
 		});
 
 		jQuery('.rate_line').click(SelectTariff);
+		
+		// выбор первого тарифа
+		jQuery('.rate_line')[0].click();
 
 		jQuery('.no_prices').hide();		
 		
@@ -148,7 +151,6 @@ function FillResults(data){
 function SelectTariff()
 {
 	var el = jQuery(this);
-	console.log(el.data('tariffname'));
 
 	jQuery('#tariff_name').val(el.data('tariffname'));
 	jQuery('#price').val(el.data('price'));
