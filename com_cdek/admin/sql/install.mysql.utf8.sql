@@ -20,6 +20,7 @@ create table #__cdek_order(
     `height` decimal(15,4),
     `length` decimal(15,4),
     `price` decimal(15,4),
+    `nds` decimal(15,4),
     `customer_name` varchar(64),
     `email` varchar(128),
     `phone` varchar(20),

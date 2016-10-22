@@ -1,6 +1,10 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+
+$weight_no_size = $this->model->GetSettings()->weight_no_size;
+$with_nds = $this->model->GetUserSettings()->with_nds;
+
 ?>
 
 <?php if ($this->model->ordered) {?>
@@ -36,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="control-group weight pull-left">
 			<div class="controls">
             	<label class="control-label">, кг<span class="asterisk correct">*</span></label>
-				<input class="comma-replace advantage_fields" type="text" name="weight" id="weight_input" value="<?php echo $this->model->GetSettings()->weight_no_size; ?>" autocomplete="off" />
+				<input class="comma-replace advantage_fields" type="text" name="weight" id="weight_input" value="<?php echo $weight_no_size; ?>" autocomplete="off" />
 			</div>
 		</div>
 		<div class="control-group dimension pull-left">
@@ -66,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
 				<thead>
 					<tr id="calc_results_head">
 						<th colspan="2">Тариф</th>
-						<th>Стоимость, руб.</th>
+						<th>Стоимость, руб.<?php echo ($with_nds == 1 ? ' (в т.ч. НДС)' : '') ?></th>
 						<th>Срок доставки, раб. дни</th>
 					</tr>
 				</thead>
@@ -116,10 +120,12 @@ defined('_JEXEC') or die('Restricted access');
 		<div id="counteragents">
 			<hr class="divider">
 			<input type="hidden" name="make_order" value="sure" />
-			<input type="hidden" name="weight_no_size" id="weight_no_size" value="<?php echo $this->model->GetSettings()->weight_no_size; ?>" />
+			<input type="hidden" name="weight_no_size" id="weight_no_size" value="<?php echo $weight_no_size; ?>" />
 			<input type="hidden" id="tariff_name" name="tariff_name" value="" />
 			<input type="hidden" id="price" name="price" value="" />
 			<input type="hidden" id="delivery_time" name="delivery_time" value="" />
+			<input type="hidden" id="with_nds" name="with_nds" value="<?php echo $with_nds; ?>" />
+			<input type="hidden" id="nds" name="nds" value="" />
 			<button class="submit" name="submit" id="orderbutton"/><span>Оформить заказ</span></button>
 		</div>
 	</div>	

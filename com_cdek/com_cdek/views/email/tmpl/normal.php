@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 			Срок доставки: <?php echo $this->data->delivery_time; ?> дней<br />
 		</p>
 		<p>
-			Стоимость доставки: <?php echo $this->data->price; ?> р<br />
+			Стоимость доставки: <?php echo $this->data->price; ?> р <?php if($this->data->nds > 0) echo ', в том числе НДС ' . $this->data->nds . ' р'; ?> <br />
 		</p>
 		<p>
 			ФИО: <?php echo $this->data->customer_name; ?><br />

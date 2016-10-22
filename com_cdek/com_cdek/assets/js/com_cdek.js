@@ -139,10 +139,10 @@ function FillResults(data){
 		jQuery('#calc_results_rows tr').remove();
 		jQuery.each(data, function(i, v){
 			jQuery('#calc_results_rows').append(jQuery('<tr>'
-				+ '<td><input class="rate_line" data-tariffname="'+v.name+'" data-price="'+v.price+'" data-delivery_time="'+v.delivery_time+'" type="radio" name="tariff" value="'+v.tariffId+'" /></td>'
-				+ '<td>'+v.name+'</td>'
-				+ '<td>'+v.price+'</td>'
-				+ '<td>'+v.delivery_time+'</td>'
+				+ '<td><input class="rate_line" data-tariffname="'+v.name+'" data-price="'+v.price+'" data-nds="'+v.nds+'" data-delivery_time="'+v.delivery_time+'" type="radio" name="tariff" value="'+v.tariffId+'" /></td>'
+				+ '<td>' + v.name + '</td>'
+				+ '<td>' + v.price + (jQuery('#with_nds') ? ' ('+ v.nds + ')' : '' ) + '</td>'
+				+ '<td>' + v.delivery_time + '</td>'
 			+'</tr>'));
 		});
 
@@ -168,6 +168,7 @@ function SelectTariff()
 
 	jQuery('#tariff_name').val(el.data('tariffname'));
 	jQuery('#price').val(el.data('price'));
+	jQuery('#nds').val(el.data('nds'));
 	jQuery('#delivery_time').val(el.data('delivery_time'));
 }
 

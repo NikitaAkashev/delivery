@@ -38,6 +38,8 @@ create table if not exists `#__delivery_parcel2parcel_status`(
 create table if not exists `#__delivery_user`(
 	`user` int not null primary key references `#__users(id)`,
 	`contract_name` varchar(64) not null,
+	`with_nds` tinyint(1) not null default 0,
+	`interest` decimal(4, 2),
 	unique(`contract_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

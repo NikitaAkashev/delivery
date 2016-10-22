@@ -24,6 +24,7 @@ class CdekModelsOrder extends CdekModelsDefault
 	public $ordered = false;
 
 	public $settings;
+	public $user_settings;
 
 	function __construct() {
 		parent::__construct();
@@ -65,7 +66,9 @@ class CdekModelsOrder extends CdekModelsDefault
 		if($this->IsFilled())
 		{
 			$settings = $this->GetSettings();
-			$interest = $settings->interest;
+			$user_settings = $this->GetUserSettings();
+			$interest = $user_settings->interest ? $user_settings->interest : $settings->interest;
+			$with_nds = $user_settings->with_nds;
 			$ceil_to = $settings->ceil_to;
 			$result = array();
 			$tariffs = $this->GetTariffs();
@@ -74,11 +77,22 @@ class CdekModelsOrder extends CdekModelsDefault
 				$res = $this->CalculateByTariff($tariff->tariff_id);
 				if($res)
 				{
-					$res['price'] = $res['price'] * $interest;
+					// получим нашу цену
+					$price = $res['price'] * $interest;
 
 					// если указано, до куда округлять, округлим
 					if($ceil_to)
-						$res['price'] = ceil($res['price']/$ceil_to) * $ceil_to;
+						$price = ceil($price/$ceil_to) * $ceil_to;
+					
+					// добавим НДС, если надо
+					$nds = 0;
+					if($with_nds)
+						$nds = ceil($price * 0.18);
+					
+					$price = $price + $nds;
+					
+					$res['price'] = $price;
+					$res['nds'] = $nds;
 
 					$res['name'] = $tariff->tariff_name;
 					$res['delivery_time'] = $res['deliveryPeriodMin'] == $res['deliveryPeriodMax'] ? $res['deliveryPeriodMax'] : $res['deliveryPeriodMin'] . ' - ' . $res['deliveryPeriodMax'];
@@ -211,23 +225,15 @@ class CdekModelsOrder extends CdekModelsDefault
 	    $data['outer_city_from_name'] = $data['city_from'];
 	    $data['outer_city_to_id'] = $data['city_to_id'];
 	    $data['outer_city_to_name'] = $data['city_to'];
-	    $data['weight'] = $data['weight'];
-	    $data['width'] = $data['width'];
-	    $data['height'] = $data['height'];
-	    $data['length'] = $data['length'];
-	    $data['customer_name'] = $data['customer_name'];
-	    $data['email'] = $data['email'];
-	    $data['phone'] = $data['phone'];
 	    $data['mem'] = $data['comments'];
-	    $data['price'] = $data['price'];
 
 		return $this->store($data);
 	}
 
 
-	// Получение реквизитов для отправки письма
+	// Получение настроек модуля
 	function GetSettings()
-	{
+	{		
 		if(!$this->settings) {
 			$db = JFactory::getDBO();
 			$query = "
@@ -244,6 +250,27 @@ from #__cdek_settings
 			$this->settings = $db->loadObject();
 		}
 		return $this->settings;
+	}
+
+	// Получение параметров пользователя
+	function GetUserSettings()
+	{		
+		if(!$this->user_settings) {
+			$user_id = JFactory::getUser()->id;
+			
+			$db = JFactory::getDBO();
+			$query = "
+select 
+	with_nds,
+	interest
+from #__delivery_user
+where 
+	user = '" . $user_id . "'
+";
+			$db->setQuery($query);
+			$this->user_settings = $db->loadObject();
+		}
+		return $this->user_settings;
 	}
 
 	// Получение списка тарифов
