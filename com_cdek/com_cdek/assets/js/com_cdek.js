@@ -12,13 +12,16 @@ jQuery(document).ready(function(){
 	jQuery('#client_phone').change(ValidatePhone);
 	jQuery('#client_phone').keyup(ValidatePhone);
 
-	jQuery('#calculate').click(Recalculate);
+	jQuery('#calculate').click(function(){return Recalculate(true)});
 	jQuery('#orderbutton').click(ValidateOrder);
 	
 	jQuery('#weight_input').change(CheckSizeRequired);
 	jQuery('#weight_input').keyup(CheckSizeRequired);
 	
 	CheckSizeRequired();
+	
+	jQuery('.advantage_fields').change(function(){Recalculate(false)});
+	jQuery('.advantage_fields').keyup(function(){Recalculate(false)});
 });
 /**
  * подтягиваем список городов ajax`ом, данные jsonp в зависмости от введённых символов
@@ -60,21 +63,24 @@ function autocity(id)
 /**
  * @return {boolean}
  */
-function ValidateCalc()
+function ValidateCalc(display_errors)
 {
 	var has_errors = false;
 	jQuery('.advantage_fields').removeClass('alert-error');
 
 	if(jQuery('#city_from_id').val() == '') {
-		jQuery('#city_from').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#city_from').addClass('alert-error');
 		has_errors = true;
 	};
 	if(jQuery('#city_to_id').val() == '') {
-		jQuery('#city_to').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#city_to').addClass('alert-error');
 		has_errors = true;
 	};
 	if(jQuery('#weight_input').val() == '') {
-		jQuery('#weight_input').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#weight_input').addClass('alert-error');
 		has_errors = true;
 	};
 
@@ -82,26 +88,29 @@ function ValidateCalc()
 		return !has_errors;
 
 	if(jQuery('#width_input').val() == '') {
-		jQuery('#width_input').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#width_input').addClass('alert-error');
 		has_errors = true;
 	};
 	if(jQuery('#length_input').val() == '') {
-		jQuery('#length_input').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#length_input').addClass('alert-error');
 		has_errors = true;
 	};
 	if(jQuery('#height_input').val() == '') {
-		jQuery('#height_input').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#height_input').addClass('alert-error');
 		has_errors = true;
 	};
 
-	if(!has_errors)
+	if(!has_errors && display_errors)
 		jQuery('.advantage_fields').removeClass('alert-error');
 
 	return !has_errors;
 }
 
-function Recalculate(){
-	if (!ValidateCalc()) return false;
+function Recalculate(display_errors){
+	if (!ValidateCalc(display_errors)) return false;
 
 	jQuery('#advantage_area').addClass("loading");
 	jQuery.post(
