@@ -21,6 +21,9 @@ defined('_JEXEC') or die('Restricted access');
 			Высота: <?php echo $this->data->height; ?> см	<br />
 		</p>
 		<p>
+			Срок доставки: <?php echo $this->data->delivery_time; ?> дней<br />
+		</p>
+		<p>
 			Стоимость доставки: <?php echo $this->data->price; ?> р<br />
 		</p>
 		<p>

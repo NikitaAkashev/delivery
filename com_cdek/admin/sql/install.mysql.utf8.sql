@@ -14,6 +14,7 @@ create table #__cdek_order(
     `outer_city_from_name` varchar(128),
     `outer_city_to_id` int,
     `outer_city_to_name` varchar(128),
+	`delivery_time` varchar(10),
     `weight` decimal(15,4),
     `width` decimal(15,4),
     `height` decimal(15,4),

@@ -139,7 +139,7 @@ function FillResults(data){
 		jQuery('#calc_results_rows tr').remove();
 		jQuery.each(data, function(i, v){
 			jQuery('#calc_results_rows').append(jQuery('<tr>'
-				+ '<td><input class="rate_line" data-tariffname="'+v.name+'" data-price="'+v.price+'" type="radio" name="tariff" value="'+v.tariffId+'" /></td>'
+				+ '<td><input class="rate_line" data-tariffname="'+v.name+'" data-price="'+v.price+'" data-delivery_time="'+v.delivery_time+'" type="radio" name="tariff" value="'+v.tariffId+'" /></td>'
 				+ '<td>'+v.name+'</td>'
 				+ '<td>'+v.price+'</td>'
 				+ '<td>'+v.delivery_time+'</td>'
@@ -168,6 +168,7 @@ function SelectTariff()
 
 	jQuery('#tariff_name').val(el.data('tariffname'));
 	jQuery('#price').val(el.data('price'));
+	jQuery('#delivery_time').val(el.data('delivery_time'));
 }
 
 function ValidateEmail()

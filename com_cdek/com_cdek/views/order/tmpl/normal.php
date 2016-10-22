@@ -119,6 +119,7 @@ defined('_JEXEC') or die('Restricted access');
 			<input type="hidden" name="weight_no_size" id="weight_no_size" value="<?php echo $this->model->GetSettings()->weight_no_size; ?>" />
 			<input type="hidden" id="tariff_name" name="tariff_name" value="" />
 			<input type="hidden" id="price" name="price" value="" />
+			<input type="hidden" id="delivery_time" name="delivery_time" value="" />
 			<button class="submit" name="submit" id="orderbutton"/><span>Оформить заказ</span></button>
 		</div>
 	</div>	
