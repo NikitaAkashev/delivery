@@ -2,9 +2,9 @@
 
 function GetOrdersRemote()
 {
-	$login = "cb856d1c179ec2f182318bb9cf7112da";
-	$password = "b014577bd45bf280eef2c76a55aed3f0";
-	$url = "http://int.cdek.ru/status_report_h.php";
+	$login = "";
+	$password = "";
+	$url = "";
 
 	$date = date("Y-m-d", time() - 60 * 60 * 24 * 5);
 
@@ -50,7 +50,7 @@ function GetOrdersRemote()
 function GetOrdersLocal()
 {
 	$table_prefix = 'fu28n_';
-	$mysqli = new mysqli('localhost', 'root', '', 'u7508_expcompany');
+	$mysqli = new mysqli('', '', '', '');
 	if ($mysqli->connect_error) {
 		die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
 	}
