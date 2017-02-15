@@ -1,31 +1,89 @@
 <?php
-$login = "";
-$password = "";
-$url = "http://int.cdek.ru/status_report_h.php";
 
-$date = date("Y-m-d", time() - 60 * 60 * 24 * 5);
+function GetOrdersRemote()
+{
+	$login = "cb856d1c179ec2f182318bb9cf7112da";
+	$password = "b014577bd45bf280eef2c76a55aed3f0";
+	$url = "http://int.cdek.ru/status_report_h.php";
 
-$secure = md5($date.'&'.password);
+	$date = date("Y-m-d", time() - 60 * 60 * 24 * 5);
 
-$xml ='<?xml version="1.0" encoding="UTF8"?>
-<StatusReport Date="'.$date.'" Account="'.$login.'" Secure="'.$secure.'" ShowHistory="1" >
-	<ChangePeriod DateFirst ="2013-07-16" DateLast ="2017-07-17" / >
-</StatusReport>"';
+	$secure = md5($date.'&'.$password);
 
-// создание нового ресурса cURL
-$ch = curl_init();
-echo $date;
-echo $url.'?account='.$login.'&secure='.$secure.'&datefirst='.$date.'&showhistory=1';
-// установка URL и других необходимых параметров
-curl_setopt($ch, CURLOPT_URL, $url.'?account='.$login.'&secure='.$secure.'&datefirst='.$date.'&showhistory=1');
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, "?xml_request=".urlencode($xml));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-// загрузка страницы и выдача её браузеру
-    $out = curl_exec($ch);
-    echo $out;
+	$xml ='<?xml version="1.0" encoding="UTF8"?>
+	<StatusReport Date="'.$date.'" Account="'.$login.'" Secure="'.$secure.'" ShowHistory="1" >
+		<ChangePeriod DateFirst ="2013-07-16" DateLast ="2017-07-17" / >
+	</StatusReport>"';
 
+	// создание нового ресурса cURL
+	$ch = curl_init();
+	// установка URL и других необходимых параметров
+	curl_setopt($ch, CURLOPT_URL, $url.'?account='.$login.'&secure='.$secure.'&datefirst='.$date);
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, "?xml_request=".urlencode($xml));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+	// загрузка страницы и выдача её браузеру
+	$out = curl_exec($ch);
+	// завершение сеанса и освобождение ресурсов
+	curl_close($ch);
+		
+	$order = simplexml_load_string ($out);
+	
+	$orders = array();
+	
+	foreach($order->Order as $ord )
+	{
+		$row = array();
+		$attrs = $ord->attributes();
+		$status_attrs = $ord->Status->attributes();
+		
+		$row['outer_id'] = (string)$attrs['DispatchNumber'];	
+		$row['date'] = (string)$status_attrs['Date'];
+		$row['code'] = (string)$status_attrs['Code'];
+		
+		$orders[] = $row;
+	}
+	
+	return $orders;
+}
 
-// завершение сеанса и освобождение ресурсов
-curl_close($ch);
+function GetOrdersLocal()
+{
+	$table_prefix = 'fu28n_';
+	$mysqli = new mysqli('localhost', 'root', '', 'u7508_expcompany');
+	if ($mysqli->connect_error) {
+		die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
+	}
+	
+	$query = <<<TXT
+select 
+	p.parcel, 
+	p.outer_id,
+	s.code,
+	ps.dt
+from #__delivery_parcel p
+left join (
+		select ps.parcel, max(ps.dt) dt
+		from #__delivery_parcel p
+			join #__delivery_parcel2parcel_status ps on ps.parcel = p.parcel
+		group by ps.parcel
+	) pdt on p.parcel = pdt.parcel
+left join #__delivery_parcel2parcel_status ps on ps.parcel = p.parcel and ps.dt = pdt.dt
+left join #__delivery_parcel_status s on s.parcel_status = ps.parcel_status
+where
+    p.outer_id <> ''
+    and p.outer_id is not null
+TXT;
+	
+	$query = str_replace("#__", $table_prefix, $query);
+	
+	$result = $mysqli->query($query);
+	
+	$orders = $result->fetch_all(MYSQLI_ASSOC);
+	
+	return $orders;
+}
+
+print_r(GetOrdersRemote());
+print_r(GetOrdersLocal());
 ?>

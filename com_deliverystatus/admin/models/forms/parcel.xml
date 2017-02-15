@@ -33,6 +33,7 @@
 		<field
 				name="outer_id"
 				type="text"
+				label="COM_DELIVERYSTATUS_OUTER_ID_LABEL"
 				description="COM_DELIVERYSTATUS_OUTER_ID_DESC"
 				size="40"
 				class="inputbox"
