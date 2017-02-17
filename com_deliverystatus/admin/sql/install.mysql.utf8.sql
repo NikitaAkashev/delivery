@@ -15,7 +15,6 @@ create table if not exists `#__delivery_parcel`(
 	`places_amount` int null,
 	`weight` float null,
 	`volume` float null,
-	`outer_id` varchar(64) null,
 	UNIQUE(`parcel_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
