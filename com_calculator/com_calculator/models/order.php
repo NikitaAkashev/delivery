@@ -366,6 +366,9 @@ order by t.name, base.delivery_hours;
 		if (!CalculatorModelsOrder::IsPhoneValid($this->form['phone']))
 			return false;
 		
+		// проверим, что выбран тариф
+		if (!$this->form['calc_row_id'])
+			return false;
 		return true;
 	}
 	
