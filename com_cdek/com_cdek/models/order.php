@@ -156,6 +156,9 @@ class CdekModelsOrder extends CdekModelsDefault
 	// проверим, что пришли все данные, которые нам нужны для заказа
 	function CheckOrderData()
 	{		
+		if (!$data['tariff'])
+			return false;
+		
 		if (empty($this->form['make_order']) || $this->form['make_order'] != 'sure')
 			return false;
 		
