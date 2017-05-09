@@ -18,8 +18,8 @@ class Syncer
 		$this->_cdek_days = $cdek_days;
 		
 		$this->_mysqli = new mysqli($sql_host, $sql_user, $sql_password, $sql_db);
-		if ($mysqli->connect_error) {
-			die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
+		if ($this->_mysqli->connect_error) {
+			die('Connect Error (' . $this->_mysqli->connect_errno . ') ' . $this->_mysqli->connect_error);
 		}
 		
 		$this->_sql_prefix = $sql_prefix;
@@ -99,7 +99,10 @@ TXT;
 		
 		$result = $this->_mysqli->query($query);
 		
-		$orders = $result->fetch_all(MYSQLI_ASSOC);
+		$orders = array();
+		while ($row = $result->fetch_assoc()) {
+			$orders[] = $row;
+		}
 		
 		return $orders;
 	}
