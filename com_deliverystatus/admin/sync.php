@@ -98,7 +98,7 @@ TXT;
 		
 		$query = $this->RealQuery($query);
 		
-		$result = $this->_mysqli->query($query);
+		$result = $this->_mysqli->query($query) or die($this->_mysqli->error);
 		
 		$orders = array();
 		while ($row = $result->fetch_assoc()) {
