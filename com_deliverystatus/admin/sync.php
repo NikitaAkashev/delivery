@@ -92,7 +92,8 @@ left join #__delivery_parcel_status s on s.parcel_status = ps.parcel_status
 where
 	p.outer_id <> ''
 	and p.outer_id is not null
-	and s.code <> '4' -- статус не "Вручен"
+	and (s.code <> '4' -- статус не "Вручен"
+		or s.code is null)
 TXT;
 		
 		$query = $this->RealQuery($query);
@@ -138,7 +139,8 @@ TXT;
 		$local = $this->GetOrdersLocal();
 		if (!count($local))
 			return;
-		
+			
+		$new_data = array();
 		foreach($local as $loc)
 		{
 			foreach($remote as $rem)
