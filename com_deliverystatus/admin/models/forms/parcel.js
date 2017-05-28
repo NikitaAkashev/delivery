@@ -1,7 +1,7 @@
 jQuery(function() {
     document.formvalidator.setHandler('parcelnumber',
         function (value) {
-            regex=/^[0-9а-я]+$/;
+            regex=/^[0-9а-я#№\/-]+$/;
             return regex.test(value);
         });
     document.formvalidator.setHandler('sender',

@@ -12,7 +12,8 @@ class DeliveryStatusModelParcels extends JModelList
 					'sender', 'p.sender', 
 					'receiver', 'p.receiver', 
 					'status_name', 
-					'published', 'p.published');		
+					'published', 'p.published',
+					'outer_id', 'p.outer_id');		
 		} 		
 		parent::__construct($config);	
 	}
