@@ -1,7 +1,5 @@
 jQuery(document).ready(function(){
 
-	jQuery.curCSS = jQuery.css;
-
 	autocity("#city_from");
 	autocity("#city_to");
 
@@ -14,8 +12,16 @@ jQuery(document).ready(function(){
 	jQuery('#client_phone').change(ValidatePhone);
 	jQuery('#client_phone').keyup(ValidatePhone);
 
-	jQuery('#calculate').click(Recalculate);
+	jQuery('#calculate').click(function(){return Recalculate(true)});
 	jQuery('#orderbutton').click(ValidateOrder);
+	
+	jQuery('#weight_input').change(CheckSizeRequired);
+	jQuery('#weight_input').keyup(CheckSizeRequired);
+	
+	CheckSizeRequired();
+	
+	jQuery('.advantage_fields').change(function(){Recalculate(false)});
+	jQuery('.advantage_fields').keyup(function(){Recalculate(false)});
 });
 /**
  * подтягиваем список городов ajax`ом, данные jsonp в зависмости от введённых символов
@@ -57,21 +63,24 @@ function autocity(id)
 /**
  * @return {boolean}
  */
-function ValidateCalc()
+function ValidateCalc(display_errors)
 {
 	var has_errors = false;
 	jQuery('.advantage_fields').removeClass('alert-error');
 
 	if(jQuery('#city_from_id').val() == '') {
-		jQuery('#city_from').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#city_from').addClass('alert-error');
 		has_errors = true;
 	};
 	if(jQuery('#city_to_id').val() == '') {
-		jQuery('#city_to').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#city_to').addClass('alert-error');
 		has_errors = true;
 	};
 	if(jQuery('#weight_input').val() == '') {
-		jQuery('#weight_input').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#weight_input').addClass('alert-error');
 		has_errors = true;
 	};
 
@@ -79,26 +88,29 @@ function ValidateCalc()
 		return !has_errors;
 
 	if(jQuery('#width_input').val() == '') {
-		jQuery('#width_input').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#width_input').addClass('alert-error');
 		has_errors = true;
 	};
 	if(jQuery('#length_input').val() == '') {
-		jQuery('#length_input').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#length_input').addClass('alert-error');
 		has_errors = true;
 	};
 	if(jQuery('#height_input').val() == '') {
-		jQuery('#height_input').addClass('alert-error');
+		if (display_errors) 
+			jQuery('#height_input').addClass('alert-error');
 		has_errors = true;
 	};
 
-	if(!has_errors)
+	if(!has_errors && display_errors)
 		jQuery('.advantage_fields').removeClass('alert-error');
 
 	return !has_errors;
 }
 
-function Recalculate(){
-	if (!ValidateCalc()) return false;
+function Recalculate(display_errors){
+	if (!ValidateCalc(display_errors)) return false;
 
 	jQuery('#advantage_area').addClass("loading");
 	jQuery.post(
@@ -127,14 +139,17 @@ function FillResults(data){
 		jQuery('#calc_results_rows tr').remove();
 		jQuery.each(data, function(i, v){
 			jQuery('#calc_results_rows').append(jQuery('<tr>'
-				+ '<td><input class="rate_line" data-tariffname="'+v.name+'" data-price="'+v.price+'" type="radio" name="tariff" value="'+v.tariffId+'" /></td>'
-				+ '<td>'+v.name+'</td>'
-				+ '<td>'+v.price+'</td>'
-				+ '<td>'+v.delivery_time+'</td>'
+				+ '<td><input class="rate_line" data-tariffname="'+v.name+'" data-price="'+v.price+'" data-nds="'+v.nds+'" data-delivery_time="'+v.delivery_time+'" type="radio" name="tariff" value="'+v.tariffId+'" /></td>'
+				+ '<td>' + v.name + '</td>'
+				+ '<td>' + v.price + (jQuery('#with_nds') ? ' ('+ v.nds + ')' : '' ) + '</td>'
+				+ '<td>' + v.delivery_time + '</td>'
 			+'</tr>'));
 		});
 
 		jQuery('.rate_line').click(SelectTariff);
+		
+		// выбор первого тарифа
+		jQuery('.rate_line')[0].click();
 
 		jQuery('.no_prices').hide();		
 		
@@ -150,10 +165,11 @@ function FillResults(data){
 function SelectTariff()
 {
 	var el = jQuery(this);
-	console.log(el.data('tariffname'));
 
 	jQuery('#tariff_name').val(el.data('tariffname'));
 	jQuery('#price').val(el.data('price'));
+	jQuery('#nds').val(el.data('nds'));
+	jQuery('#delivery_time').val(el.data('delivery_time'));
 }
 
 function ValidateEmail()
@@ -197,4 +213,16 @@ function ValidateOrder()
 		has_errors = true;
 
 	return !has_errors;
+}
+
+function CheckSizeRequired()
+{
+	if(jQuery('#weight_input').val() <= jQuery('#weight_no_size').val())
+	{
+		jQuery('.dimension .asterisk').hide();
+	}
+	else
+	{
+		jQuery('.dimension .asterisk').show();
+	}
 }
